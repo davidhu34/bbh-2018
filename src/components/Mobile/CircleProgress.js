@@ -12,9 +12,10 @@ class CircleProgress extends Component {
     }
 
     render () {
-        let width = (this.props.width || 100) + 'px'
-        let height = (this.props.height || 100) +'px'
-        let { value, max } = this.props
+        let { value, max, size } = this.props
+        let width = (size || 100) + 'px'
+        let height = width
+
         let percentage = 100 * (value || 0) / (max || 100)
 
         return <div style={{
@@ -35,20 +36,27 @@ class CircleProgress extends Component {
                 from={{ opacity: 0 }}
                 to={{ opacity: 1 }}>
                 { styles => <CircularProgressbar
+                    background
                     percentage={percentage*styles.opacity}
                     text={`${percentage}%`}
                     styles={{
                         root: { width, height },
-                        path: { stroke: 'url(#id1)' },
+                        background: { fill: 'azure', r: 40 },
+                        path: {
+                            strokeLinecap: 'round',
+                            stroke: 'url(#id1)',
+                            transform: 'rotate(-45deg)',
+                            transformOrigin: 'center center'
+                        },
                         text: { fill: 'transparent' },
                     }}
                  />}
             </Spring>
 
             <GradientSVG idCSS={'id1'}
-                rotation={300}
-                startColor={'aquamarine'}
-                endColor={'marine'}
+                rotation={90}
+                startColor={'azure'}
+                endColor={'aquamarine'}
             />
 
         </div>
