@@ -3,6 +3,8 @@ import { Spring, Transition, config as springConfig } from 'react-spring'
 import CircularProgressbar from 'react-circular-progressbar';
 
 import GradientSVG from './GradientSVG'
+import Text from './Text'
+
 class CircleProgress extends Component {
 
     componentDidMount() {
@@ -24,13 +26,8 @@ class CircleProgress extends Component {
             margin: 'auto',
             textAlign: 'center'
         }}>
-            <div style={{
-                position: 'absolute',
-                width,
-                height,
-            }}>
-                {value}
-            </div>
+
+            <Text {...this.props} />
 
             <Spring config={ springConfig.slow }
                 from={{ opacity: 0 }}
