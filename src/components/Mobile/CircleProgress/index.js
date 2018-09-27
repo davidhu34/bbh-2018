@@ -4,6 +4,7 @@ import CircularProgressbar from 'react-circular-progressbar';
 
 import GradientSVG from './GradientSVG'
 import Text from './Text'
+import HomeStatistic from '../HomeStatistic'
 
 class CircleProgress extends Component {
 
@@ -26,9 +27,14 @@ class CircleProgress extends Component {
             margin: 'auto',
             textAlign: 'center'
         }}>
-
-            <Text {...this.props} />
-
+            <div style={{
+                position: 'absolute',
+                width,
+                height,
+                paddingTop: (size || 100) / 4
+            }}>
+                {this.props.children}
+            </div>
             <Spring config={ springConfig.slow }
                 from={{ opacity: 0 }}
                 to={{ opacity: 1 }}>
