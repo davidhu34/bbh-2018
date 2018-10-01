@@ -5,6 +5,7 @@ import { Grid, Icon, Header, Table } from 'semantic-ui-react'
 
 import CircleProgress from './CircleProgress'
 import HomeStatistic from './HomeStatistic'
+import Camera from '../Camera'
 
 class Home extends Component {
     render () {

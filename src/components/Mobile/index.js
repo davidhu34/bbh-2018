@@ -7,6 +7,7 @@ import { pushRoute } from '../../actions'
 import AppBar from './AppBar'
 import Home from './Home'
 import Food from './Food'
+import Temp from './Temp'
 import Profile from './Profile'
 import Footer from './Footer'
 
@@ -25,7 +26,7 @@ const Mobile = ({
         <AppBar />
         <Route exact path="/" component={Home} />
         <Route path="/food" component={Food} />
-        <Route path="/profile" component={Profile} />
+        <Route path="/temp" component={Temp} />
 
         <Footer />
     </div>
