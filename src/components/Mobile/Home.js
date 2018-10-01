@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import CircularProgressbar from 'react-circular-progressbar';
+import CircularProgressbar from 'react-circular-progressbar'
 
 import { Grid, Icon, Header, Table } from 'semantic-ui-react'
 
