@@ -14,10 +14,14 @@ export function* routeSaga() {
 }
 
 
-const filterFoodList = (list, filter) => {
-    return Promise.resolve(list.filter( food => food.category == filter ));
+const filterFoodList = (dataList, filter) => {
+    let idList = []
+    dataList.map( food => {
+        if (food.category == filter) idList.push(food.id)
+    })
+    return Promise.resolve(idList)
 }
-export function* foodListFilter(action) {
+function* foodListFilter(action) {
 
     const filter = action.filter
     yield put({type: 'FOOD_UI_LIST_FILTER_START', action})
@@ -33,12 +37,21 @@ export function* foodListFilter(action) {
     })
 }
 
+function* foodCreateSubmit(action) {
+    yield put({type: 'FOOD_CREATE_SUBMIT_START'})
+    yield delay(500)
+    yield put({type: 'FOOD_CREATE_SUBMIT_END', food: action.food})
+}
+
 export function* foodSaga() {
-    yield takeLatest('FOOD_LIST_FILTER', foodListFilter)
+    yield all([
+        takeLatest('FOOD_LIST_FILTER', foodListFilter),
+        takeLatest('FOOD_CREATE_SUBMIT', foodCreateSubmit)
+    ])
 }
 export default function* rootSaga() {
     yield all([
         fork(routeSaga),
-        foodSaga(),
+        fork(foodSaga),
     ])
 }

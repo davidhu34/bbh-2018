@@ -29,7 +29,15 @@ const foodDataInit = {
 }
 export const foodData = (state = foodDataInit, action) => {
     switch (action.type) {
-        case 'FOOD_DATA_CREATE':
+        case 'FOOD_CREATE_SUBMIT_END':
+            return {
+                ...state,
+                list: [...state.list, action.food.id],
+                data: {
+                    ...state.data,
+                    [action.food.id]: action.food
+                }
+            }
         default:
             return state
     }
@@ -37,7 +45,7 @@ export const foodData = (state = foodDataInit, action) => {
 
 const foodUIInit = {
     loading: false,
-    filter: '',
+    filter: 'LUNCH',
     list: ['1','2','3']
 }
 export const foodUI = (state = foodUIInit, action) => {
@@ -56,6 +64,18 @@ export const foodUI = (state = foodUIInit, action) => {
                 filter: action.filter,
                 loading: false,
                 list: action.list
+            }
+        case 'FOOD_CREATE_SUBMIT_START':
+            return {
+                ...state,
+                loading: true
+            }
+        case 'FOOD_CREATE_SUBMIT_END':
+        console.log(action)
+            return {
+                ...state,
+                loading: false,
+                list: [...state.list, action.food.id]
             }
         default:
             return state

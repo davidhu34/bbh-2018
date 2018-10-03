@@ -13,7 +13,12 @@ import { foodListFilter } from '../../actions'
 
 class Food extends Component {
     render () {
-        let { foodListFilter, foodData, foodUI } = this.props
+        let {
+            foodListFilter,
+            foodCreateSubmit,
+            foodData,
+            foodUI
+        } = this.props
 
         return <div style={{
             width: '100%',
@@ -148,7 +153,9 @@ class Food extends Component {
                         borderTopColor: 'lightgray',
                         margin: 'auto'
                     }}>
-                    { foodUI.list.map( food => <Grid.Row style={{
+                    { foodUI.list.map( id => {
+                        const food = foodData.data[id]
+                        return <Grid.Row style={{
                             borderTop: '1px',
                             borderTopStyle: 'solid',
                             borderTopColor: 'lightgray',
@@ -170,13 +177,23 @@ class Food extends Component {
                                 +
                             </Grid.Column>
                         </Grid.Row>
-                    )}
+                    }) }
                     <Grid.Row style={{
-                            borderTop: '1px',
-                            borderTopStyle: 'solid',
-                            borderTopColor: 'lightgray',
+                        borderTop: '1px',
+                        borderTopStyle: 'solid',
+                        borderTopColor: 'lightgray',
+                    }}>
+                        <Grid.Column onClick={ (e) => {
+                            const time = (new Date()).getTime()
+                            foodCreateSubmit({
+                                id: time.toString(),
+                                desc: time.toString(),
+                                time: time,
+                                category: foodUI.filter,
+                                tags: [],
+                                calorie: time.toString().substr(-3)
+                            })
                         }}>
-                        <Grid.Column>
                             <Icon size="large" name="add" />
                         </Grid.Column>
                     </Grid.Row>
@@ -195,6 +212,10 @@ export default connect(
         foodData, foodUI
     }),
     dispatch => ({
-        foodListFilter: (filter) => dispatch(foodListFilter(filter))
+        foodListFilter: (filter) => dispatch(foodListFilter(filter)),
+        foodCreateSubmit: (food) => dispatch({
+            type: 'FOOD_CREATE_SUBMIT',
+            food: food
+        })
     })
 )(Food)
