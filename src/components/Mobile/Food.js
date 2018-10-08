@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import CircularProgressbar from 'react-circular-progressbar'
 
-import { Grid, Icon, Header, Table } from 'semantic-ui-react'
+import { Grid, Icon, Header, Table, Input, Button } from 'semantic-ui-react'
 
 import CircleProgress from './CircleProgress'
 import HomeStatistic from './HomeStatistic'
@@ -61,13 +61,12 @@ class Food extends Component {
                 padded
                 relaxed
                 textAlign={'center'}
-                verticalAlign={'middle'}
-                style={{
+                verticalAlign={'middle'}>
+                <Grid.Row style={{
                     borderTop: '1px',
                     borderTopStyle: 'solid',
                     borderTopColor: 'lightgray',
                 }}>
-                <Grid.Row>
                     <Grid.Column>
                         <Icon size="large" name="list alternate" />
                     </Grid.Column>
@@ -84,13 +83,13 @@ class Food extends Component {
                 textAlign={'center'}
                 verticalAlign={'middle'}
                 style={{
+                    marginTop: 'auto',
+                }}>
+                <Grid.Row style={{
+                    paddingBottom: 0,
                     borderTop: '1px',
                     borderTopStyle: 'solid',
                     borderTopColor: 'lightgray',
-                    marginTop: 0,
-                }}>
-                <Grid.Row style={{
-                    paddingBottom: 0
                 }}>
                     <Grid.Column>
                         <div style={{
@@ -148,9 +147,6 @@ class Food extends Component {
                 : <Grid textAlign={'center'}
                     verticalAlign={'middle'}
                     style={{
-                        borderTop: '1px',
-                        borderTopStyle: 'solid',
-                        borderTopColor: 'lightgray',
                         margin: 'auto'
                     }}>
                     { foodUI.list.map( id => {
@@ -178,6 +174,7 @@ class Food extends Component {
                             </Grid.Column>
                         </Grid.Row>
                     }) }
+
                     <Grid.Row style={{
                         borderTop: '1px',
                         borderTopStyle: 'solid',
@@ -197,10 +194,60 @@ class Food extends Component {
                             <Icon size="large" name="add" />
                         </Grid.Column>
                     </Grid.Row>
+
                 </Grid>
             }
 
-            <div style={{height: '500px', display:'block'}}>
+            <Grid padded>
+                <Grid.Row style={{
+                    borderTop: '1px',
+                    borderTopStyle: 'solid',
+                    borderTopColor: 'lightgray',
+                    paddingBottom: 0
+                }}>
+                    <Grid.Column width={1} />
+                    <Grid.Column width={14}>
+                        <Input fluid size="mini" placeholder='Search...' />
+                    </Grid.Column>
+                    <Grid.Column width={1} />
+                </Grid.Row>
+                <Grid.Row style={{
+                    paddingBottom: 0
+                }}>
+                    <Grid.Column width={1} />
+                    <Grid.Column width={5}>
+                        <Input fluid size="mini" placeholder='count' />
+                    </Grid.Column>
+                    <Grid.Column width={5} style={{ margin: 'auto 0'}}>
+                        fdghgfdh
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row style={{
+                    paddingBottom: 0
+                }}>
+                    <Grid.Column width={1} />
+                    <Grid.Column width={5}>
+                        <Input fluid size="mini" placeholder='cal...' />
+                    </Grid.Column>
+                    <Grid.Column width={5} style={{ margin: 'auto 0'}}>
+                        sqdfqwe
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row style={{
+                    paddingBottom: 0
+                }}>
+                    <Grid.Column width={1} />
+                    <Grid.Column width={7}>
+                        <Button fluid size="mini">sfdgfs</Button>
+                    </Grid.Column>
+                    <Grid.Column width={7}>
+                        <Button fluid size="mini">safd</Button>
+                    </Grid.Column>
+                    <Grid.Column width={1} />
+                </Grid.Row>
+            </Grid>
+
+            <div style={{ height: '500px', display:'block' }}>
             </div>
 
         </div>

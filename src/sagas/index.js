@@ -5,7 +5,7 @@ import { push } from 'connected-react-router'
 
 export function* changeRoute(action) {
     yield put({type: 'CHANGE_ROUTE_START'})
-    yield delay(1000)
+    yield delay(1)
     yield put(push(action.route))
 }
 
@@ -39,7 +39,7 @@ function* foodListFilter(action) {
 
 function* foodCreateSubmit(action) {
     yield put({type: 'FOOD_CREATE_SUBMIT_START'})
-    yield delay(500)
+    yield delay(1)
     yield put({type: 'FOOD_CREATE_SUBMIT_END', food: action.food})
 }
 
