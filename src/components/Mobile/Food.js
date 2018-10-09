@@ -7,18 +7,28 @@ import { Grid, Icon, Header, Table, Input, Button } from 'semantic-ui-react'
 
 import CircleProgress from './CircleProgress'
 import HomeStatistic from './HomeStatistic'
-
+import FoodInputArea from './FoodInputArea'
+import FoodList from './FoodList'
 import { foodListFilter } from '../../actions'
 
 
 class Food extends Component {
+
+    foodDataList(start, end) {
+        const { foodData, foodUI } = this.props
+        return foodUI.list.slice(start,end).map( id => foodData.data[id] )
+    }
+
     render () {
-        let {
+        const {
             foodListFilter,
             foodCreateSubmit,
             foodData,
             foodUI
         } = this.props
+
+        const editingId = foodUI.list[foodUI.editing] || ''
+        const editingData = editingId? foodData.data[editingId]: {}
 
         return <div style={{
             width: '100%',
@@ -84,7 +94,8 @@ class Food extends Component {
                 verticalAlign={'middle'}
                 style={{
                     marginTop: 'auto',
-                }}>
+                }}
+            >
                 <Grid.Row style={{
                     paddingBottom: 0,
                     borderTop: '1px',
@@ -144,111 +155,52 @@ class Food extends Component {
 
             { foodUI.loading
                 ? 'loading'
-                : <Grid textAlign={'center'}
-                    verticalAlign={'middle'}
-                    style={{
-                        margin: 'auto'
-                    }}>
-                    { foodUI.list.map( id => {
-                        const food = foodData.data[id]
-                        return <Grid.Row style={{
+                : <React.Fragment>
+
+                    <FoodList foodDataList={this.foodDataList(0,foodUI.editing)} />
+
+                    { editingId
+                        ? <FoodInputArea
+                            preset={{ ...editingData }}
+                            filter={ foodUI.filter }
+                            submit={ food => foodCreateSubmit(food)}
+                        />
+                        : null
+                    }
+
+                    <FoodList foodDataList={this.foodDataList(foodUI.editing+1,foodUI.list.length)} />
+
+                    <Grid textAlign={'center'}
+                        verticalAlign={'middle'}
+                        style={{
+                            margin: 'auto'
+                        }}
+                    >
+                        <Grid.Row style={{
                             borderTop: '1px',
                             borderTopStyle: 'solid',
                             borderTopColor: 'lightgray',
-                            backgroundColor: 'ghostwhite'
                         }}>
-                            <Grid.Column width={1}>
-                                ●
-                            </Grid.Column>
-                            <Grid.Column textAlign={'left'} width={6}>
-                                {food.desc}
-                            </Grid.Column>
-                            <Grid.Column width={3}>
-                                {food.calorie}
-                            </Grid.Column>
-                            <Grid.Column width={3}>
-                                cal
-                            </Grid.Column>
-                            <Grid.Column textAlign={'left'} width={2}>
-                                +
+                            <Grid.Column onClick={ (e) => {
+                                const time = (new Date()).getTime()
+                                foodCreateSubmit({
+                                    id: time.toString(),
+                                    desc: time.toString(),
+                                    time: time,
+                                    category: foodUI.filter,
+                                    tags: [],
+                                    calorie: time.toString().substr(-3)
+                                })
+                            }}>
+                                <Icon size="large" name="add" />
                             </Grid.Column>
                         </Grid.Row>
-                    }) }
+                    </Grid>
 
-                    <Grid.Row style={{
-                        borderTop: '1px',
-                        borderTopStyle: 'solid',
-                        borderTopColor: 'lightgray',
-                    }}>
-                        <Grid.Column onClick={ (e) => {
-                            const time = (new Date()).getTime()
-                            foodCreateSubmit({
-                                id: time.toString(),
-                                desc: time.toString(),
-                                time: time,
-                                category: foodUI.filter,
-                                tags: [],
-                                calorie: time.toString().substr(-3)
-                            })
-                        }}>
-                            <Icon size="large" name="add" />
-                        </Grid.Column>
-                    </Grid.Row>
-
-                </Grid>
+                </React.Fragment>
             }
 
-            <Grid padded>
-                <Grid.Row style={{
-                    borderTop: '1px',
-                    borderTopStyle: 'solid',
-                    borderTopColor: 'lightgray',
-                    paddingBottom: 0
-                }}>
-                    <Grid.Column width={1} />
-                    <Grid.Column width={14}>
-                        <Input fluid size="mini" placeholder='Search...' />
-                    </Grid.Column>
-                    <Grid.Column width={1} />
-                </Grid.Row>
-                <Grid.Row style={{
-                    paddingBottom: 0
-                }}>
-                    <Grid.Column width={1} />
-                    <Grid.Column width={5}>
-                        <Input fluid size="mini" placeholder='count' />
-                    </Grid.Column>
-                    <Grid.Column width={5} style={{ margin: 'auto 0'}}>
-                        fdghgfdh
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row style={{
-                    paddingBottom: 0
-                }}>
-                    <Grid.Column width={1} />
-                    <Grid.Column width={5}>
-                        <Input fluid size="mini" placeholder='cal...' />
-                    </Grid.Column>
-                    <Grid.Column width={5} style={{ margin: 'auto 0'}}>
-                        sqdfqwe
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row style={{
-                    paddingBottom: 0
-                }}>
-                    <Grid.Column width={1} />
-                    <Grid.Column width={7}>
-                        <Button fluid size="mini">sfdgfs</Button>
-                    </Grid.Column>
-                    <Grid.Column width={7}>
-                        <Button fluid size="mini">safd</Button>
-                    </Grid.Column>
-                    <Grid.Column width={1} />
-                </Grid.Row>
-            </Grid>
-
-            <div style={{ height: '500px', display:'block' }}>
-            </div>
+            <div style={{ height: '500px', display:'block' }} />
 
         </div>
     }

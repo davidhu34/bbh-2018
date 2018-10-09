@@ -7,7 +7,7 @@ const foodDataInit = {
             desc: 'KFC',
             category: 'LUNCH',
             tags: [],
-            calorie: 500,
+            calorie: '500',
         },
         '2': {
             id: '2',
@@ -15,7 +15,7 @@ const foodDataInit = {
             desc: '7-11',
             category: 'LUNCH',
             tags: [],
-            calorie: 5000,
+            calorie: '5000',
         },
         '3': {
             id: '3',
@@ -23,7 +23,7 @@ const foodDataInit = {
             desc: '牛排',
             category: 'DINNER',
             tags: [],
-            calorie: 8000,
+            calorie: '8000',
         },
     }
 }
@@ -44,6 +44,7 @@ export const foodData = (state = foodDataInit, action) => {
 }
 
 const foodUIInit = {
+    editing: null,
     loading: false,
     filter: 'LUNCH',
     list: ['1','2','3']
@@ -64,6 +65,11 @@ export const foodUI = (state = foodUIInit, action) => {
                 filter: action.filter,
                 loading: false,
                 list: action.list
+            }
+        case 'FOOD_EDIT_START':
+            return {
+                ...state,
+                editing: action.editing
             }
         case 'FOOD_CREATE_SUBMIT_START':
             return {
