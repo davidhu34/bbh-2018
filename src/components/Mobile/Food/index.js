@@ -10,7 +10,7 @@ import HomeStatistic from '../HomeStatistic'
 
 import FoodInputArea from './FoodInputArea'
 import FoodList from './FoodList'
-import { foodListFilter, foodEditSubmit, foodEdit } from '../../../actions'
+import { foodListFilter, foodEditSubmit, foodEdit, foodEditEnd } from '../../../actions'
 
 
 class Food extends Component {
@@ -28,6 +28,7 @@ class Food extends Component {
         const {
             foodListFilter,
             foodEditSubmit,
+            foodEditEnd,
             foodData,
             foodUI
         } = this.props
@@ -177,6 +178,7 @@ class Food extends Component {
                             preset={ foodData.data[editing] }
                             filter={ foodUI.filter }
                             submit={ food => foodEditSubmit(food)}
+                            cancel={ () => foodEditEnd() }
                         />
                         : null
                     }
@@ -228,6 +230,7 @@ export default connect(
     dispatch => ({
         foodListFilter: (filter) => dispatch(foodListFilter(filter)),
         foodEditSubmit: (food) => dispatch(foodEditSubmit(food)),
-        foodEdit: (index) => dispatch(foodEdit(index))
+        foodEdit: (index) => dispatch(foodEdit(index)),
+        foodEditEnd: () => dispatch(foodEditEnd())
     })
 )(Food)

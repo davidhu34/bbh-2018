@@ -11,6 +11,10 @@ export const foodEdit = (index) => ({
     type: 'FOOD_EDIT', editing: index
 })
 
+export const foodEditEnd = (index) => ({
+    type: 'FOOD_EDIT_END', editing: index
+})
+
 
 export const foodEditSubmit = (food) => ({
     type: 'FOOD_EDIT_SUBMIT',

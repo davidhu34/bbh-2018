@@ -54,7 +54,7 @@ class FoodInputArea extends Component {
                 <Grid.Column width={1} />
                 <Grid.Column width={14}>
                     <Input fluid size="mini" name="DESC"
-                        defaultValue={this.state.DESC}
+                        value={this.state.DESC}
                         placeholder={'desc...'}
                         onChange={this.handleChange}
                     />
@@ -68,7 +68,7 @@ class FoodInputArea extends Component {
                 <Grid.Column width={5}>
                     <Input fluid size="mini"
                         name="COUNT"
-                        defaultValue={this.state.COUNT}
+                        value={this.state.COUNT}
                         placeholder={'count'}
                         onChange={this.handleChange}
                     />
@@ -84,7 +84,7 @@ class FoodInputArea extends Component {
                 <Grid.Column width={5}>
                     <Input fluid size="mini"
                         name="CALORIES"
-                        defaultValue={this.state.CALORIES}
+                        value={this.state.CALORIES}
                         placeholder={'cal...'}
                         onChange={this.handleChange}
                     />
