@@ -1,38 +1,41 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import CircularProgressbar from 'react-circular-progressbar'
-
 import { Form, Grid, Icon, Header, Table, Input, Button } from 'semantic-ui-react'
 
 class FoodInputArea extends Component {
-    ref = null
     state = {}
-    names = ['DESC','COUNT','CALORIES']
 
     constructor(props) {
         super(props)
 
-        let state = {}
         const preset = this.props.preset || {}
-        this.names.map( name => {
-            state[name] = preset[name] || ''
-        })
-        this.state = state;
+        this.state = {
+            DESC: preset.desc || '',
+            CALORIES: preset.calories || '',
+            COUNT: preset.count || '',
+        }
     }
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value })
 
     getSubmission = () => {
         const time = (new Date()).getTime()
-        return {
-            id: time.toString(),
+        const formData = {
             desc: this.state.DESC,
+            count: this.state.COUNT.toString(),
+            calories: this.state.CALORIES.toString(),
+        }
+        const preset = this.props.preset || {}
+        return preset.id? {
+            ...preset,
+            ...formData
+        } : {
+            id: time.toString(),
             time: time,
             category: this.props.filter,
-            count: this.state.COUNT,
             tags: [],
-            calorie: this.state.CALORIES.toString(),
+            ...formData
         }
     }
 
@@ -51,8 +54,8 @@ class FoodInputArea extends Component {
                 <Grid.Column width={1} />
                 <Grid.Column width={14}>
                     <Input fluid size="mini" name="DESC"
+                        defaultValue={this.state.DESC}
                         placeholder={'desc...'}
-                        innerRef={ ref => { this.ref = ref } }
                         onChange={this.handleChange}
                     />
                 </Grid.Column>
@@ -65,6 +68,7 @@ class FoodInputArea extends Component {
                 <Grid.Column width={5}>
                     <Input fluid size="mini"
                         name="COUNT"
+                        defaultValue={this.state.COUNT}
                         placeholder={'count'}
                         onChange={this.handleChange}
                     />
@@ -80,6 +84,7 @@ class FoodInputArea extends Component {
                 <Grid.Column width={5}>
                     <Input fluid size="mini"
                         name="CALORIES"
+                        defaultValue={this.state.CALORIES}
                         placeholder={'cal...'}
                         onChange={this.handleChange}
                     />

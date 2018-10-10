@@ -5,16 +5,21 @@ import CircularProgressbar from 'react-circular-progressbar'
 
 import { Grid, Icon, Header, Table, Input, Button } from 'semantic-ui-react'
 
-import CircleProgress from './CircleProgress'
-import HomeStatistic from './HomeStatistic'
+import CircleProgress from '../CircleProgress'
+import HomeStatistic from '../HomeStatistic'
+
 import FoodInputArea from './FoodInputArea'
 import FoodList from './FoodList'
-import { foodListFilter } from '../../actions'
+import { foodListFilter, foodEditSubmit, foodEdit } from '../../../actions'
 
 
 class Food extends Component {
 
-    foodDataList(start, end) {
+    editFood (index) {
+        this.props.foodEdit(index)
+    }
+
+    getfoodDataList(start, end) {
         const { foodData, foodUI } = this.props
         return foodUI.list.slice(start,end).map( id => foodData.data[id] )
     }
@@ -22,13 +27,19 @@ class Food extends Component {
     render () {
         const {
             foodListFilter,
-            foodCreateSubmit,
+            foodEditSubmit,
             foodData,
             foodUI
         } = this.props
 
-        const editingId = foodUI.list[foodUI.editing] || ''
-        const editingData = editingId? foodData.data[editingId]: {}
+        const editing = foodUI.editing || ''
+        const editingIndex = foodUI.list.indexOf(editing)
+        const middle = editingIndex < 0? foodUI.list.length: editingIndex + 1
+        const foodDataList = [
+            this.getfoodDataList(0, middle),
+            this.getfoodDataList(middle)
+        ]
+        console.log('EDITING',editing)
 
         return <div style={{
             width: '100%',
@@ -157,18 +168,22 @@ class Food extends Component {
                 ? 'loading'
                 : <React.Fragment>
 
-                    <FoodList foodDataList={this.foodDataList(0,foodUI.editing)} />
+                    <FoodList editFood={ this.editFood.bind(this) }
+                        foodDataList={this.getfoodDataList(0, middle)}
+                    />
 
-                    { editingId
+                    { editing
                         ? <FoodInputArea
-                            preset={{ ...editingData }}
+                            preset={ foodData.data[editing] }
                             filter={ foodUI.filter }
-                            submit={ food => foodCreateSubmit(food)}
+                            submit={ food => foodEditSubmit(food)}
                         />
                         : null
                     }
 
-                    <FoodList foodDataList={this.foodDataList(foodUI.editing+1,foodUI.list.length)} />
+                    <FoodList editFood={ this.editFood.bind(this) }
+                        foodDataList={this.getfoodDataList(middle)}
+                    />
 
                     <Grid textAlign={'center'}
                         verticalAlign={'middle'}
@@ -183,7 +198,7 @@ class Food extends Component {
                         }}>
                             <Grid.Column onClick={ (e) => {
                                 const time = (new Date()).getTime()
-                                foodCreateSubmit({
+                                foodEditSubmit({
                                     id: time.toString(),
                                     desc: time.toString(),
                                     time: time,
@@ -212,9 +227,7 @@ export default connect(
     }),
     dispatch => ({
         foodListFilter: (filter) => dispatch(foodListFilter(filter)),
-        foodCreateSubmit: (food) => dispatch({
-            type: 'FOOD_CREATE_SUBMIT',
-            food: food
-        })
+        foodEditSubmit: (food) => dispatch(foodEditSubmit(food)),
+        foodEdit: (index) => dispatch(foodEdit(index))
     })
 )(Food)

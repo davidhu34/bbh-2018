@@ -7,7 +7,7 @@ const foodDataInit = {
             desc: 'KFC',
             category: 'LUNCH',
             tags: [],
-            calorie: '500',
+            calories: '500',
         },
         '2': {
             id: '2',
@@ -15,7 +15,7 @@ const foodDataInit = {
             desc: '7-11',
             category: 'LUNCH',
             tags: [],
-            calorie: '5000',
+            calories: '5000',
         },
         '3': {
             id: '3',
@@ -23,16 +23,17 @@ const foodDataInit = {
             desc: '牛排',
             category: 'DINNER',
             tags: [],
-            calorie: '8000',
+            calories: '8000',
         },
     }
 }
 export const foodData = (state = foodDataInit, action) => {
     switch (action.type) {
-        case 'FOOD_CREATE_SUBMIT_END':
+        case 'FOOD_EDIT_SUBMIT_END':
+            const isNew = state.list.indexOf(action.food.id) < 0
             return {
                 ...state,
-                list: [...state.list, action.food.id],
+                list: isNew? [...state.list, action.food.id]: state.list,
                 data: {
                     ...state.data,
                     [action.food.id]: action.food
@@ -55,6 +56,7 @@ export const foodUI = (state = foodUIInit, action) => {
         case 'FOOD_LIST_FILTER_START':
             return {
                 ...state,
+                editing: null,
                 filter: action.filter,
                 loading: true
             }
@@ -71,17 +73,23 @@ export const foodUI = (state = foodUIInit, action) => {
                 ...state,
                 editing: action.editing
             }
-        case 'FOOD_CREATE_SUBMIT_START':
+        case 'FOOD_EDIT_END':
+            return {
+                ...state,
+                editing: null
+            }
+        case 'FOOD_EDIT_SUBMIT_START':
             return {
                 ...state,
                 loading: true
             }
-        case 'FOOD_CREATE_SUBMIT_END':
-        console.log(action)
+        case 'FOOD_EDIT_SUBMIT_END':
+            const isNew = state.list.indexOf(action.food.id) < 0
             return {
                 ...state,
                 loading: false,
-                list: [...state.list, action.food.id]
+                editing: null,
+                list: isNew? [...state.list, action.food.id]: state.list
             }
         default:
             return state
