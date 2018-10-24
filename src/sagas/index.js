@@ -3,7 +3,7 @@ import { put, takeEvery, takeLatest, all, call,  select, fork } from 'redux-saga
 // import { push } from 'react-router-redux'
 import { push } from 'connected-react-router'
 
-import { foodEditEnd } from '../actions'
+import { foodFormChange } from '../actions'
 
 export function* changeRoute(action) {
     yield put({type: 'CHANGE_ROUTE_START'})
@@ -33,7 +33,8 @@ function* foodListFilter(action) {
     })
     const filteredList = yield call(filterFoodList, dataList, filter)
     console.log(dataList,filteredList, action)
-    yield put({type: 'FOOD_LIST_FILTER_END',
+    yield put({
+        type: 'FOOD_LIST_FILTER_END',
         filter: action.filter,
         list: filteredList
     })
@@ -41,12 +42,33 @@ function* foodListFilter(action) {
 
 function* foodEditSubmit(action) {
     yield put({type: 'FOOD_EDIT_SUBMIT_START'})
+
+    const food = yield select( state => state.foodData.data[state.foodUI.editing] || {})
+    const form = action.form
+    const time = (new Date()).getTime()
+    const newFood = {
+        ...food,
+        id: food.id || time.toString(),
+        time: food.time || time,
+        desc: form.DESC,
+        calories: form.CALORIES,
+        count: form.COUNT,
+    }
     yield delay(1)
-    yield put({type: 'FOOD_EDIT_SUBMIT_END', food: action.food })
+    yield put({type: 'FOOD_EDIT_SUBMIT_END', food: newFood })
 }
 
 function* foodEdit(action) {
     yield put({type: 'FOOD_EDIT_END' })
+
+    const food = yield select( state => state.foodData.data[action.editing] || {})
+    yield put(
+        foodFormChange({
+            DESC: food.desc || '',
+            CALORIES: food.calories || '',
+            COUNT: food.count || '',
+        })
+    )
     yield put({type: 'FOOD_EDIT_START', editing: action.editing })
 }
 

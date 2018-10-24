@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { Grid, Icon, Header, Table, Input, Button } from 'semantic-ui-react'
 
-const FoodList = ({ foodDataList, editFood }) => (
+const FoodList = ({ foodDataList, editFood, viewFood }) => (
     <Grid textAlign={'center'}
         verticalAlign={'middle'}
         style={{
@@ -15,19 +15,19 @@ const FoodList = ({ foodDataList, editFood }) => (
                 backgroundColor: 'ghostwhite'
             }}>
                 <Grid.Column width={1} onClick={ e => editFood(food.id) }>
-                    ●
+                    <Icon size="mini" name="pencil" />
                 </Grid.Column>
                 <Grid.Column textAlign={'left'} width={6}>
                     {food.desc}
                 </Grid.Column>
-                <Grid.Column width={3}>
-                    {food.calorie}
+                <Grid.Column textAlign={'right'} width={3}>
+                    {food.calories}
                 </Grid.Column>
                 <Grid.Column width={3}>
                     cal
                 </Grid.Column>
-                <Grid.Column textAlign={'left'} width={2}>
-                    +
+                <Grid.Column textAlign={'left'} width={2} onClick={ e => viewFood(food.id) }>
+                    <Icon size="mini" name="down" />
                 </Grid.Column>
             </Grid.Row>)
         }

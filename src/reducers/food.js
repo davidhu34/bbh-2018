@@ -44,12 +44,38 @@ export const foodData = (state = foodDataInit, action) => {
     }
 }
 
+const foodFormInit = {
+    DESC: '',
+    COUNT: '',
+    CALORIES: '',
+}
+
 const foodUIInit = {
     editing: null,
+    viewing: null,
     loading: false,
     filter: 'LUNCH',
-    list: ['1','2','3']
+    list: ['1','2','3'],
+    form: foodFormInit
 }
+
+const foodForm = (state , action) => {
+    console.log('FOODFORM', action)
+    switch (action.type) {
+        case 'FOOD_FORM_CHANGE':
+            let changeMade = {}
+            Object.keys(action.change).map( name => {
+                changeMade[name] = action.change[name]
+            })
+            return {
+                ...state,
+                ...changeMade
+            }
+        default:
+            return state
+    }
+}
+
 export const foodUI = (state = foodUIInit, action) => {
     console.log('FOODUI', action)
     switch (action.type) {
@@ -57,6 +83,7 @@ export const foodUI = (state = foodUIInit, action) => {
             return {
                 ...state,
                 editing: null,
+                viewing: null,
                 filter: action.filter,
                 loading: true
             }
@@ -68,10 +95,22 @@ export const foodUI = (state = foodUIInit, action) => {
                 loading: false,
                 list: action.list
             }
+        case 'FOOD_VIEW':
+            return {
+                ...state,
+                editing: null,
+                viewing: action.viewing == state.viewing? null: action.viewing,
+            }
+        case 'FOOD_FORM_CHANGE':
+            return {
+                ...state,
+                form: foodForm(state.form, action)
+            }
         case 'FOOD_EDIT_START':
             return {
                 ...state,
-                editing: action.editing
+                viewing: null,
+                editing: action.editing,
             }
         case 'FOOD_EDIT_END':
             return {
@@ -89,7 +128,8 @@ export const foodUI = (state = foodUIInit, action) => {
                 ...state,
                 loading: false,
                 editing: null,
-                list: isNew? [...state.list, action.food.id]: state.list
+                list: isNew? [...state.list, action.food.id]: state.list,
+                form: foodForm(state.form, action),
             }
         default:
             return state

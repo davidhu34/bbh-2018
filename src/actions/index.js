@@ -7,16 +7,21 @@ export const foodListFilter = (filter) => ({
     type: 'FOOD_LIST_FILTER', filter
 })
 
-export const foodEdit = (index) => ({
-    type: 'FOOD_EDIT', editing: index
+export const foodEdit = (foodId) => ({
+    type: 'FOOD_EDIT', editing: foodId
 })
 
-export const foodEditEnd = (index) => ({
-    type: 'FOOD_EDIT_END', editing: index
+export const foodEditEnd = () => ({
+    type: 'FOOD_EDIT_END'
 })
 
 
-export const foodEditSubmit = (food) => ({
+export const foodEditSubmit = (form) => ({
     type: 'FOOD_EDIT_SUBMIT',
-    food: food
+    form: form
+})
+
+export const foodFormChange = (change) => ({
+    type: 'FOOD_FORM_CHANGE',
+    change: change
 })

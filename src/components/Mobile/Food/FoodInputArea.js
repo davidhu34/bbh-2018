@@ -3,44 +3,21 @@ import { connect } from 'react-redux'
 
 import { Form, Grid, Icon, Header, Table, Input, Button } from 'semantic-ui-react'
 
+import { foodFormChange, foodEditSubmit,  foodEditEnd } from '../../../actions'
+
 class FoodInputArea extends Component {
-    state = {}
 
-    constructor(props) {
-        super(props)
-
-        const preset = this.props.preset || {}
-        this.state = {
-            DESC: preset.desc || '',
-            CALORIES: preset.calories || '',
-            COUNT: preset.count || '',
-        }
-    }
-
-    handleChange = (e, { name, value }) => this.setState({ [name]: value })
-
-    getSubmission = () => {
-        const time = (new Date()).getTime()
-        const formData = {
-            desc: this.state.DESC,
-            count: this.state.COUNT.toString(),
-            calories: this.state.CALORIES.toString(),
-        }
-        const preset = this.props.preset || {}
-        return preset.id? {
-            ...preset,
-            ...formData
-        } : {
-            id: time.toString(),
-            time: time,
-            category: this.props.filter,
-            tags: [],
-            ...formData
-        }
-    }
+    handleChange = (e, { name, value }) => this.props.foodFormChange({ [name]: value })
 
     render () {
-        const { submit, cancel } = this.props
+
+        const {
+            foodEditSubmit,
+            foodEditEnd,
+            foodUI
+        } = this.props
+
+        const form = foodUI.form
 
         return <Form>
         <Form.Group>
@@ -54,7 +31,7 @@ class FoodInputArea extends Component {
                 <Grid.Column width={1} />
                 <Grid.Column width={14}>
                     <Input fluid size="mini" name="DESC"
-                        value={this.state.DESC}
+                        value={form.DESC}
                         placeholder={'desc...'}
                         onChange={this.handleChange}
                     />
@@ -68,7 +45,7 @@ class FoodInputArea extends Component {
                 <Grid.Column width={5}>
                     <Input fluid size="mini"
                         name="COUNT"
-                        value={this.state.COUNT}
+                        value={form.COUNT}
                         placeholder={'count'}
                         onChange={this.handleChange}
                     />
@@ -84,7 +61,7 @@ class FoodInputArea extends Component {
                 <Grid.Column width={5}>
                     <Input fluid size="mini"
                         name="CALORIES"
-                        value={this.state.CALORIES}
+                        value={form.CALORIES}
                         placeholder={'cal...'}
                         onChange={this.handleChange}
                     />
@@ -98,10 +75,18 @@ class FoodInputArea extends Component {
             }}>
                 <Grid.Column width={1} />
                 <Grid.Column width={7}>
-                    <Button fluid size="mini" onClick={ e => submit(this.getSubmission()) }>確認</Button>
+                    <Button fluid size="mini" onClick={
+                        e => foodEditSubmit(form)
+                    }>
+                        確認
+                    </Button>
                 </Grid.Column>
                 <Grid.Column width={7}>
-                    <Button fluid size="mini" onClick={ e => { cancel(e) } }>取消</Button>
+                    <Button fluid size="mini" onClick={
+                        e => { foodEditEnd() }
+                    }>
+                        取消
+                    </Button>
                 </Grid.Column>
                 <Grid.Column width={1} />
             </Grid.Row>
@@ -112,4 +97,11 @@ class FoodInputArea extends Component {
     }
 }
 
-export default FoodInputArea
+export default connect(
+    ({ foodUI }) => ({ foodUI }),
+    dispatch => ({
+        foodEditSubmit: (form) => dispatch(foodEditSubmit(form)),
+        foodEditEnd: () => dispatch(foodEditEnd()),
+        foodFormChange: (change) => dispatch(foodFormChange(change))
+    })
+)(FoodInputArea)

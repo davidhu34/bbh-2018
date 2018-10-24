@@ -10,14 +10,12 @@ import HomeStatistic from '../HomeStatistic'
 
 import FoodInputArea from './FoodInputArea'
 import FoodList from './FoodList'
-import { foodListFilter, foodEditSubmit, foodEdit, foodEditEnd } from '../../../actions'
+import { foodListFilter, foodEdit } from '../../../actions'
 
 
 class Food extends Component {
 
-    editFood (index) {
-        this.props.foodEdit(index)
-    }
+    editFood = (index) => this.props.foodEdit(index)
 
     getfoodDataList(start, end) {
         const { foodData, foodUI } = this.props
@@ -169,7 +167,7 @@ class Food extends Component {
                 ? 'loading'
                 : <React.Fragment>
 
-                    <FoodList editFood={ this.editFood.bind(this) }
+                    <FoodList editFood={ this.editFood }
                         foodDataList={this.getfoodDataList(0, middle)}
                     />
 
@@ -177,13 +175,11 @@ class Food extends Component {
                         ? <FoodInputArea
                             preset={ foodData.data[editing] }
                             filter={ foodUI.filter }
-                            submit={ food => foodEditSubmit(food)}
-                            cancel={ () => foodEditEnd() }
                         />
                         : null
                     }
 
-                    <FoodList editFood={ this.editFood.bind(this) }
+                    <FoodList editFood={ this.editFood }
                         foodDataList={this.getfoodDataList(middle)}
                     />
 
@@ -229,8 +225,6 @@ export default connect(
     }),
     dispatch => ({
         foodListFilter: (filter) => dispatch(foodListFilter(filter)),
-        foodEditSubmit: (food) => dispatch(foodEditSubmit(food)),
         foodEdit: (index) => dispatch(foodEdit(index)),
-        foodEditEnd: () => dispatch(foodEditEnd())
     })
 )(Food)
