@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Camera from '../Camera'
 
 class Temp extends Component {
     render () {
@@ -10,7 +9,6 @@ class Temp extends Component {
                 overflowX: 'hidden',
                 margin: 0
             }}>
-            <Camera />
         </div>
     }
 }

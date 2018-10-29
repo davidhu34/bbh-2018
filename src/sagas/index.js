@@ -79,9 +79,16 @@ export function* foodSaga() {
         takeLatest('FOOD_EDIT', foodEdit)
     ])
 }
+
+
+export function* cameraSaga() {
+    yield all([
+    ])
+}
 export default function* rootSaga() {
     yield all([
         fork(routeSaga),
+        fork(cameraSaga),
         fork(foodSaga),
     ])
 }

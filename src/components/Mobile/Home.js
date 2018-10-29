@@ -5,7 +5,6 @@ import { Grid, Icon, Header, Table } from 'semantic-ui-react'
 
 import CircleProgress from './CircleProgress'
 import HomeStatistic from './HomeStatistic'
-import Camera from '../Camera'
 
 class Home extends Component {
     render () {
@@ -75,7 +74,7 @@ class Home extends Component {
                 </Grid.Row>
             </Grid>
 
-            
+
             <div style={{height: '500px', display:'block'}}>
             </div>
 

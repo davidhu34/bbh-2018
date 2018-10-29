@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import CameraPhoto, { FACING_MODES, IMAGE_TYPES } from 'jslib-html5-camera-photo'
-import { Button } from 'semantic-ui-react'
+import { Button, Icon } from 'semantic-ui-react'
 
-import ImageContainer from './ImageContainer'
-import Canvas from './Canvas'
+import ImageContainer from '../../ImageContainer'
+import Canvas from '../../Canvas'
 
 class Camera extends Component {
 
@@ -49,8 +49,12 @@ class Camera extends Component {
                 this.setState({
                     insightsTime: time,
                     insights: [1,2,3].map( (data, i) => ({
-                        x0: 10*data, y0: 10*data,
-                        x1: 10*data + 100, y1: 10*data + random/10,
+                        calories: 10*data + 100,
+                        desc: 10*data + random/10,
+                        x0: 10*data,
+                        y0: 10*data,
+                        x1: 10*data + 100,
+                        y1: 10*data + random/10,
                     }))
                 })
             }
@@ -69,7 +73,11 @@ class Camera extends Component {
         }
     }
 
-    startCamera (front, resolution = {}) {
+    startCamera (front) {
+        let resolution = {
+            width: this.props.width,
+            height: this.props.height
+        }
         let mode = front
             ? FACING_MODES.USER
             : FACING_MODES.ENVIRONMENT
@@ -120,6 +128,7 @@ class Camera extends Component {
             this.setState({
                 snapshotURI: this.cameraPhoto.getDataUri(config)
             })
+            this.props.displaySnapshot(this.state.insights)
         }
     }
     clearSnapshot() {
@@ -149,6 +158,8 @@ class Camera extends Component {
             <video ref={ ref => {this.camRef = ref} }
                 autoPlay
                 playsInline
+                width={this.props.width}
+                height={this.props.height}
                 style={{
                     display: snapshotURI? 'none': 'inline-block',
                     position: 'relative'
@@ -183,24 +194,34 @@ class Camera extends Component {
             <div style={{
                 position: 'absolute',
                 width: '100%',
-                bottom: 0
+                bottom: '-1.5em'
             }}>
                 { snapshotURI
                     ? <div>
-                        <Button onClick={ () => {
-                            this.clearSnapshot()
-                        }}> re-shoot </Button>
-                        <Button onClick={ () => {
-                            this.stopCamera()
-                        }}> use photo </Button>
+                        <Icon circular size='big' inverted color='teal'
+                            name='redo alternate'
+                            onClick={ () => {
+                                this.clearSnapshot()
+                            }} />
+                        <Icon color='transparent'/>
+                        <Icon circular size='big' inverted color='teal'
+                            name='upload'
+                            onClick={ () => {
+                                this.stopCamera()
+                            }} />
                     </div>
                     : <div>
-                        <Button onClick={ () => {
-                            this.switchFrontCamera(!front)
-                        }}> switch </Button>
-                        <Button onClick={ () => {
-                            this.getSnapshot()
-                        }}> shoot </Button>
+                        <Icon circular size='big' inverted color='teal'
+                            name='refresh'
+                            onClick={ () => {
+                                this.switchFrontCamera(!front)
+                            }} />
+                        <Icon color='transparent'/>
+                        <Icon circular size='big' inverted color='teal'
+                            name='camera'
+                            onClick={ () => {
+                                this.getSnapshot()
+                            }} />
                     </div>
                 }
             </div>

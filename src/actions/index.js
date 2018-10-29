@@ -25,3 +25,8 @@ export const foodFormChange = (change) => ({
     type: 'FOOD_FORM_CHANGE',
     change: change
 })
+
+export const cameraSnapshot = (insights) => ({
+    type: 'CAMERA_SNAPSHOT',
+    insights: insights
+})
