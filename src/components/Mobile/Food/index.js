@@ -116,7 +116,7 @@ class Food extends Component {
                             display: 'inline-flex',
                             borderBottom: '4px',
                             borderBottomStyle: 'solid',
-                            borderColor: 'foodUI.filter == 'BREAKFAST'? 'red': 'transparent',
+                            borderColor: foodUI.filter == 'BREAKFAST'? 'red': 'transparent',
                         }}>
                             <div style={{color:'transparent'}}>{'_'}</div>
                             {'早餐'}
