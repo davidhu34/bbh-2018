@@ -51,8 +51,8 @@ const foodFormInit = {
 }
 
 const foodUIInit = {
-    editing: null,
     viewing: null,
+    viewingMode: null,
     loading: false,
     filter: 'LUNCH',
     list: ['1','2','3'],
@@ -82,8 +82,8 @@ export const foodUI = (state = foodUIInit, action) => {
         case 'FOOD_LIST_FILTER_START':
             return {
                 ...state,
-                editing: null,
                 viewing: null,
+                viewingMode: null,
                 filter: action.filter,
                 loading: true
             }
@@ -98,8 +98,8 @@ export const foodUI = (state = foodUIInit, action) => {
         case 'FOOD_VIEW':
             return {
                 ...state,
-                editing: null,
-                viewing: action.viewing == state.viewing? null: action.viewing,
+                viewing: action.viewing == state.viewing && state.viewingMode == 'VIEW'? null: action.viewing,
+                viewingMode: 'VIEW',
             }
         case 'FOOD_FORM_CHANGE':
             return {
@@ -109,13 +109,14 @@ export const foodUI = (state = foodUIInit, action) => {
         case 'FOOD_EDIT_START':
             return {
                 ...state,
-                viewing: null,
-                editing: action.editing,
+                viewing: action.editing,
+                viewingMode: 'EDIT',
             }
         case 'FOOD_EDIT_END':
             return {
                 ...state,
-                editing: null
+                viewing: null,
+                viewingMode: null,
             }
         case 'FOOD_EDIT_SUBMIT_START':
             return {
@@ -127,7 +128,8 @@ export const foodUI = (state = foodUIInit, action) => {
             return {
                 ...state,
                 loading: false,
-                editing: null,
+                viewing: null,
+                viewingMode: null,
                 list: isNew? [...state.list, action.food.id]: state.list,
                 form: foodForm(state.form, action),
             }

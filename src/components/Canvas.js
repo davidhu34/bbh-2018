@@ -32,15 +32,15 @@ class Canvas extends Component {
     }
 
     drawRectangle(rect) {
-        let { x0, y0, x1, y1 } = rect
+        let { x1, y1, x2, y2 } = rect
         const ctx = this.ref.getContext('2d')
 
 		ctx.beginPath()
-		ctx.moveTo(x0,y0)
-		ctx.lineTo(x1,y0)
+		ctx.moveTo(x1,y1)
+		ctx.lineTo(x2,y1)
+		ctx.lineTo(x2,y2)
+		ctx.lineTo(x1,y2)
 		ctx.lineTo(x1,y1)
-		ctx.lineTo(x0,y1)
-		ctx.lineTo(x0,y0)
 		ctx.stroke()
 		ctx.closePath()
     }

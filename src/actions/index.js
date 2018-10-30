@@ -7,6 +7,10 @@ export const foodListFilter = (filter) => ({
     type: 'FOOD_LIST_FILTER', filter
 })
 
+export const foodView = (foodId) => ({
+    type: 'FOOD_VIEW', viewing: foodId
+})
+
 export const foodEdit = (foodId) => ({
     type: 'FOOD_EDIT', editing: foodId
 })
@@ -14,7 +18,6 @@ export const foodEdit = (foodId) => ({
 export const foodEditEnd = () => ({
     type: 'FOOD_EDIT_END'
 })
-
 
 export const foodEditSubmit = (form) => ({
     type: 'FOOD_EDIT_SUBMIT',
@@ -29,4 +32,22 @@ export const foodFormChange = (change) => ({
 export const cameraSnapshot = (insights) => ({
     type: 'CAMERA_SNAPSHOT',
     insights: insights
+})
+
+export const activityListSort = (sorting) => ({
+    type: 'ACTIVITY_LIST_SORT', sorting
+})
+
+export const activityEditEnd = () => ({
+    type: 'ACTIVITY_EDIT_END'
+})
+
+export const activityEditSubmit = (form) => ({
+    type: 'ACTIVITY_EDIT_SUBMIT',
+    form: form
+})
+
+export const activityFormChange = (change) => ({
+    type: 'ACTIVITY_FORM_CHANGE',
+    change: change
 })

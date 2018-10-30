@@ -5,39 +5,37 @@ import CircularProgressbar from 'react-circular-progressbar'
 
 import { Grid, Icon, Header } from 'semantic-ui-react'
 
-import CircleProgress from '../CircleProgress'
-import HomeStatistic from '../HomeStatistic'
+import ActivityDetial from './ActivityDetial'
+import ActivityInputArea from './ActivityInputArea'
+import ActivityList from './ActivityList'
 
-import FoodInputArea from './FoodInputArea'
-import FoodList from './FoodList'
-import FoodDetail from './FoodDetail'
-
-import { foodListFilter, foodEdit, foodView } from '../../../actions'
+import { activityListSort, activityView, activityEdit } from '../../../actions'
 
 
-class Food extends Component {
+class Activity extends Component {
 
-    editFood = (index) => this.props.foodEdit(index)
-    viewFood = (index) => this.props.foodView(index)
+    viewActivity = (index) => this.props.activityView(index)
+    editActivity = (index) => this.props.activityEdit(index)
 
-    getfoodDataList(start, end) {
-        const { foodData, foodUI } = this.props
-        return foodUI.list.slice(start,end).map( id => foodData.data[id] )
+    getActivityDataList(start, end) {
+        const { activityData, activityUI } = this.props
+        return activityUI.list.slice(start,end).map( id => activityData.data[id] )
     }
 
     render () {
         const {
-            foodListFilter,
-            foodData,
-            foodUI
+            activityListFilter,
+            activityData,
+            activityUI
         } = this.props
 
-        const { list, viewing, viewingMode, loading } = foodUI
+        const { list, viewing, viewingMode, loading } = activityUI
 
         const viewingIndex = list.indexOf(viewing)
         const middle = viewingIndex < 0? list.length: viewingIndex + 1
-        const foodDataList = list.map( id => foodData.data[id] )
-        console.log('EDITING',viewing)
+        const activityDataList = list.map( id => activityData.data[id] )
+
+        console.log('VIEWING',viewing)
 
         return <div style={{
             width: '100%',
@@ -90,10 +88,10 @@ class Food extends Component {
                         <Icon size="large" name="list alternate" />
                     </Grid.Column>
                     <Grid.Column>
-                        <Icon size="large" name="camera" />
+                        <Icon size="large" name="add circle" />
                     </Grid.Column>
                     <Grid.Column>
-                        <Icon size="large" name="search"  />
+                        <Icon size="large" name="heart"  />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -111,51 +109,39 @@ class Food extends Component {
                     borderTopStyle: 'solid',
                     borderTopColor: 'lightgray',
                 }}>
-                    <Grid.Column onClick={ (e) => foodListFilter('BREAKFAST')}>
+                    <Grid.Column onClick={ (e) => activityListSort('TIME')}>
                         <div style={{
                             display: 'inline-flex',
                             borderBottom: '4px',
                             borderBottomStyle: 'solid',
-                            borderColor: 'foodUI.filter == 'BREAKFAST'? 'red': 'transparent',
+                            borderColor: activityUI.sorting == 'TIME'? 'red': 'transparent',
                         }}>
                             <div style={{color:'transparent'}}>{'_'}</div>
-                            {'早餐'}
+                            {'日期'}
                             <div style={{color:'transparent'}}>{'_'}</div>
                         </div>
                     </Grid.Column>
-                    <Grid.Column onClick={ (e) => foodListFilter('LUNCH')}>
+                    <Grid.Column onClick={ (e) => activityListSort('DISTANCE')}>
                         <div style={{
                             display: 'inline-flex',
                             borderBottom: '4px',
                             borderBottomStyle: 'solid',
-                            borderColor: foodUI.filter == 'LUNCH'? 'red': 'transparent',
+                            borderColor: activityUI.sorting == 'DISTANCE'? 'red': 'transparent',
                         }}>
                             <div style={{color:'transparent'}}>{'_'}</div>
-                            {'午餐'}
+                            {'距離'}
                             <div style={{color:'transparent'}}>{'_'}</div>
                         </div>
                     </Grid.Column>
-                    <Grid.Column onClick={ (e) => foodListFilter('DINNER')}>
+                    <Grid.Column onClick={ (e) => activityListSort('PARTICIATION')}>
                         <div style={{
                             display: 'inline-flex',
                             borderBottom: '4px',
                             borderBottomStyle: 'solid',
-                            borderColor: foodUI.filter == 'DINNER'? 'red': 'transparent',
+                            borderColor: activityUI.sorting == 'PARTICIATION'? 'red': 'transparent',
                         }}>
                             <div style={{color:'transparent'}}>{'_'}</div>
-                            {'晚餐'}
-                            <div style={{color:'transparent'}}>{'_'}</div>
-                        </div>
-                    </Grid.Column>
-                    <Grid.Column>
-                        <div style={{
-                            display: 'inline-flex',
-                            borderBottom: '4px',
-                            borderBottomStyle: 'solid',
-                            borderColor: 'transparent',
-                        }}>
-                            <div style={{color:'transparent'}}>{'_'}</div>
-                            {'其他'}
+                            {'參與'}
                             <div style={{color:'transparent'}}>{'_'}</div>
                         </div>
                     </Grid.Column>
@@ -166,52 +152,25 @@ class Food extends Component {
                 ? 'loading'
                 : <React.Fragment>
 
-                    <FoodList
-                        viewFood={ this.viewFood }
-                        editFood={ this.editFood }
-                        foodDataList={foodDataList.slice(0, middle)}
+                    <ActivityList
+                        editActivity={ this.editActivity }
+                        viewActivity={ this.viewActivity }
+                        activityDataList={activityDataList.slice(0, middle)}
                     />
 
                     {
                         viewing && viewingMode == 'EDIT'
-                            ? <FoodInputArea />
+                            ? <ActivityInputArea />
                         : viewing && viewingMode == 'VIEW'
-                            ?  <FoodDetail food={foodDataList[middle]} />
+                            ?  <ActivityDetial activity={ activityDataList[middle] } />
                         : null
                     }
 
-                    <FoodList
-                        viewFood={ this.viewFood }
-                        editFood={ this.editFood }
-                        foodDataList={foodDataList.slice(middle)}
+                    <ActivityList
+                        editActivity={ this.editActivity }
+                        viewActivity={ this.viewActivity }
+                        activityDataList={activityDataList.slice(middle)}
                     />
-
-                    <Grid textAlign={'center'}
-                        verticalAlign={'middle'}
-                        style={{
-                            margin: 'auto'
-                        }}
-                    >
-                        <Grid.Row style={{
-                            borderTop: '1px',
-                            borderTopStyle: 'solid',
-                            borderTopColor: 'lightgray',
-                        }}>
-                            <Grid.Column onClick={ (e) => {
-                                const time = (new Date()).getTime()
-                                foodEditSubmit({
-                                    id: time.toString(),
-                                    desc: time.toString(),
-                                    time: time,
-                                    category: foodUI.filter,
-                                    tags: [],
-                                    calorie: time.toString().substr(-3)
-                                })
-                            }}>
-                                <Icon size="large" name="add" />
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
 
                 </React.Fragment>
             }
@@ -223,12 +182,12 @@ class Food extends Component {
 }
 
 export default connect(
-    ({ foodData, foodUI }) => ({
-        foodData, foodUI
+    ({ activityData, activityUI }) => ({
+        activityData, activityUI
     }),
     dispatch => ({
-        foodListFilter: (filter) => dispatch(foodListFilter(filter)),
-        foodEdit: (foodId) => dispatch(foodEdit(foodId)),
-        foodView: (foodId) => dispatch(foodView(foodId)),
+        activityListSort: (sorting) => dispatch(activityListSort(sorting)),
+        activityView: (activityId) => dispatch(activityView(activityId)),
+        activityEdit: (activityId) => dispatch(activityEdit(activityId)),
     })
-)(Food)
+)(Activity)

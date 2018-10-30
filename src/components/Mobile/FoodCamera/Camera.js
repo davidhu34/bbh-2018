@@ -51,10 +51,10 @@ class Camera extends Component {
                     insights: [1,2,3].map( (data, i) => ({
                         calories: 10*data + 100,
                         desc: 10*data + random/10,
-                        x0: 10*data,
-                        y0: 10*data,
-                        x1: 10*data + 100,
-                        y1: 10*data + random/10,
+                        x1: 10*data,
+                        y1: 10*data,
+                        x2: 10*data + 100,
+                        y2: 10*data + random/10,
                     }))
                 })
             }

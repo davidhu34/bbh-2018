@@ -10,8 +10,9 @@ class FoodCamera extends Component {
     render () {
         const { foodCameraUI } = this.props
         const insightDataList = foodCameraUI.insights.map( insight => ({
-            desc: insight.desc,
+            desc: insight.food_name,
             calories: insight.calories,
+            score: insight.score,
         }))
 
         return <div style={{
@@ -26,7 +27,7 @@ class FoodCamera extends Component {
                 height={window.innerWidth}
                 displaySnapshot={this.props.cameraSnapshot}
             />
-            <React.Fragment >
+            <React.Fragment>
                 <FoodList style={{
                     paddingTop: window.innerWidth
                 }}

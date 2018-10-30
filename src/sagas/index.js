@@ -43,7 +43,7 @@ function* foodListFilter(action) {
 function* foodEditSubmit(action) {
     yield put({type: 'FOOD_EDIT_SUBMIT_START'})
 
-    const food = yield select( state => state.foodData.data[state.foodUI.editing] || {})
+    const food = yield select( state => state.foodData.data[state.foodUI.viewing] || {})
     const form = action.form
     const time = (new Date()).getTime()
     const newFood = {
@@ -80,6 +80,76 @@ export function* foodSaga() {
     ])
 }
 
+const sortActivityList = (dataList, sorting) => {
+    let newList = dataList.map( a => a.id )
+    newList.sort( (a,b) => {
+        switch(sortng) {
+            case 'TIME':
+                return dataList[a].time - dataList[b].time
+            case 'PARTICIPATION':
+                return dataList[a].participation - dataList[b].participation
+            case 'DISTANCE':
+            default:
+                return 0
+        }
+    })
+    return Promise.resolve(newList)
+}
+
+function* activityListSort(action) {
+
+    const sorting = action.sorting
+    yield put({type: 'ACTIVITY_LIST_SORT_START', action})
+
+    const dataList = yield select(state => {
+        return state.activityData.list.map( key => state.activityData.data[key] )
+    })
+    const sortedList = yield call(sortActivityList, dataList, sorting)
+    console.log(dataList,sortedList,action)
+    yield put({
+        type: 'ACTIVITY_LIST_SORT_END',
+        sorting: action.sorting,
+        list: sortedList
+    })
+}
+function* activityEditSubmit(action) {
+    yield put({type: 'ACTIVITY_EDIT_SUBMIT_START'})
+
+    const activity = yield select( state => state.activityData.data[state.activityUI.viewing] || {})
+    const form = action.form
+    const time = (new Date()).getTime()
+    const newActivity = {
+        ...activity,
+        id: activity.id || time.toString(),
+        time: form.TIME,
+        desc: form.DESC,
+        max: form.MAX,
+    }
+    yield delay(1)
+    yield put({type: 'ACTIVITY_EDIT_SUBMIT_END', activity: newActivity })
+}
+
+function* activityEdit(action) {
+    yield put({type: 'ACTIVITY_EDIT_END' })
+
+    const activity = yield select( state => state.activityData.data[action.editing] || {})
+    yield put(
+        activityFormChange({
+            TIME: form.TIME || '',
+            DESC: form.DESC || '',
+            MAX: form.MAX || '',
+        })
+    )
+    yield put({type: 'ACTIVITY_EDIT_START', editing: action.editing })
+}
+export function* activitySaga() {
+    yield all([
+        takeLatest('ACTIVITY_LIST_SORT', activityListSort),
+        takeLatest('ACTIVITY_EDIT_SUBMIT', activityEditSubmit),
+        takeLatest('ACTIVITY_EDIT', activityEdit)
+    ])
+}
+
 
 export function* cameraSaga() {
     yield all([
@@ -90,5 +160,6 @@ export default function* rootSaga() {
         fork(routeSaga),
         fork(cameraSaga),
         fork(foodSaga),
+        fork(activitySaga),
     ])
 }

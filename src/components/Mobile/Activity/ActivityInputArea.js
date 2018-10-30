@@ -1,23 +1,23 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { Form, Grid, Icon, Input, Button } from 'semantic-ui-react'
+import { Form, Grid, Icon, Button } from 'semantic-ui-react'
 
-import { foodFormChange, foodEditSubmit, foodEditEnd } from '../../../actions'
+import { activityFormChange, activityEditSubmit,  activityEditEnd } from '../../../actions'
 
-class FoodInputArea extends Component {
+class ActivityInputArea extends Component {
 
-    handleChange = (e, { name, value }) => this.props.foodFormChange({ [name]: value })
+    handleChange = (e, { name, value }) => this.props.activityFormChange({ [name]: value })
 
     render () {
 
         const {
-            foodEditSubmit,
-            foodEditEnd,
-            foodUI
+            activityEditSubmit,
+            activityEditEnd,
+            activityUI
         } = this.props
 
-        const form = foodUI.form
+        const form = activityUI.form
 
         return <Form>
         <Form.Group>
@@ -43,15 +43,15 @@ class FoodInputArea extends Component {
                 paddingBottom: 0
             }}>
                 <Grid.Column width={1} />
-                <Grid.Column width={5}>
+                <Grid.Column width={14}>
                     <Input fluid size="mini"
-                        name="COUNT"
-                        value={form.COUNT}
-                        placeholder={'count'}
+                        name="TIME"
+                        value={form.TIME}
+                        placeholder={'date time'}
                         onChange={this.handleChange}
                     />
                 </Grid.Column>
-                <Grid.Column width={5} style={{ margin: 'auto 0'}}>
+                <Grid.Column width={1} style={{ margin: 'auto 0'}}>
                     fdghgfdh
                 </Grid.Column>
             </Grid.Row>
@@ -61,14 +61,14 @@ class FoodInputArea extends Component {
                 <Grid.Column width={1} />
                 <Grid.Column width={5}>
                     <Input fluid size="mini"
-                        name="CALORIES"
-                        value={form.CALORIES}
-                        placeholder={'cal...'}
+                        name="MAX"
+                        value={form.MAX}
+                        placeholder={'max participants...'}
                         onChange={this.handleChange}
                     />
                 </Grid.Column>
                 <Grid.Column width={5} style={{ margin: 'auto 0'}}>
-                    sqdfqwe
+                    {'人'}
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row style={{
@@ -77,14 +77,14 @@ class FoodInputArea extends Component {
                 <Grid.Column width={1} />
                 <Grid.Column width={7}>
                     <Button fluid size="mini" onClick={
-                        e => foodEditSubmit(form)
+                        e => activityEditSubmit(form)
                     }>
                         確認
                     </Button>
                 </Grid.Column>
                 <Grid.Column width={7}>
                     <Button fluid size="mini" onClick={
-                        e => { foodEditEnd() }
+                        e => { activityEditEnd() }
                     }>
                         取消
                     </Button>
@@ -99,10 +99,10 @@ class FoodInputArea extends Component {
 }
 
 export default connect(
-    ({ foodUI }) => ({ foodUI }),
+    ({ activityUI }) => ({ activityUI }),
     dispatch => ({
-        foodEditSubmit: (form) => dispatch(foodEditSubmit(form)),
-        foodEditEnd: () => dispatch(foodEditEnd()),
-        foodFormChange: (change) => dispatch(foodFormChange(change))
+        activityEditSubmit: (form) => dispatch(activityEditSubmit(form)),
+        activityEditEnd: () => dispatch(activityEditEnd()),
+        activityFormChange: (change) => dispatch(activityFormChange(change))
     })
-)(FoodInputArea)
+)(ActivityInputArea)

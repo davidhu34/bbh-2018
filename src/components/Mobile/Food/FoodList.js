@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Grid, Icon, Header, Table, Input, Button } from 'semantic-ui-react'
+import { Grid, Icon } from 'semantic-ui-react'
 
 const FoodList = ({ foodDataList, editFood, viewFood }) => (
     <Grid textAlign={'center'}
@@ -27,7 +27,7 @@ const FoodList = ({ foodDataList, editFood, viewFood }) => (
                     cal
                 </Grid.Column>
                 <Grid.Column textAlign={'left'} width={2} onClick={ e => viewFood(food.id) }>
-                    <Icon size="mini" name="down" />
+                    <Icon size="mini" name="caret down" />
                 </Grid.Column>
             </Grid.Row>)
         }
