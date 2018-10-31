@@ -38,6 +38,14 @@ export const activityListSort = (sorting) => ({
     type: 'ACTIVITY_LIST_SORT', sorting
 })
 
+export const activityEdit = (foodId) => ({
+    type: 'ACTIVITY_EDIT', editing: foodId
+})
+
+export const activityView = (foodId) => ({
+    type: 'ACTIVITY_VIEW', editing: foodId
+})
+
 export const activityEditEnd = () => ({
     type: 'ACTIVITY_EDIT_END'
 })

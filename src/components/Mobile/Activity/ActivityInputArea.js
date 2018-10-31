@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { Form, Grid, Icon, Button } from 'semantic-ui-react'
+import { Form, Input, Grid, Icon, Button } from 'semantic-ui-react'
 
 import { activityFormChange, activityEditSubmit,  activityEditEnd } from '../../../actions'
 

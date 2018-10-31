@@ -32,7 +32,7 @@ const Footer = ({
                 <Grid.Column onClick={() => pushRoute('/camera')}>
                     <Icon size="large" name="camera" />
                 </Grid.Column>
-                <Grid.Column onClick={() => pushRoute('/')}>
+                <Grid.Column onClick={() => pushRoute('/activity')}>
                     <Icon size="large" name="bicycle" />
                 </Grid.Column>
                 <Grid.Column onClick={() => pushRoute('/')}>

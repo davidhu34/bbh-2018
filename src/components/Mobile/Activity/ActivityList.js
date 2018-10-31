@@ -19,7 +19,7 @@ const ActivityList = ({ activityDataList, editActivity, viewActivity }) => {
                 }}>
                     <Grid.Column width={1} onClick={ e => {
                         switch (activity.participation) {
-                            case 3:
+                            case '3':
                                 editActivity(activity.id);
                                 break;
                             case 2:
@@ -47,7 +47,7 @@ const ActivityList = ({ activityDataList, editActivity, viewActivity }) => {
                         人
                     </Grid.Column>
                     <Grid.Column textAlign={'left'} width={2} onClick={ e => viewActivity(activity.id) }>
-                    <Icon size="mini" name="down" />
+                    <Icon size="mini" name="caret down" />
                     </Grid.Column>
                 </Grid.Row>
             })

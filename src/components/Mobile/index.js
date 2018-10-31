@@ -8,6 +8,7 @@ import AppBar from './AppBar'
 import Home from './Home'
 import Food from './Food'
 import FoodCamera from './FoodCamera'
+import Activity from './Activity'
 import Temp from './Temp'
 import Profile from './Profile'
 import Footer from './Footer'
@@ -28,6 +29,7 @@ const Mobile = ({
         <Route exact path="/" component={Home} />
         <Route path="/food" component={Food} />
         <Route path="/camera" component={FoodCamera} />
+        <Route path="/activity" component={Activity} />
 
         <Footer />
     </div>

@@ -3,7 +3,7 @@ import { put, takeEvery, takeLatest, all, call,  select, fork } from 'redux-saga
 // import { push } from 'react-router-redux'
 import { push } from 'connected-react-router'
 
-import { foodFormChange } from '../actions'
+import { foodFormChange, activityFormChange } from '../actions'
 
 export function* changeRoute(action) {
     yield put({type: 'CHANGE_ROUTE_START'})
@@ -81,19 +81,19 @@ export function* foodSaga() {
 }
 
 const sortActivityList = (dataList, sorting) => {
-    let newList = dataList.map( a => a.id )
+    let newList = [...dataList]
     newList.sort( (a,b) => {
-        switch(sortng) {
+        switch(sorting) {
             case 'TIME':
-                return dataList[a].time - dataList[b].time
+                return a.time - b.time
             case 'PARTICIPATION':
-                return dataList[a].participation - dataList[b].participation
+                return a.participation - b.participation
             case 'DISTANCE':
             default:
                 return 0
         }
     })
-    return Promise.resolve(newList)
+    return Promise.resolve(newList.map( a => a.id ))
 }
 
 function* activityListSort(action) {
@@ -135,9 +135,9 @@ function* activityEdit(action) {
     const activity = yield select( state => state.activityData.data[action.editing] || {})
     yield put(
         activityFormChange({
-            TIME: form.TIME || '',
-            DESC: form.DESC || '',
-            MAX: form.MAX || '',
+            TIME: activity.time || '',
+            DESC: activity.desc || '',
+            MAX: activity.max || '',
         })
     )
     yield put({type: 'ACTIVITY_EDIT_START', editing: action.editing })

@@ -5,7 +5,7 @@ import CircularProgressbar from 'react-circular-progressbar'
 
 import { Grid, Icon, Header } from 'semantic-ui-react'
 
-import ActivityDetial from './ActivityDetial'
+import ActivityDetail from './ActivityDetail'
 import ActivityInputArea from './ActivityInputArea'
 import ActivityList from './ActivityList'
 
@@ -24,7 +24,7 @@ class Activity extends Component {
 
     render () {
         const {
-            activityListFilter,
+            activityListSort,
             activityData,
             activityUI
         } = this.props
@@ -61,9 +61,6 @@ class Activity extends Component {
                         <Icon name="angle left" />
                     </Grid.Column>
                     <Grid.Column width={8}>
-                        <CircleProgress size={150} max={2500} value={1234}>
-                            <HomeStatistic tiny title={'目前體重'} value={100} unit={'kg'} />
-                        </CircleProgress>
                     </Grid.Column>
                     <Grid.Column width={4}
                         style={{
@@ -162,7 +159,7 @@ class Activity extends Component {
                         viewing && viewingMode == 'EDIT'
                             ? <ActivityInputArea />
                         : viewing && viewingMode == 'VIEW'
-                            ?  <ActivityDetial activity={ activityDataList[middle] } />
+                            ?  <ActivityDetail activity={ activityDataList[middle] } />
                         : null
                     }
 
