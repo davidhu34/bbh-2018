@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
-import CameraPhoto, { FACING_MODES, IMAGE_TYPES } from 'jslib-html5-camera-photo'
+import axios from 'axios'
 import { Button, Icon } from 'semantic-ui-react'
+import CameraPhoto, { FACING_MODES, IMAGE_TYPES } from 'jslib-html5-camera-photo'
 
+import { INSIGHT_API, INSIGHTS_INTERVAL } from '../../../configs'
 import ImageContainer from '../../ImageContainer'
 import Canvas from '../../Canvas'
 
@@ -36,30 +38,15 @@ class Camera extends Component {
 
     channelInsights() {
         this.haltInsights()
-        this.insightsInterval = setInterval( () => this.collectInsights(), 100)
+        this.insightsInterval = setInterval( () => this.collectInsights(), INSIGHTS_INTERVAL)
     }
 
     collectInsights() {
-        let time = (new Date).getTime()
-        let random = Number(time.toString().substr(-1))*100
 
-        setTimeout( () => {
+        const dataUri = this.cameraPhoto.getDataUri({ imageType: IMAGE_TYPES.JPG })
+        this.fetchInsight(dataUri)
 
-            if (this.insightsInterval && this.state.insightsTime < time) {
-                this.setState({
-                    insightsTime: time,
-                    insights: [1,2,3].map( (data, i) => ({
-                        calories: 10*data + 100,
-                        desc: 10*data + random/10,
-                        x1: 10*data,
-                        y1: 10*data,
-                        x2: 10*data + 100,
-                        y2: 10*data + random/10,
-                    }))
-                })
-            }
 
-        }, random)
     }
 
     haltInsights() {
@@ -122,13 +109,21 @@ class Camera extends Component {
         }
     }
 
-    getSnapshot(config = {}) {
+    getSnapshot() {
         if (this.state.active) {
             this.haltInsights()
+            const dataUri = this.cameraPhoto.getDataUri({ imageType: IMAGE_TYPES.JPG })
             this.setState({
-                snapshotURI: this.cameraPhoto.getDataUri(config)
+                snapshotURI: dataUri
             })
             this.props.displaySnapshot(this.state.insights)
+
+
+            this.fetchInsight(dataUri).then( insights => {
+                console.log()
+            }).catch( error => {
+                console.log(error)
+            })
         }
     }
     clearSnapshot() {
@@ -143,6 +138,68 @@ class Camera extends Component {
             : this.cameraPhoto.getCameraSettings() || {}
     }
 
+    fetchInsight(dataUri) {
+
+        const time = (new Date()).getTime()
+        return new Promise( (resolve, reject) => {
+            // const file = this.dataURLtoFile(dataUri,'myFile')
+            // const form = new FormData()
+            // form.append('image', dataUri, file.name)
+
+            return axios({
+                method: 'post',
+                url: INSIGHT_API,
+                data: { image: dataUri },
+                headers: {
+                    'Access-Control-Allow-Headers': '*',
+                    'Access-Control-Allow-Origin': '*',
+                    'crossdomain': true,
+                    'crossDomain': true,
+                }
+            }).then( response => {
+                const insights = response.data
+                console.log(...insights,response);
+                const { width, height, displaySnapshot } = this.props
+                this.setState({
+                    insightsTime: time,
+                    insights: insights.map( (insight, i) => ({
+                        calories: insight.calories,
+                        desc: insight.food_name,
+                        x1: insight.x1*width,
+                        y1: insight.y1*height,
+                        x2: insight.x2*width,
+                        y2: insight.y2*height,
+                    }))
+                })
+
+                displaySnapshot(this.state.insights)
+                return insights
+            }).catch( error => {
+                console.log(error)
+            });
+        })
+    }
+    fetchInsightDev () {
+        const time = (new Date()).getTime()
+        let random = Number(time.toString().substr(-1))*100
+        setTimeout( () => {
+
+            if (this.insightsInterval && this.state.insightsTime < time) {
+                return Promise.resolve({
+                    insightsTime: time,
+                    insights: [1,2,3].map( (data, i) => ({
+                        calories: 10*data + 100,
+                        desc: 10*data + random/10,
+                        x1: 10*data,
+                        y1: 10*data,
+                        x2: 10*data + 100,
+                        y2: 10*data + random/10,
+                    }))
+                })
+            }
+
+        }, random)
+    }
     render () {
         let { front, active, snapshotURI, insights } = this.state
         let { aspectRatio, frameRate, height, width } = this.getCameraSettings()

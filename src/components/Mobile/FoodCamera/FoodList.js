@@ -9,7 +9,9 @@ const FoodList = ({ foodDataList, selectFood }) => (
             paddingTop: window.innerWidth + 30,
             margin: 'auto'
         }}>
-        {   foodDataList.map( (food,i) => <Grid.Row key={i} style={{
+        {   foodDataList.map( (food,i) => {
+            console.log(food)
+            return <Grid.Row key={i} style={{
                 borderTop: '1px',
                 borderTopStyle: 'solid',
                 borderTopColor: 'lightgray',
@@ -30,7 +32,7 @@ const FoodList = ({ foodDataList, selectFood }) => (
                 <Grid.Column textAlign={'left'} width={2} onClick={ e => selectFood(food.id) }>
                     <Icon size="mini" name="add circle" />
                 </Grid.Column>
-            </Grid.Row>)
+            </Grid.Row>})
         }
     </Grid>
 )

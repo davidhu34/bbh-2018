@@ -9,11 +9,7 @@ import { cameraSnapshot } from '../../../actions'
 class FoodCamera extends Component {
     render () {
         const { foodCameraUI } = this.props
-        const insightDataList = foodCameraUI.insights.map( insight => ({
-            desc: insight.food_name,
-            calories: insight.calories,
-            score: insight.score,
-        }))
+        const insightDataList = foodCameraUI.insights
 
         return <div style={{
             width: '100%',
