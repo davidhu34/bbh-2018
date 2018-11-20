@@ -3,7 +3,12 @@ import { put, takeEvery, takeLatest, all, call,  select, fork } from 'redux-saga
 // import { push } from 'react-router-redux'
 import { push } from 'connected-react-router'
 
-import { foodFormChange, activityFormChange } from '../actions'
+import {
+    launchLoader,
+    closeLoader,
+    foodFormChange,
+    activityFormChange
+} from '../actions'
 
 export function* changeRoute(action) {
     yield put({type: 'CHANGE_ROUTE_START'})
@@ -42,6 +47,7 @@ function* foodListFilter(action) {
 
 function* foodEditSubmit(action) {
     yield put({type: 'FOOD_EDIT_SUBMIT_START'})
+    yield put(launchLoader())
 
     const food = yield select( state => state.foodData.data[state.foodUI.viewing] || {})
     const form = action.form
@@ -54,8 +60,9 @@ function* foodEditSubmit(action) {
         calories: form.CALORIES,
         count: form.COUNT,
     }
-    yield delay(1)
+    yield delay(1000)
     yield put({type: 'FOOD_EDIT_SUBMIT_END', food: newFood })
+    yield put(closeLoader())
 }
 
 function* foodEdit(action) {

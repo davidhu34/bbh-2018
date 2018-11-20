@@ -12,6 +12,7 @@ import Activity from './Activity'
 import Temp from './Temp'
 import Profile from './Profile'
 import Footer from './Footer'
+import Modal from '../Modal'
 
 const Mobile = ({
     router,
@@ -31,6 +32,7 @@ const Mobile = ({
         <Route path="/camera" component={FoodCamera} />
         <Route path="/activity" component={Activity} />
 
+        <Modal />
         <Footer />
     </div>
 )

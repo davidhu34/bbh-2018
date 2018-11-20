@@ -43,7 +43,7 @@ export const activityEdit = (foodId) => ({
 })
 
 export const activityView = (foodId) => ({
-    type: 'ACTIVITY_VIEW', editing: foodId
+    type: 'ACTIVITY_VIEW', viewing: foodId
 })
 
 export const activityEditEnd = () => ({
@@ -58,4 +58,13 @@ export const activityEditSubmit = (form) => ({
 export const activityFormChange = (change) => ({
     type: 'ACTIVITY_FORM_CHANGE',
     change: change
+})
+
+export const launchLoader = () => ({
+    type: 'MODAL_LAUNCH',
+    modalType: 'LOADER'
+})
+
+export const closeLoader = () => ({
+    type: 'MODAL_CLOSE'
 })
