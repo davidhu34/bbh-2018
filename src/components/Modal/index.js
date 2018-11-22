@@ -9,7 +9,7 @@ const ModalComponent = ({ modal }) => {
     console.log(modal)
     // if (open) {
         switch (modalType) {
-            case 'LOADER':
+            case 'ACTIVITY_JOIN':
                 return <Modal basic open>
                     <Modal.Content>
                         <Loader inverted>Loading</Loader>
@@ -21,5 +21,12 @@ const ModalComponent = ({ modal }) => {
     // } else return <span >{'kiu'}</span>
 }
 
-
 export default connect( ({ modal }) => ({ modal }) )(ModalComponent)
+
+export const ModalLoader = connect( ({ modal }) => ({ modal }) )(
+    ({ modal }) => <Modal basic open={modal.loading}>
+        <Modal.Content>
+            <Loader inverted>Loading</Loader>
+        </Modal.Content>
+    </Modal>
+)

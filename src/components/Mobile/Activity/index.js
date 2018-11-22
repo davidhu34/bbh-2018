@@ -159,7 +159,7 @@ class Activity extends Component {
                         viewing && viewingMode == 'EDIT'
                             ? <ActivityInputArea />
                         : viewing && viewingMode == 'VIEW'
-                            ?  <ActivityDetail activity={ activityDataList[middle] } />
+                            ?  <ActivityDetail activity={ activityDataList[middle-1] } />
                         : null
                     }
 

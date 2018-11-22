@@ -60,11 +60,6 @@ export const activityFormChange = (change) => ({
     change: change
 })
 
-export const launchLoader = () => ({
-    type: 'MODAL_LAUNCH',
-    modalType: 'LOADER'
-})
+export const launchLoader = () => ({ type: 'LOADER_LAUNCH' })
 
-export const closeLoader = () => ({
-    type: 'MODAL_CLOSE'
-})
+export const closeLoader = () => ({ type: 'LOADER_CLOSE' })
