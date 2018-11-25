@@ -9,13 +9,14 @@ import ActivityDetail from './ActivityDetail'
 import ActivityInputArea from './ActivityInputArea'
 import ActivityList from './ActivityList'
 
-import { activityListSort, activityView, activityEdit } from '../../../actions'
+import { activityListSort, activityView, activityEdit, activityJoin } from '../../../actions'
 
 
 class Activity extends Component {
 
-    viewActivity = (index) => this.props.activityView(index)
-    editActivity = (index) => this.props.activityEdit(index)
+    viewActivity = (id) => this.props.activityView(id)
+    editActivity = (id) => this.props.activityEdit(id)
+    joinActivity = (id) => this.props.activityJoin(id)
 
     getActivityDataList(start, end) {
         const { activityData, activityUI } = this.props
@@ -152,6 +153,7 @@ class Activity extends Component {
                     <ActivityList
                         editActivity={ this.editActivity }
                         viewActivity={ this.viewActivity }
+                        joinActivity={ this.joinActivity }
                         activityDataList={activityDataList.slice(0, middle)}
                     />
 
@@ -166,6 +168,7 @@ class Activity extends Component {
                     <ActivityList
                         editActivity={ this.editActivity }
                         viewActivity={ this.viewActivity }
+                        joinActivity={ this.joinActivity }
                         activityDataList={activityDataList.slice(middle)}
                     />
 
@@ -186,5 +189,6 @@ export default connect(
         activityListSort: (sorting) => dispatch(activityListSort(sorting)),
         activityView: (activityId) => dispatch(activityView(activityId)),
         activityEdit: (activityId) => dispatch(activityEdit(activityId)),
+        activityJoin: (activityId) => dispatch(activityJoin(activityId)),
     })
 )(Activity)

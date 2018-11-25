@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 
 import { Grid, Icon } from 'semantic-ui-react'
 
-const ActivityList = ({ activityDataList, editActivity, viewActivity }) => {
+const ActivityList = ({
+    activityDataList,
+    editActivity, viewActivity, joinActivity
+}) => {
     return <Grid textAlign={'center'}
         verticalAlign={'middle'}
         style={{
@@ -22,9 +25,11 @@ const ActivityList = ({ activityDataList, editActivity, viewActivity }) => {
                             case '3':
                                 editActivity(activity.id);
                                 break;
-                            case 2:
-                            case 1:
-                            case 0:
+                            case '2':
+                            case '1':
+                            case '0':
+                                joinActivity(activity.id)
+                                break;
                             default:
                                 break;
                         }

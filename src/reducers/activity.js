@@ -45,6 +45,7 @@ const activityDataInit = {
 }
 export const activityData = (state = activityDataInit, action) => {
     switch (action.type) {
+        case 'ACTIVITY_JOIN_SUBMIT_END':
         case 'ACTIVITY_EDIT_SUBMIT_END':
             const isNew = state.list.indexOf(action.activity.id) < 0
             return {
@@ -135,11 +136,13 @@ export const activityUI = (state = activityUIInit, action) => {
                 viewingMode: null,
             }
         case 'ACTIVITY_EDIT_SUBMIT_START':
+        case 'ACTIVITY_JOIN_SUBMIT_START':
             return {
                 ...state,
                 loading: true
             }
         case 'ACTIVITY_EDIT_SUBMIT_END':
+        case 'ACTIVITY_JOIN_SUBMIT_END':
             const isNew = state.list.indexOf(action.activity.id) < 0
             return {
                 ...state,

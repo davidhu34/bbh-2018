@@ -1,9 +1,11 @@
 import { delay } from 'redux-saga'
-import { put, takeEvery, takeLatest, all, call,  select, fork } from 'redux-saga/effects'
+import { put, take, takeEvery, takeLatest, all, call,  select, fork } from 'redux-saga/effects'
 // import { push } from 'react-router-redux'
 import { push } from 'connected-react-router'
 
 import {
+    launchModal,
+    closeModal,
     launchLoader,
     closeLoader,
     foodFormChange,
@@ -121,6 +123,7 @@ function* activityListSort(action) {
 }
 function* activityEditSubmit(action) {
     yield put({type: 'ACTIVITY_EDIT_SUBMIT_START'})
+    yield put(launchLoader())
 
     const activity = yield select( state => state.activityData.data[state.activityUI.viewing] || {})
     const form = action.form
@@ -134,6 +137,7 @@ function* activityEditSubmit(action) {
     }
     yield delay(1)
     yield put({type: 'ACTIVITY_EDIT_SUBMIT_END', activity: newActivity })
+    yield put(closeLoader())
 }
 
 function* activityEdit(action) {
@@ -149,11 +153,42 @@ function* activityEdit(action) {
     )
     yield put({type: 'ACTIVITY_EDIT_START', editing: action.editing })
 }
+
+function* activityJoin(action) {
+    yield put({type: 'ACTIVITY_JOIN_END' })
+
+    yield put({type: 'ACTIVITY_JOIN_START' })
+
+    const activity = yield select( state => state.activityData.data[action.activity] || {})
+
+    yield put(launchModal({
+        modalType: 'ACTIVITY_JOIN_OPTIONS',
+        data: {
+            activtiy: activity
+        }
+    }))
+
+    const { participation } = yield take('ACTIVITY_JOIN_SUBMIT')
+
+    yield put(launchLoader())
+    yield put({type: 'ACTIVITY_JOIN_SUBMIT_START' })
+
+    const newActivity = {
+        ...activity, participation
+    }
+    yield delay(1)
+    yield put({type: 'ACTIVITY_JOIN_SUBMIT_END', activity: newActivity })
+    yield put(closeModal())
+    yield put(closeLoader())
+    yield put({type: 'ACTIVITY_JOIN_END' })
+}
+
 export function* activitySaga() {
     yield all([
         takeLatest('ACTIVITY_LIST_SORT', activityListSort),
         takeLatest('ACTIVITY_EDIT_SUBMIT', activityEditSubmit),
-        takeLatest('ACTIVITY_EDIT', activityEdit)
+        takeLatest('ACTIVITY_EDIT', activityEdit),
+        takeLatest('ACTIVITY_JOIN', activityJoin)
     ])
 }
 

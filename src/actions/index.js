@@ -38,12 +38,12 @@ export const activityListSort = (sorting) => ({
     type: 'ACTIVITY_LIST_SORT', sorting
 })
 
-export const activityEdit = (foodId) => ({
-    type: 'ACTIVITY_EDIT', editing: foodId
+export const activityEdit = (activityId) => ({
+    type: 'ACTIVITY_EDIT', editing: activityId
 })
 
-export const activityView = (foodId) => ({
-    type: 'ACTIVITY_VIEW', viewing: foodId
+export const activityView = (activityId) => ({
+    type: 'ACTIVITY_VIEW', viewing: activityId
 })
 
 export const activityEditEnd = () => ({
@@ -60,6 +60,24 @@ export const activityFormChange = (change) => ({
     change: change
 })
 
+export const activityJoin = (activityId) => ({
+    type: 'ACTIVITY_JOIN', activity: activityId
+})
+
+export const activityJoinSubmit = (participation) => ({
+    type: 'ACTIVITY_JOIN_SUBMIT', participation
+})
+
 export const launchLoader = () => ({ type: 'LOADER_LAUNCH' })
 
 export const closeLoader = () => ({ type: 'LOADER_CLOSE' })
+
+
+export const launchModal = ({ modalType, data }) => ({
+    type: 'MODAL_LAUNCH',
+    modalType, data
+})
+
+export const closeModal = () => ({
+    type: 'MODAL_CLOSE'
+})

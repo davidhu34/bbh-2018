@@ -1,18 +1,37 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { Modal, Loader } from 'semantic-ui-react'
+import { Modal, Loader, Grid, Button } from 'semantic-ui-react'
 
+import { activityJoinSubmit } from '../../actions'
 
-const ModalComponent = ({ modal }) => {
-    const { open, modalType, data, resolve } = modal
-    console.log(modal)
+const ModalComponent = ({ modal, activityJoinSubmit }) => {
+    const { open, modalType, data } = modal
     // if (open) {
         switch (modalType) {
-            case 'ACTIVITY_JOIN':
-                return <Modal basic open>
+            case 'ACTIVITY_JOIN_OPTIONS':
+                return <Modal open>
                     <Modal.Content>
-                        <Loader inverted>Loading</Loader>
+                        asdfsadf
+                        <Grid  columns={2}>
+                            <Grid.Row>
+                                <Grid.Column>
+                                    <Button fluid size="mini" onClick={
+                                        (e) => activityJoinSubmit('2')
+                                    }>
+                                        我要加入
+                                    </Button>
+                                </Grid.Column>
+                                <Grid.Column>
+                                    <Button fluid size="mini" onClick={
+                                        (e) => activityJoinSubmit('1')
+                                    }>
+                                        我有興趣
+                                    </Button>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+
                     </Modal.Content>
                 </Modal>
             default:
@@ -21,9 +40,16 @@ const ModalComponent = ({ modal }) => {
     // } else return <span >{'kiu'}</span>
 }
 
-export default connect( ({ modal }) => ({ modal }) )(ModalComponent)
+export default connect(
+    ({ modal }) => ({ modal }),
+    dispatch => ({
+        activityJoinSubmit: (participation) => dispatch(activityJoinSubmit(participation))
+    })
+)(ModalComponent)
 
-export const ModalLoader = connect( ({ modal }) => ({ modal }) )(
+export const ModalLoader = connect(
+    ({ modal }) => ({ modal })
+)(
     ({ modal }) => <Modal basic open={modal.loading}>
         <Modal.Content>
             <Loader inverted>Loading</Loader>
