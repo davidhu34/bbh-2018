@@ -29,6 +29,10 @@ export const foodFormChange = (change) => ({
     change: change
 })
 
+export const foodPhotoSubmit = ({ desc, calories, count }) => ({
+    type: 'FOOD_PHOTO_SUBMIT', desc, calories, count
+})
+
 export const cameraSnapshot = (insights) => ({
     type: 'CAMERA_SNAPSHOT',
     insights: insights

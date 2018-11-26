@@ -29,6 +29,7 @@ const foodDataInit = {
 }
 export const foodData = (state = foodDataInit, action) => {
     switch (action.type) {
+        case 'FOOD_PHOTO_SUBMIT_END':
         case 'FOOD_EDIT_SUBMIT_END':
             const isNew = state.list.indexOf(action.food.id) < 0
             return {
@@ -123,6 +124,8 @@ export const foodUI = (state = foodUIInit, action) => {
                 ...state,
                 loading: true
             }
+
+        case 'FOOD_PHOTO_SUBMIT_END':
         case 'FOOD_EDIT_SUBMIT_END':
             const isNew = state.list.indexOf(action.food.id) < 0
             return {

@@ -9,7 +9,8 @@ import {
     launchLoader,
     closeLoader,
     foodFormChange,
-    activityFormChange
+    activityFormChange,
+    foodView
 } from '../actions'
 
 export function* changeRoute(action) {
@@ -81,10 +82,28 @@ function* foodEdit(action) {
     yield put({type: 'FOOD_EDIT_START', editing: action.editing })
 }
 
+function* foodPhotoSubmit(action) {
+    yield put({type: 'FOOD_PHOTO_SUBMIT_START'})
+    yield put(launchLoader())
+
+    const time = (new Date()).getTime()
+    const { desc, calories, count } = action
+    const newFood = {
+        id: time.toString(),
+        time: time, desc, calories, count
+    }
+    yield delay(1000)
+    yield put({type: 'FOOD_PHOTO_SUBMIT_END', food: newFood })
+    yield put(push('/food'))
+    yield put(foodView(newFood.id))
+    yield put(closeLoader())
+}
+
 export function* foodSaga() {
     yield all([
         takeLatest('FOOD_LIST_FILTER', foodListFilter),
         takeLatest('FOOD_EDIT_SUBMIT', foodEditSubmit),
+        takeLatest('FOOD_PHOTO_SUBMIT', foodPhotoSubmit),
         takeLatest('FOOD_EDIT', foodEdit)
     ])
 }

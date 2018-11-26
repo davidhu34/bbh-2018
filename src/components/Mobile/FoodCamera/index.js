@@ -4,11 +4,11 @@ import { connect } from 'react-redux'
 import Camera from './Camera'
 import FoodList from './FoodList'
 
-import { cameraSnapshot } from '../../../actions'
+import { cameraSnapshot, foodPhotoSubmit } from '../../../actions'
 
 class FoodCamera extends Component {
     render () {
-        const { foodCameraUI } = this.props
+        const { foodCameraUI, selectFood } = this.props
         const insightDataList = foodCameraUI.insights
 
         return <div style={{
@@ -28,7 +28,7 @@ class FoodCamera extends Component {
                     paddingTop: window.innerWidth
                 }}
                     foodDataList={insightDataList}
-                    selectFood={() => {}}
+                    selectFood={ (food) => selectFood(food) }
                 />
             </React.Fragment>
 
@@ -42,5 +42,6 @@ export default connect(
     }),
     dispatch => ({
         cameraSnapshot: (insights) => dispatch(cameraSnapshot(insights)),
+        selectFood: food => dispatch(foodPhotoSubmit(food))
     })
 )(FoodCamera)

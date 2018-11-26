@@ -44,7 +44,8 @@ class Camera extends Component {
     collectInsights() {
 
         const dataUri = this.cameraPhoto.getDataUri({ imageType: IMAGE_TYPES.JPG })
-        this.fetchInsight(dataUri)
+        // this.fetchInsight(dataUri)
+        this.fetchInsightDev(dataUri)
 
 
     }
@@ -119,7 +120,8 @@ class Camera extends Component {
             this.props.displaySnapshot(this.state.insights)
 
 
-            this.fetchInsight(dataUri).then( insights => {
+            this.fetchInsightDev(dataUri).then( insights => {
+            // this.fetchInsight(dataUri).then( insights => {
                 console.log()
             }).catch( error => {
                 console.log(error)
@@ -179,15 +181,19 @@ class Camera extends Component {
             });
         })
     }
+
     fetchInsightDev () {
         const time = (new Date()).getTime()
         let random = Number(time.toString().substr(-1))*100
-        setTimeout( () => {
+        return new Promise( (resolve, reject) => {
+            setTimeout( () => {
 
-            if (this.insightsInterval && this.state.insightsTime < time) {
-                return Promise.resolve({
-                    insightsTime: time,
-                    insights: [1,2,3].map( (data, i) => ({
+                if (this.insightsInterval && this.state.insightsTime < time) {
+
+                    const { width, height, displaySnapshot } = this.props
+                    
+                    const insights = [1,2,3].map( (data, i) => ({
+                        food_name: 10*data + random/10,
                         calories: 10*data + 100,
                         desc: 10*data + random/10,
                         x1: 10*data,
@@ -195,10 +201,15 @@ class Camera extends Component {
                         x2: 10*data + 100,
                         y2: 10*data + random/10,
                     }))
-                })
-            }
+                    this.setState({
+                        insightsTime: time,
+                        insights: insights
+                    })
+                    return insights
+                }
 
-        }, random)
+            }, random)
+        })
     }
     render () {
         let { front, active, snapshotURI, insights } = this.state

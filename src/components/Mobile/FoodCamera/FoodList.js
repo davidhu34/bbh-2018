@@ -29,7 +29,7 @@ const FoodList = ({ foodDataList, selectFood }) => (
                 <Grid.Column width={3}>
                     cal
                 </Grid.Column>
-                <Grid.Column textAlign={'left'} width={2} onClick={ e => selectFood(food.id) }>
+                <Grid.Column textAlign={'left'} width={2} onClick={ (e) => selectFood(food) }>
                     <Icon size="mini" name="add circle" />
                 </Grid.Column>
             </Grid.Row>})
