@@ -155,7 +155,7 @@ class Food extends Component {
                             borderColor: 'transparent',
                         }}>
                             <div style={{color:'transparent'}}>{'_'}</div>
-                            {'其他'}
+                            {'宵夜'}
                             <div style={{color:'transparent'}}>{'_'}</div>
                         </div>
                     </Grid.Column>

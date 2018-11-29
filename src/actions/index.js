@@ -42,6 +42,10 @@ export const activityListSort = (sorting) => ({
     type: 'ACTIVITY_LIST_SORT', sorting
 })
 
+export const activityListFilter = ({ filter, sorting }) => ({
+    type: 'ACTIVITY_LIST_FILTER', filter, sorting
+})
+
 export const activityEdit = (activityId) => ({
     type: 'ACTIVITY_EDIT', editing: activityId
 })

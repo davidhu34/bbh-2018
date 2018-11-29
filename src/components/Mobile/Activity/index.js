@@ -9,7 +9,13 @@ import ActivityDetail from './ActivityDetail'
 import ActivityInputArea from './ActivityInputArea'
 import ActivityList from './ActivityList'
 
-import { activityListSort, activityView, activityEdit, activityJoin } from '../../../actions'
+import {
+    activityListFilter,
+    activityListSort,
+    activityView,
+    activityJoin,
+    activityEdit,
+} from '../../../actions'
 
 
 class Activity extends Component {
@@ -30,7 +36,15 @@ class Activity extends Component {
             activityUI
         } = this.props
 
-        const { list, viewing, viewingMode, loading } = activityUI
+
+        const { list,
+            viewing, viewingMode,
+            loading,
+            filter,
+            sorting,
+        } = activityUI
+
+        const activityListFilter = (filter) => this.props.activityListFilter(filter, sorting)
 
         const viewingIndex = list.indexOf(viewing)
         const middle = viewingIndex < 0? list.length: viewingIndex + 1
@@ -82,14 +96,17 @@ class Activity extends Component {
                     borderTopStyle: 'solid',
                     borderTopColor: 'lightgray',
                 }}>
-                    <Grid.Column>
-                        <Icon size="large" name="list alternate" />
+                    <Grid.Column onClick={ (e) => activityListFilter('ALL')}>
+                        <Icon size="large" name="calendar alternate"
+                            color={ filter == 'ALL'? 'red': ''}  />
                     </Grid.Column>
-                    <Grid.Column>
-                        <Icon size="large" name="add circle" />
+                    <Grid.Column onClick={ (e) => activityListFilter('MINE')}>
+                        <Icon size="large" name="add circle"
+                            color={ filter == 'MINE'? 'red': ''}  />
                     </Grid.Column>
-                    <Grid.Column>
-                        <Icon size="large" name="heart"  />
+                    <Grid.Column onClick={ (e) => activityListFilter('LIKED')}>
+                        <Icon size="large" name="heart"
+                            color={ filter == 'LIKED'? 'red': ''} />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -112,7 +129,7 @@ class Activity extends Component {
                             display: 'inline-flex',
                             borderBottom: '4px',
                             borderBottomStyle: 'solid',
-                            borderColor: activityUI.sorting == 'TIME'? 'red': 'transparent',
+                            borderColor: sorting == 'TIME'? 'red': 'transparent',
                         }}>
                             <div style={{color:'transparent'}}>{'_'}</div>
                             {'日期'}
@@ -124,19 +141,19 @@ class Activity extends Component {
                             display: 'inline-flex',
                             borderBottom: '4px',
                             borderBottomStyle: 'solid',
-                            borderColor: activityUI.sorting == 'DISTANCE'? 'red': 'transparent',
+                            borderColor: sorting == 'DISTANCE'? 'red': 'transparent',
                         }}>
                             <div style={{color:'transparent'}}>{'_'}</div>
                             {'距離'}
                             <div style={{color:'transparent'}}>{'_'}</div>
                         </div>
                     </Grid.Column>
-                    <Grid.Column onClick={ (e) => activityListSort('PARTICIATION')}>
+                    <Grid.Column onClick={ (e) => activityListSort('PARTICIPATION')}>
                         <div style={{
                             display: 'inline-flex',
                             borderBottom: '4px',
                             borderBottomStyle: 'solid',
-                            borderColor: activityUI.sorting == 'PARTICIATION'? 'red': 'transparent',
+                            borderColor: sorting == 'PARTICIPATION'? 'red': 'transparent',
                         }}>
                             <div style={{color:'transparent'}}>{'_'}</div>
                             {'參與'}
@@ -187,6 +204,7 @@ export default connect(
     }),
     dispatch => ({
         activityListSort: (sorting) => dispatch(activityListSort(sorting)),
+        activityListFilter: (filter, sorting) => dispatch(activityListFilter({filter, sorting})),
         activityView: (activityId) => dispatch(activityView(activityId)),
         activityEdit: (activityId) => dispatch(activityEdit(activityId)),
         activityJoin: (activityId) => dispatch(activityJoin(activityId)),

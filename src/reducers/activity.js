@@ -1,5 +1,5 @@
 const activityDataInit = {
-    list: ['1','2','3'],
+    list: ['1','2','3','4','5'],
     data: {
         '1': {
             id: '1',
@@ -72,7 +72,8 @@ const activityUIInit = {
     viewingMode: null,
     loading: false,
     sorting: 'TIME',
-    list: ['1','2','3','4'],
+    filter: 'ALL',
+    list: ['1','2','3','4','5'],
     form: activityFormInit
 }
 
@@ -105,9 +106,25 @@ export const activityUI = (state = activityUIInit, action) => {
                 loading: true
             }
         case 'ACTIVITY_LIST_SORT_END':
-        console.log(action)
             return {
                 ...state,
+                sorting: action.sorting,
+                loading: false,
+                list: action.list
+            }
+        case 'ACTIVITY_LIST_FILTER_START':
+            return {
+                ...state,
+                viewing: null,
+                viewingMode: null,
+                filter: action.filter,
+                sorting: action.sorting,
+                loading: true
+            }
+        case 'ACTIVITY_LIST_FILTER_END':
+            return {
+                ...state,
+                filter: action.filter,
                 sorting: action.sorting,
                 loading: false,
                 list: action.list
