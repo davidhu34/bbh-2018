@@ -1,5 +1,12 @@
+import { getDateId } from '../utils'
+
 const foodDataInit = {
     list: ['1','2','3'],
+    dateList: {
+        '20181130': ['1','2'],
+        '20181201': ['1','2','3'],
+        '20181202': ['3'],
+    },
     data: {
         '1': {
             id: '1',
@@ -27,6 +34,20 @@ const foodDataInit = {
         },
     }
 }
+
+const dateList = (state, action) => {
+    switch (action.type) {
+        case 'FOOD_PHOTO_SUBMIT_END':
+        case 'FOOD_EDIT_SUBMIT_END':
+            return {
+                ...state,
+                [action.dateId]: [...state[action.dateId],action.food.id],
+            }
+        default:
+            return state
+    }
+}
+
 export const foodData = (state = foodDataInit, action) => {
     switch (action.type) {
         case 'FOOD_PHOTO_SUBMIT_END':
@@ -35,6 +56,7 @@ export const foodData = (state = foodDataInit, action) => {
             return {
                 ...state,
                 list: isNew? [...state.list, action.food.id]: state.list,
+                dateList: dateList(state.dateList, action),
                 data: {
                     ...state.data,
                     [action.food.id]: action.food
@@ -56,6 +78,10 @@ const foodUIInit = {
     viewingMode: null,
     loading: false,
     filter: 'LUNCH',
+    dateTime: 1543593600000,
+    dateId: '20181201',
+    hasNextDay: true,
+    hasPrevDay: true,
     list: ['1','2','3'],
     form: foodFormInit
 }
@@ -89,7 +115,6 @@ export const foodUI = (state = foodUIInit, action) => {
                 loading: true
             }
         case 'FOOD_LIST_FILTER_END':
-        console.log(action)
             return {
                 ...state,
                 filter: action.filter,
@@ -119,12 +144,24 @@ export const foodUI = (state = foodUIInit, action) => {
                 viewing: null,
                 viewingMode: null,
             }
+        case 'FOOD_TIME_CHANGE_START':
         case 'FOOD_EDIT_SUBMIT_START':
             return {
                 ...state,
                 loading: true
             }
-
+        case 'FOOD_TIME_CHANGE_END':
+            return {
+                ...state,
+                loading: false,
+                viewing: null,
+                viewingMode: null,
+                dateTime: action.dateTime,
+                dateId: action.dateId,
+                hasNextDay: action.hasNextDay,
+                hasPrevDay: action.hasPrevDay,
+                list: action.list,
+            }
         case 'FOOD_PHOTO_SUBMIT_END':
         case 'FOOD_EDIT_SUBMIT_END':
             const isNew = state.list.indexOf(action.food.id) < 0
@@ -169,4 +206,17 @@ export const foodCameraUI = (state = foodCameraUIInit, action) => {
         default:
             return state
     }
+}
+
+export const getCaloriesGained = (date,foodData) => {
+    const dateId = getDateId(date)
+    if (dateId) {
+        const dateList = foodData.dateList[dateId] || []
+        let calories = 0
+        for (let i = 0; i < dateList.length; i++) {
+            const food = foodData.data[dateList[i]] || {}
+            calories += Number(food.calories) || 0
+        }
+        return calories.toString()
+    } else return ''
 }

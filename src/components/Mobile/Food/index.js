@@ -12,7 +12,11 @@ import FoodInputArea from './FoodInputArea'
 import FoodList from './FoodList'
 import FoodDetail from './FoodDetail'
 
-import { foodListFilter, foodEdit, foodView } from '../../../actions'
+
+import { getCaloriesGained } from '../../../reducers/food'
+import { getDateId } from '../../../utils'
+
+import { foodListFilter, foodEdit, foodView, foodTimeChange } from '../../../actions'
 
 
 class Food extends Component {
@@ -29,10 +33,18 @@ class Food extends Component {
         const {
             foodListFilter,
             foodData,
-            foodUI
+            foodUI,
+            foodDateChange,
         } = this.props
 
+
         const { list, viewing, viewingMode, loading } = foodUI
+
+        const viewingDate = new Date(foodUI.dateTime)
+        const gained = getCaloriesGained(viewingDate,foodData)
+
+        const toNextDay = (e) => foodDateChange(viewingDate,1)
+        const toPrevDay = (e) => foodDateChange(viewingDate,-1)
 
         const viewingIndex = list.indexOf(viewing)
         const middle = viewingIndex < 0? list.length: viewingIndex + 1
@@ -49,29 +61,37 @@ class Food extends Component {
             <Header as="h3" textAlign='center' color="teal">
                 {}
             </Header>
-            <Header as="h2" textAlign='center' color="teal">
-                {'Luke Skywalker\'s'}
+            <Header as="h3" textAlign='center' color="teal">
+                {viewingDate.toLocaleDateString()}
             </Header>
 
-            <Grid padded
-                textAlign={'center'}>
+            <Grid textAlign={'center'}>
                 <Grid.Row textAlign={'center'}>
                     <Grid.Column width={4}
                         style={{
                             margin: 'auto'
                         }}>
-                        <Icon name="angle left" />
+                        { foodUI.hasPrevDay
+                            ? <Icon name="angle left" onClick={toPrevDay} />
+                            : null
+                        }
                     </Grid.Column>
                     <Grid.Column width={8}>
                         <CircleProgress size={150} max={2500} value={1234}>
-                            <HomeStatistic tiny title={'目前體重'} value={100} unit={'kg'} />
+                            <HomeStatistic tiny
+                                title={'攝取'}
+                                value={gained}
+                                unit={'cals'} />
                         </CircleProgress>
                     </Grid.Column>
                     <Grid.Column width={4}
                         style={{
                             margin: 'auto'
                         }}>
-                        <Icon name="angle right" />
+                        { foodUI.hasNextDay
+                            ? <Icon name="angle right" onClick={toNextDay} />
+                            : null
+                        }
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -228,6 +248,10 @@ export default connect(
         foodData, foodUI
     }),
     dispatch => ({
+        foodDateChange: (date, diff) => {
+            const newDate = new Date(date.setDate(date.getDate()+diff))
+            dispatch(foodTimeChange(newDate))
+        },
         foodListFilter: (filter) => dispatch(foodListFilter(filter)),
         foodEdit: (foodId) => dispatch(foodEdit(foodId)),
         foodView: (foodId) => dispatch(foodView(foodId)),

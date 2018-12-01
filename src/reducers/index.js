@@ -5,6 +5,7 @@ import { combineReducers } from 'redux'
 import { foodData, foodUI, foodCameraUI } from './food'
 import { activityData, activityUI } from './activity'
 import { modal } from './modal'
+import { profile } from './profile'
 
 const reducer = combineReducers({
     foodData,
@@ -12,6 +13,7 @@ const reducer = combineReducers({
     foodCameraUI,
     activityData,
     activityUI,
+    profile,
     modal,
 })
 

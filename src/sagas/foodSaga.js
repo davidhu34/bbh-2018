@@ -1,4 +1,5 @@
 import { put, take, takeEvery, takeLatest, all, call,  select } from 'redux-saga/effects'
+import { getDateId } from '../utils'
 
 import {
     launchModal,
@@ -83,11 +84,38 @@ function* foodPhotoSubmit(action) {
     yield put(closeLoader())
 }
 
+const getFoodDateList = (state, dateId) => state.foodData.dateList[dateId] || []
+
+function* foodTimeChange(action) {
+    yield put({type: 'FOOD_TIME_CHANGE_START'})
+    yield put(launchLoader())
+
+    const date = action.date
+    const dateId = getDateId(date)
+    const newList = yield select(state => getFoodDateList(state, dateId))
+
+    const nextDay = new Date(date.getFullYear(), date.getMonth(), date.getDate()+1)
+    const prevDay = new Date(date.getFullYear(), date.getMonth(), date.getDate()-1)
+    const nextDayList = yield select(state => getFoodDateList(state,getDateId(nextDay)))
+    const prevDayList = yield select(state => getFoodDateList(state,getDateId(prevDay)))
+
+    yield put({
+        type: 'FOOD_TIME_CHANGE_END',
+        dateTime: action.date.getTime(),
+        dateId,
+        hasNextDay: nextDayList.length,
+        hasPrevDay: prevDayList.length,
+        list: newList
+    })
+    yield put(closeLoader())
+}
+
 export default function* foodSaga() {
     yield all([
         takeLatest('FOOD_LIST_FILTER', foodListFilter),
         takeLatest('FOOD_EDIT_SUBMIT', foodEditSubmit),
         takeLatest('FOOD_PHOTO_SUBMIT', foodPhotoSubmit),
+        takeLatest('FOOD_TIME_CHAGNE', foodTimeChange),
         takeLatest('FOOD_EDIT', foodEdit)
     ])
 }

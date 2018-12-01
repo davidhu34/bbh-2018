@@ -33,6 +33,10 @@ export const foodPhotoSubmit = ({ desc, calories, count }) => ({
     type: 'FOOD_PHOTO_SUBMIT', desc, calories, count
 })
 
+export const foodTimeChange = (date) => ({
+    type: 'FOOD_TIME_CHAGNE', date
+})
+
 export const cameraSnapshot = (insights) => ({
     type: 'CAMERA_SNAPSHOT',
     insights: insights
