@@ -1,11 +1,13 @@
 const activityDataInit = {
     list: ['1','2','3','4','5'],
+    schedule: ['3','4'],
     data: {
         '1': {
             id: '1',
             time: 1538406978195,
             desc: 'BIKING',
             max: '10',
+            participating: '1',
             participation: '0',
             location: '',
         },
@@ -14,14 +16,16 @@ const activityDataInit = {
             time: 1538406998195,
             desc: 'SWIMMIN',
             max: '3',
+            participating: '1',
             participation: '1',
             location: '',
         },
         '3': {
             id: '3',
-            time: 1538406988195,
+            time: 1538906988195,
             desc: 'BASEBALL',
             max: '40',
+            participating: '1',
             participation: '2',
             location: '',
         },
@@ -30,6 +34,7 @@ const activityDataInit = {
             time: 1538406988195,
             desc: 'Basketball',
             max: '10',
+            participating: '1',
             participation: '3',
             location: '',
         },
@@ -38,6 +43,7 @@ const activityDataInit = {
             time: 1538406988195,
             desc: 'fight',
             max: '2',
+            participating: '1',
             participation: '0',
             location: '',
         },
@@ -51,6 +57,7 @@ export const activityData = (state = activityDataInit, action) => {
             return {
                 ...state,
                 list: isNew? [...state.list, action.activity.id]: state.list,
+                schedule: action.schedule,
                 data: {
                     ...state.data,
                     [action.activity.id]: action.activity
@@ -74,6 +81,7 @@ const activityUIInit = {
     sorting: 'TIME',
     filter: 'ALL',
     list: ['1','2','3','4','5'],
+    previewScheduleIndex: 0,
     form: activityFormInit
 }
 
@@ -168,6 +176,11 @@ export const activityUI = (state = activityUIInit, action) => {
                 viewingMode: null,
                 list: isNew? [...state.list, action.activity.id]: state.list,
                 form: activityForm(state.form, action),
+            }
+        case 'ACTIVITY_PREVIEW_SCHEDULE':
+            return {
+                ...state,
+                previewScheduleIndex: action.index
             }
         default:
             return state

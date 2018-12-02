@@ -1,4 +1,7 @@
 import { put, take, takeEvery, takeLatest, all, call,  select } from 'redux-saga/effects'
+import { delay } from 'redux-saga'
+import { push } from 'connected-react-router'
+
 import { getDateId } from '../utils'
 
 import {
@@ -75,7 +78,8 @@ function* foodPhotoSubmit(action) {
     const { desc, calories, count } = action
     const newFood = {
         id: time.toString(),
-        time: time, desc, calories, count
+        time: time,
+        desc, calories, count
     }
     yield delay(1000)
     yield put({type: 'FOOD_PHOTO_SUBMIT_END', food: newFood })

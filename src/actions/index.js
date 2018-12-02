@@ -80,6 +80,10 @@ export const activityJoinSubmit = (participation) => ({
     type: 'ACTIVITY_JOIN_SUBMIT', participation
 })
 
+export const activityPreviewSchedule = (index) => ({
+    type: 'ACTIVITY_PREVIEW_SCHEDULE', index
+})
+
 export const launchLoader = () => ({ type: 'LOADER_LAUNCH' })
 
 export const closeLoader = () => ({ type: 'LOADER_CLOSE' })

@@ -14,6 +14,10 @@ const ActivityList = ({
         {   activityDataList.map( (activity,i) => {
                 const { participation } = activity
                 const isOwner = participation == 3
+                const date = new Date(activity.time)
+                const dateStr = (date.getMonth()+1).toString()
+                    + '/' + date.getDate().toString().padStart(2,'0')
+
                 return <Grid.Row style={{
                     borderTop: '1px',
                     borderTopStyle: 'solid',
@@ -42,14 +46,14 @@ const ActivityList = ({
                             : 'circle'
                         }/>
                     </Grid.Column>
-                    <Grid.Column textAlign={'left'} width={6}>
+                    <Grid.Column textAlign={'left'} width={5}>
                         {activity.desc}
                     </Grid.Column>
                     <Grid.Column textAlign={'right'} width={3}>
-                        {activity.time}
+                        { dateStr }
                     </Grid.Column>
-                    <Grid.Column width={3}>
-                        人
+                    <Grid.Column width={4}>
+                        { activity.participating + '/' + activity.max + '人' }
                     </Grid.Column>
                     <Grid.Column textAlign={'left'} width={2} onClick={ e => viewActivity(activity.id) }>
                     <Icon size="mini" name="caret down" />

@@ -87,11 +87,16 @@ function* activityEditSubmit(action) {
     yield put(launchLoader())
 
     const activity = yield select( state => state.activityData.data[state.activityUI.viewing] || {})
+
     const form = action.form
     const time = (new Date()).getTime()
+
+    const isNew = activity.id? false: true
     const newActivity = {
         ...activity,
         id: activity.id || time.toString(),
+        participating: activity.participating || '1',
+        participation: activity.participation || '3',
         time: form.TIME,
         desc: form.DESC,
         max: form.MAX,

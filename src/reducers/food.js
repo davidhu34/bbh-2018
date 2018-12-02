@@ -39,9 +39,11 @@ const dateList = (state, action) => {
     switch (action.type) {
         case 'FOOD_PHOTO_SUBMIT_END':
         case 'FOOD_EDIT_SUBMIT_END':
+            const foodDate = new Date(action.food.time)
+            const dateId = getDateId(foodDate)
             return {
                 ...state,
-                [action.dateId]: [...state[action.dateId],action.food.id],
+                [dateId]: [...state[dateId],action.food.id],
             }
         default:
             return state

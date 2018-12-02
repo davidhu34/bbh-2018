@@ -10,6 +10,7 @@ import ActivityInputArea from './ActivityInputArea'
 import ActivityList from './ActivityList'
 
 import {
+    activityPreviewSchedule,
     activityListFilter,
     activityListSort,
     activityView,
@@ -31,14 +32,16 @@ class Activity extends Component {
 
     render () {
         const {
+            changePreviewSchedule,
             activityListSort,
             activityData,
-            activityUI
+            activityUI,
         } = this.props
 
 
         const { list,
             viewing, viewingMode,
+            previewScheduleIndex,
             loading,
             filter,
             sorting,
@@ -49,6 +52,12 @@ class Activity extends Component {
         const viewingIndex = list.indexOf(viewing)
         const middle = viewingIndex < 0? list.length: viewingIndex + 1
         const activityDataList = list.map( id => activityData.data[id] )
+
+        const previewSchedule = activityData.schedule[previewScheduleIndex] || ''
+        const previewActivity = activityData.data[previewSchedule]
+
+        const previewActivityDesc = previewActivity.desc || '目前無活動'
+        const previewActivityDate = (new Date(previewActivity.time)).toLocaleDateString() || ''
 
         console.log('VIEWING',viewing)
 
@@ -73,15 +82,26 @@ class Activity extends Component {
                         style={{
                             margin: 'auto'
                         }}>
-                        <Icon name="angle left" />
+                        { previewScheduleIndex > 0
+                            ? <Icon name="angle left"
+                                onClick={ () => changePreviewSchedule(previewScheduleIndex-1) } />
+                            : null
+                        }
                     </Grid.Column>
                     <Grid.Column width={8}>
+                        { previewActivityDate }
+                        <br />
+                        { previewActivityDesc }
                     </Grid.Column>
                     <Grid.Column width={4}
                         style={{
                             margin: 'auto'
                         }}>
-                        <Icon name="angle right" />
+                        { previewScheduleIndex < activityData.schedule.length - 1
+                            ? <Icon name="angle right"
+                                onClick={ () => changePreviewSchedule(previewScheduleIndex+1) } />
+                            : null
+                        }
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -189,6 +209,34 @@ class Activity extends Component {
                         activityDataList={activityDataList.slice(middle)}
                     />
 
+                    <Grid textAlign={'center'}
+                        verticalAlign={'middle'}
+                        style={{
+                            margin: 'auto'
+                        }}
+                    >
+                        <Grid.Row style={{
+                            borderTop: '1px',
+                            borderTopStyle: 'solid',
+                            borderTopColor: 'lightgray',
+                        }}>
+                            <Grid.Column onClick={ (e) => {
+                                const time = (new Date()).getTime()
+                                // foodEditSubmit({
+                                //     id: time.toString(),
+                                //     desc: time.toString(),
+                                //     time: time,
+                                //     category: foodUI.filter,
+                                //     tags: [],
+                                //     calorie: time.toString().substr(-3)
+                                // })
+                                this.editActivity(time.toString())
+                            }}>
+                                <Icon size="large" name="add" />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+
                 </React.Fragment>
             }
 
@@ -203,6 +251,7 @@ export default connect(
         activityData, activityUI
     }),
     dispatch => ({
+        changePreviewSchedule: (index) => dispatch(activityPreviewSchedule(index)),
         activityListSort: (sorting) => dispatch(activityListSort(sorting)),
         activityListFilter: (filter, sorting) => dispatch(activityListFilter({filter, sorting})),
         activityView: (activityId) => dispatch(activityView(activityId)),
