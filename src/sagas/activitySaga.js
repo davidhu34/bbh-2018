@@ -39,6 +39,8 @@ function* activityListSort(action) {
         sorting: action.sorting,
         list: sortedList
     })
+
+    yield put(closeLoader())
 }
 
 const activityFilter = (activity, filter) => {
@@ -80,6 +82,8 @@ function* activityListFilter(action) {
         sorting: sorting,
         list: resultList
     })
+
+    yield put(closeLoader())
 }
 
 function* activityEditSubmit(action) {
@@ -97,12 +101,44 @@ function* activityEditSubmit(action) {
         id: activity.id || time.toString(),
         participating: activity.participating || '1',
         participation: activity.participation || '3',
-        time: form.TIME,
+        time: Number(form.TIME),
         desc: form.DESC,
         max: form.MAX,
     }
+
     yield delay(1)
+
     yield put({type: 'ACTIVITY_EDIT_SUBMIT_END', activity: newActivity })
+    if (isNew) {
+
+        let previewIndex = 0
+        const newSchedule = yield select( ({ activityData }) => {
+            let list = []
+            let inserted = false
+            activityData.schedule.map( (id, order) => {
+                const a = activityData.data[id]
+                if (a.time > newActivity.time) {
+                    list.push(newActivity.id)
+                    previewIndex = order
+                    inserted = true
+                }
+                list.push(id)
+            })
+
+            if (!inserted) {
+                list.push(newActivity.id)
+                previewIndex = list.length -1
+            }
+            return list
+        })
+        yield put({
+            type: 'ACTIVITY_UPDATE_SCHEDULE',
+            index: previewIndex,
+            schedule: newSchedule
+        })
+    }
+
+    yield put({type: 'ACTIVITY_LIST_FILTER', filter: 'MINE' })
     yield put(closeLoader())
 }
 
@@ -144,8 +180,30 @@ function* activityJoin(action) {
     }
     yield delay(1)
     yield put({type: 'ACTIVITY_JOIN_SUBMIT_END', activity: newActivity })
+    
+    let previewIndex = 0
+    const newSchedule = yield select( ({ activityData }) => {
+        let list = []
+        activityData.schedule.map( (id, order) => {
+            const a = activityData.data[id]
+            if (id == newActivity.id) {
+                if (participation == 2) {
+                    previewIndex = order
+                    list.push(id)
+                }
+            } else list.push(id)
+        })
+        return list
+    })
+    yield put({
+        type: 'ACTIVITY_UPDATE_SCHEDULE',
+        index: previewIndex,
+        schedule: newSchedule
+    })
+
+    yield put({type: 'ACTIVITY_LIST_FILTER', filter: 'LIKED' })
     yield put(closeModal())
-    yield put(closeLoader())
+    // yield put(closeLoader())
     yield put({type: 'ACTIVITY_JOIN_END' })
 }
 

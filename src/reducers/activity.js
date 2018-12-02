@@ -51,13 +51,17 @@ const activityDataInit = {
 }
 export const activityData = (state = activityDataInit, action) => {
     switch (action.type) {
+        case 'ACTIVITY_UPDATE_SCHEDULE':
+            return {
+                ...state,
+                schedule: action.schedule
+            }
         case 'ACTIVITY_JOIN_SUBMIT_END':
         case 'ACTIVITY_EDIT_SUBMIT_END':
             const isNew = state.list.indexOf(action.activity.id) < 0
             return {
                 ...state,
                 list: isNew? [...state.list, action.activity.id]: state.list,
-                schedule: action.schedule,
                 data: {
                     ...state.data,
                     [action.activity.id]: action.activity
@@ -177,6 +181,7 @@ export const activityUI = (state = activityUIInit, action) => {
                 list: isNew? [...state.list, action.activity.id]: state.list,
                 form: activityForm(state.form, action),
             }
+        case 'ACTIVITY_UPDATE_SCHEDULE':
         case 'ACTIVITY_PREVIEW_SCHEDULE':
             return {
                 ...state,
