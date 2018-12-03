@@ -46,6 +46,7 @@ class ActivityInputArea extends Component {
                 <Grid.Column width={14}>
                     <Input fluid size="mini"
                         name="TIME"
+                        type={'date'}
                         value={form.TIME}
                         placeholder={'date time'}
                         onChange={this.handleChange}

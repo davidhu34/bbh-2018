@@ -97,3 +97,12 @@ export const launchModal = ({ modalType, data }) => ({
 export const closeModal = () => ({
     type: 'MODAL_CLOSE'
 })
+
+export const launchFormErrors = (errors) => launchModal({
+    modalType: 'FORM_ERROR',
+    data: {
+        errors: errors || []
+    }
+})
+
+export const launchFormError = (error) => launchFormErrors([error])

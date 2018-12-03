@@ -6,6 +6,7 @@ import { getDateId } from '../utils'
 
 import {
     launchModal,
+    launchFormError,
     closeModal,
     launchLoader,
     closeLoader,
@@ -42,16 +43,35 @@ function* foodEditSubmit(action) {
 
     const food = yield select( state => state.foodData.data[state.foodUI.viewing] || {})
     const form = action.form
-    const time = (new Date()).getTime()
-    const newFood = {
-        ...food,
-        id: food.id || time.toString(),
-        time: food.time || time,
-        desc: form.DESC,
-        calories: form.CALORIES,
-        count: form.COUNT,
+    const { DESC, CALORIES, COUNT } = form
+
+    let newFood = null
+    
+    if (!DESC) {
+        yield put(launchFormError('請輸入說明~'))
+    } else if (DESC.length > 10) {
+        yield put(launchFormError('說明不要超過10個字拜託'))
+    } else if (!CALORIES || isNaN(CALORIES)) {
+        yield put(launchFormError('卡路里要輸入數字~'))
+    } else if (CALORIES.toString().length > 5) {
+        yield put(launchFormError('卡路里超過五位數了'))
+    } else if (!COUNT || isNaN(COUNT)) {
+        yield put(launchFormError('要輸入份量數量'))
+    } else if (COUNT.toString().length > 2) {
+        yield put(launchFormError('哪有吃到一百份的'))
+    } else {
+        const time = (new Date()).getTime()
+        newFood = {
+            ...food,
+            id: food.id || time.toString(),
+            time: food.time || time,
+            desc: DESC,
+            calories: CALORIES,
+            count: COUNT,
+        }
+        yield delay(1000)
     }
-    yield delay(1000)
+
     yield put({type: 'FOOD_EDIT_SUBMIT_END', food: newFood })
     yield put(closeLoader())
 }

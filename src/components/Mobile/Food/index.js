@@ -219,14 +219,6 @@ class Food extends Component {
                         }}>
                             <Grid.Column onClick={ (e) => {
                                 const time = (new Date()).getTime()
-                                // foodEditSubmit({
-                                //     id: time.toString(),
-                                //     desc: time.toString(),
-                                //     time: time,
-                                //     category: foodUI.filter,
-                                //     tags: [],
-                                //     calorie: time.toString().substr(-3)
-                                // })
                                 this.editFood(time.toString())
                             }}>
                                 <Icon size="large" name="add" />

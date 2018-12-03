@@ -3,6 +3,7 @@ import { delay } from 'redux-saga'
 
 import {
     launchModal,
+    launchFormError,
     closeModal,
     launchLoader,
     closeLoader,
@@ -93,17 +94,33 @@ function* activityEditSubmit(action) {
     const activity = yield select( state => state.activityData.data[state.activityUI.viewing] || {})
 
     const form = action.form
-    const time = (new Date()).getTime()
+    const { DESC, TIME, MAX } = form
+    const DATE = new Date(TIME)
 
-    const isNew = activity.id? false: true
-    const newActivity = {
-        ...activity,
-        id: activity.id || time.toString(),
-        participating: activity.participating || '1',
-        participation: activity.participation || '3',
-        time: Number(form.TIME),
-        desc: form.DESC,
-        max: form.MAX,
+    let newActivity = null
+
+    if (!DESC) {
+        yield put(launchFormError('請輸入說明~'))
+    } else if (DESC.length > 10) {
+        yield put(launchFormError('說明不要超過10個字拜託'))
+    } else if (!DATE || isNaN(TIME.getTime())) {
+        yield put(launchFormError('日期要輸入好~'))
+    } else if (!MAX || isNaN(MAX)) {
+        yield put(launchFormError('要輸入人數上限(數字)'))
+    } else if (MAX.toString().length > 2) {
+        yield put(launchFormError('確定一百個人揪的到嗎@@'))
+    } else {
+        const time = (new Date()).getTime()
+        const isNew = activity.id? false: true
+        newActivity = {
+            ...activity,
+            id: activity.id || time.toString(),
+            participating: activity.participating || '1',
+            participation: activity.participation || '3',
+            time: (new Date(form.TIME)).getTime(),
+            desc: form.DESC,
+            max: form.MAX,
+        }
     }
 
     yield delay(1)
@@ -180,7 +197,7 @@ function* activityJoin(action) {
     }
     yield delay(1)
     yield put({type: 'ACTIVITY_JOIN_SUBMIT_END', activity: newActivity })
-    
+
     let previewIndex = 0
     const newSchedule = yield select( ({ activityData }) => {
         let list = []

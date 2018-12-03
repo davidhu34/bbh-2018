@@ -58,15 +58,17 @@ export const activityData = (state = activityDataInit, action) => {
             }
         case 'ACTIVITY_JOIN_SUBMIT_END':
         case 'ACTIVITY_EDIT_SUBMIT_END':
-            const isNew = state.list.indexOf(action.activity.id) < 0
-            return {
-                ...state,
-                list: isNew? [...state.list, action.activity.id]: state.list,
-                data: {
-                    ...state.data,
-                    [action.activity.id]: action.activity
+            if (action.activity) {
+                const isNew = state.list.indexOf(action.activity.id) < 0
+                return {
+                    ...state,
+                    list: isNew? [...state.list, action.activity.id]: state.list,
+                    data: {
+                        ...state.data,
+                        [action.activity.id]: action.activity
+                    }
                 }
-            }
+            } else return state
         default:
             return state
     }
@@ -172,14 +174,19 @@ export const activityUI = (state = activityUIInit, action) => {
             }
         case 'ACTIVITY_EDIT_SUBMIT_END':
         case 'ACTIVITY_JOIN_SUBMIT_END':
-            const isNew = state.list.indexOf(action.activity.id) < 0
-            return {
+            if (action.activity) {
+                const isNew = state.list.indexOf(action.activity.id) < 0
+                return {
+                    ...state,
+                    loading: false,
+                    viewing: null,
+                    viewingMode: null,
+                    list: isNew? [...state.list, action.activity.id]: state.list,
+                    form: activityForm(state.form, action),
+                }
+            } else return {
                 ...state,
-                loading: false,
-                viewing: null,
-                viewingMode: null,
-                list: isNew? [...state.list, action.activity.id]: state.list,
-                form: activityForm(state.form, action),
+                loading: false
             }
         case 'ACTIVITY_UPDATE_SCHEDULE':
         case 'ACTIVITY_PREVIEW_SCHEDULE':

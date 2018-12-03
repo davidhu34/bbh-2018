@@ -5,7 +5,7 @@ const foodDataInit = {
     dateList: {
         '20181130': ['1','2'],
         '20181201': ['1','2','3'],
-        '20181202': ['3'],
+        '20181204': ['3'],
     },
     data: {
         '1': {
@@ -41,9 +41,10 @@ const dateList = (state, action) => {
         case 'FOOD_EDIT_SUBMIT_END':
             const foodDate = new Date(action.food.time)
             const dateId = getDateId(foodDate)
+            const prevList = state[dateId] || []
             return {
                 ...state,
-                [dateId]: [...state[dateId],action.food.id],
+                [dateId]: [...prevList,action.food.id],
             }
         default:
             return state
@@ -54,16 +55,18 @@ export const foodData = (state = foodDataInit, action) => {
     switch (action.type) {
         case 'FOOD_PHOTO_SUBMIT_END':
         case 'FOOD_EDIT_SUBMIT_END':
-            const isNew = state.list.indexOf(action.food.id) < 0
-            return {
-                ...state,
-                list: isNew? [...state.list, action.food.id]: state.list,
-                dateList: dateList(state.dateList, action),
-                data: {
-                    ...state.data,
-                    [action.food.id]: action.food
+            if (action.food) {
+                const isNew = state.list.indexOf(action.food.id) < 0
+                return {
+                    ...state,
+                    list: isNew? [...state.list, action.food.id]: state.list,
+                    dateList: dateList(state.dateList, action),
+                    data: {
+                        ...state.data,
+                        [action.food.id]: action.food
+                    }
                 }
-            }
+            } else return state
         default:
             return state
     }
@@ -166,14 +169,19 @@ export const foodUI = (state = foodUIInit, action) => {
             }
         case 'FOOD_PHOTO_SUBMIT_END':
         case 'FOOD_EDIT_SUBMIT_END':
-            const isNew = state.list.indexOf(action.food.id) < 0
-            return {
+            if (action.food) {
+                const isNew = state.list.indexOf(action.food.id) < 0
+                return {
+                    ...state,
+                    loading: false,
+                    viewing: null,
+                    viewingMode: null,
+                    list: isNew? [...state.list, action.food.id]: state.list,
+                    form: foodForm(state.form, action),
+                }
+            } else return {
                 ...state,
-                loading: false,
-                viewing: null,
-                viewingMode: null,
-                list: isNew? [...state.list, action.food.id]: state.list,
-                form: foodForm(state.form, action),
+                loading: false
             }
         default:
             return state
