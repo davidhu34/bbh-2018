@@ -27,7 +27,7 @@ function* foodListFilter(action) {
     yield put({type: 'FOOD_LIST_FILTER_START', action})
 
     const dataList = yield select(state => {
-        return state.foodData.list.map( key => state.foodData.data[key] )
+        return state.foodData.dateList[state.foodUI.dateId].map( key => state.foodData.data[key] )
     })
     const filteredList = yield call(filterFoodList, dataList, filter)
     yield put({
@@ -46,7 +46,7 @@ function* foodEditSubmit(action) {
     const { DESC, CALORIES, COUNT } = form
 
     let newFood = null
-    
+
     if (!DESC) {
         yield put(launchFormError('請輸入說明~'))
     } else if (DESC.length > 10) {
@@ -116,21 +116,28 @@ function* foodTimeChange(action) {
 
     const date = action.date
     const dateId = getDateId(date)
-    const newList = yield select(state => getFoodDateList(state, dateId))
+    const filter = yield select(state => state.foodUI.filter)
+    const newDataList = yield select(state => {
+        console.log(getFoodDateList(state, dateId))
+        return getFoodDateList(state, dateId).map( foodId => state.foodData.data[foodId] )
+    })
 
     const nextDay = new Date(date.getFullYear(), date.getMonth(), date.getDate()+1)
     const prevDay = new Date(date.getFullYear(), date.getMonth(), date.getDate()-1)
     const nextDayList = yield select(state => getFoodDateList(state,getDateId(nextDay)))
     const prevDayList = yield select(state => getFoodDateList(state,getDateId(prevDay)))
 
+
+    const filteredList = yield call(filterFoodList, newDataList, filter)
     yield put({
         type: 'FOOD_TIME_CHANGE_END',
         dateTime: action.date.getTime(),
         dateId,
         hasNextDay: nextDayList.length,
         hasPrevDay: prevDayList.length,
-        list: newList
+        list: filteredList
     })
+
     yield put(closeLoader())
 }
 

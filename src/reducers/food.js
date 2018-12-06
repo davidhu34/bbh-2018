@@ -3,9 +3,9 @@ import { getDateId } from '../utils'
 const foodDataInit = {
     list: ['1','2','3'],
     dateList: {
-        '20181130': ['1','2'],
-        '20181201': ['1','2','3'],
-        '20181204': ['3'],
+        '20181204': ['1','2'],
+        '20181205': ['1','2','3'],
+        '20181206': ['3'],
     },
     data: {
         '1': {
@@ -83,11 +83,11 @@ const foodUIInit = {
     viewingMode: null,
     loading: false,
     filter: 'LUNCH',
-    dateTime: 1543593600000,
-    dateId: '20181201',
+    dateTime: 1543939200000,
+    dateId: '20181205',
     hasNextDay: true,
     hasPrevDay: true,
-    list: ['1','2','3'],
+    list: ['3'],
     form: foodFormInit
 }
 
