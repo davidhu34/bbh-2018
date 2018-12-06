@@ -38,13 +38,13 @@ class Food extends Component {
         } = this.props
 
 
-        const { list, viewing, viewingMode, loading } = foodUI
+        const { list, viewing, viewingMode, loading, filter } = foodUI
 
         const viewingDate = new Date(foodUI.dateTime)
         const gained = getCaloriesGained(viewingDate,foodData)
 
-        const toNextDay = (e) => foodDateChange(viewingDate,1)
-        const toPrevDay = (e) => foodDateChange(viewingDate,-1)
+        const toNextDay = (e) => foodDateChange(viewingDate, 1, filter)
+        const toPrevDay = (e) => foodDateChange(viewingDate, -1, filter)
 
         const viewingIndex = list.indexOf(viewing)
         const middle = viewingIndex < 0? list.length: viewingIndex + 1
@@ -240,9 +240,9 @@ export default connect(
         foodData, foodUI
     }),
     dispatch => ({
-        foodDateChange: (date, diff) => {
+        foodDateChange: (date, diff, filter) => {
             const newDate = new Date(date.setDate(date.getDate()+diff))
-            dispatch(foodTimeChange(newDate))
+            dispatch(foodTimeChange({ date: newDate, filter: filter }))
         },
         foodListFilter: (filter) => dispatch(foodListFilter(filter)),
         foodEdit: (foodId) => dispatch(foodEdit(foodId)),

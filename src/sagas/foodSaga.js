@@ -94,15 +94,24 @@ function* foodPhotoSubmit(action) {
     yield put({type: 'FOOD_PHOTO_SUBMIT_START'})
     yield put(launchLoader())
 
-    const time = (new Date()).getTime()
+    const date = new Date()
+    const time = date.getTime()
     const { desc, calories, count } = action
+
+    const filter = 'BREAKFAST'
     const newFood = {
         id: time.toString(),
         time: time,
+        category: filter,
         desc, calories, count
     }
+
     yield delay(1000)
     yield put({type: 'FOOD_PHOTO_SUBMIT_END', food: newFood })
+
+    // const filter = yield select(state => state.foodUI.filter)
+    yield put({ type:'FOOD_TIME_CHAGNE', date, filter })
+
     yield put(push('/food'))
     yield put(foodView(newFood.id))
     yield put(closeLoader())
@@ -114,9 +123,8 @@ function* foodTimeChange(action) {
     yield put({type: 'FOOD_TIME_CHANGE_START'})
     yield put(launchLoader())
 
-    const date = action.date
+    const { filter, date } = action
     const dateId = getDateId(date)
-    const filter = yield select(state => state.foodUI.filter)
     const newDataList = yield select(state => {
         console.log(getFoodDateList(state, dateId))
         return getFoodDateList(state, dateId).map( foodId => state.foodData.data[foodId] )
