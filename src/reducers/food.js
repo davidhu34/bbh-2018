@@ -1,37 +1,52 @@
 import { getDateId } from '../utils'
 
-const foodDataInit = {
-    list: ['1','2','3'],
-    dateList: {
-        '20181204': ['1','2'],
-        '20181205': ['1','2','3'],
-        '20181206': ['3'],
-    },
-    data: {
-        '1': {
-            id: '1',
-            time: 1538406978195,
-            desc: 'KFC',
-            category: 'LUNCH',
-            tags: [],
-            calories: '500',
+const day0 = new Date()
+const y = day0.getFullYear()
+const m = day0.getMonth()
+const d = day0.getDate()
+const day0Id = getDateId(day0)
+
+const day1 = new Date(y,m,d-1)
+const day1Id = getDateId(day1)
+
+const day2 = new Date(y,m,d-2)
+const day2Id = getDateId(day2)
+
+const foodDataInit = () => {
+
+    return {
+        list: ['1','2','3'],
+        dateList: {
+            [day2Id]: ['1','2'],
+            [day1Id]: ['1','2','3'],
+            [day0Id]: ['3'],
         },
-        '2': {
-            id: '2',
-            time: 1538406998195,
-            desc: '7-11',
-            category: 'LUNCH',
-            tags: [],
-            calories: '5000',
-        },
-        '3': {
-            id: '3',
-            time: 1538406988195,
-            desc: '牛排',
-            category: 'DINNER',
-            tags: [],
-            calories: '8000',
-        },
+        data: {
+            '1': {
+                id: '1',
+                time: 1538406978195,
+                desc: 'KFC',
+                category: 'LUNCH',
+                tags: [],
+                calories: '500',
+            },
+            '2': {
+                id: '2',
+                time: 1538406998195,
+                desc: '7-11',
+                category: 'LUNCH',
+                tags: [],
+                calories: '5000',
+            },
+            '3': {
+                id: '3',
+                time: 1538406988195,
+                desc: '牛排',
+                category: 'DINNER',
+                tags: [],
+                calories: '8000',
+            },
+        }
     }
 }
 
@@ -51,7 +66,7 @@ const dateList = (state, action) => {
     }
 }
 
-export const foodData = (state = foodDataInit, action) => {
+export const foodData = (state = foodDataInit(), action) => {
     switch (action.type) {
         case 'FOOD_PHOTO_SUBMIT_END':
         case 'FOOD_EDIT_SUBMIT_END':
@@ -83,8 +98,8 @@ const foodUIInit = {
     viewingMode: null,
     loading: false,
     filter: 'LUNCH',
-    dateTime: 1543939200000,
-    dateId: '20181205',
+    dateTime: day0.getTime(),
+    dateId: day0Id,
     hasNextDay: true,
     hasPrevDay: true,
     list: ['3'],

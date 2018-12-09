@@ -1,10 +1,18 @@
+import { getDateId } from '../utils'
+
+const day0 = new Date()
+const y = day0.getFullYear()
+const m = day0.getMonth()
+const d = day0.getDate()
+const day0Id = getDateId(day0)
+
 const activityDataInit = {
     list: ['1','2','3','4','5'],
     schedule: ['3','4'],
     data: {
         '1': {
             id: '1',
-            time: 1538406978195,
+            time: (new Date(y,m,d+1)).getTime(),
             desc: 'BIKING',
             max: '10',
             participating: '1',
@@ -13,7 +21,7 @@ const activityDataInit = {
         },
         '2': {
             id: '2',
-            time: 1538406998195,
+            time: (new Date(y,m,d+3)).getTime(),
             desc: 'SWIMMIN',
             max: '3',
             participating: '1',
@@ -22,7 +30,7 @@ const activityDataInit = {
         },
         '3': {
             id: '3',
-            time: 1538906988195,
+            time: (new Date(y,m,d+3)).getTime(),
             desc: 'BASEBALL',
             max: '40',
             participating: '1',
@@ -31,7 +39,7 @@ const activityDataInit = {
         },
         '4': {
             id: '4',
-            time: 1538406988195,
+            time: (new Date(y,m,d+5)).getTime(),
             desc: 'Basketball',
             max: '10',
             participating: '1',
@@ -40,7 +48,7 @@ const activityDataInit = {
         },
         '5': {
             id: '5',
-            time: 1538406988195,
+            time: (new Date(y,m+1,d)).getTime(),
             desc: 'fight',
             max: '2',
             participating: '1',

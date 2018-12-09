@@ -44,8 +44,8 @@ class Camera extends Component {
     collectInsights() {
 
         const dataUri = this.cameraPhoto.getDataUri({ imageType: IMAGE_TYPES.JPG })
-        // this.fetchInsight(dataUri)
-        this.fetchInsightDev(dataUri)
+        this.fetchInsight(dataUri)
+        // this.fetchInsightDev(dataUri)
 
 
     }
@@ -120,8 +120,8 @@ class Camera extends Component {
             this.props.displaySnapshot(this.state.insights)
 
 
-            this.fetchInsightDev(dataUri).then( insights => {
-            // this.fetchInsight(dataUri).then( insights => {
+            // this.fetchInsightDev(dataUri).then( insights => {
+            this.fetchInsight(dataUri).then( insights => {
                 console.log()
             }).catch( error => {
                 console.log(error)
@@ -191,7 +191,7 @@ class Camera extends Component {
                 if (this.insightsInterval && this.state.insightsTime < time) {
 
                     const { width, height, displaySnapshot } = this.props
-                    
+
                     const insights = [1,2,3].map( (data, i) => ({
                         food_name: 10*data + random/10,
                         calories: 10*data + 100,

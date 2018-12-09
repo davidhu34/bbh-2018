@@ -1,6 +1,6 @@
 src/configs/index.js
 server/configs.js
-
+dist/
 # Logs
 logs
 *.log
