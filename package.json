@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "author": "davidhu34 <b01901133@gmail.com>",
+  "main": "server/index.js",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --hot",
+    "start": "node server",
+    "dev": "webpack-dev-server --hot",
     "build": "webpack -p --config webpack.config.prod.js"
   },
   "devDependencies": {

@@ -28,7 +28,8 @@ const app = express()
 
 applyMiddlewares( app )
 
-app.use( express.static( path.join( __dirname, '..', 'public' ) ) )
+// app.use( express.static( path.join( __dirname, '..', 'public' ) ) )
+app.use( express.static( path.join( __dirname ) ) )
 
 const port = normalizePort( process.env.PORT || PORT )
 app.set( 'port', port )
@@ -47,8 +48,9 @@ const decodeBase64Image = function(dataString) {
     const matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
     response = {};
 
-    if (matches.length !== 3) {
-        return new Error('Invalid input string');
+    if (!matches || matches.length !== 3) {
+        // return new Error('Invalid input string');
+        return null;
     }
 
     response.type = matches[1];
@@ -57,31 +59,40 @@ const decodeBase64Image = function(dataString) {
     return response;
 }
 
-app.post('/', function (req, res, next) {
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname + '/index.html'));
+});
+
+app.post('*/insights', function (req, res, next) {
     const data = req.body
+    console.log('REQUEST GET');
     const imageBuffer = decodeBase64Image(data.image);
-    const imgPath = __dirname + '/foodImage.jpg'
 
-    fs.writeFile(imgPath, imageBuffer.data, (err) => {
 
-        let form = new FormData();
-        form.append('image', fs.createReadStream(imgPath), {
-            filename: 'foodImage.jpg'
+    if (imageBuffer) {
+        const imgPath = __dirname + '/foodImage.jpg'
+
+        fs.writeFile(imgPath, imageBuffer.data, (err) => {
+
+            let form = new FormData();
+            form.append('image', fs.createReadStream(imgPath), {
+                filename: 'foodImage.jpg'
+            });
+            console.log('FORM CREATED, SENDING AXIOS');
+            axios.create({
+                headers: form.getHeaders()
+            }).post(IMAGE_API,form).then(response => {
+                console.log('AXIOS RETURN', response.data);
+                res.send(response.data)
+            }).catch( error => {
+                console.log('AXIOS ERROR', error);
+                res.send({ error: 'error' })
+            });
         });
+    } else {
+        res.send({ error: 'invalid image' })
+    }
 
-        axios.create({
-            headers: form.getHeaders()
-        }).post(IMAGE_API,form).then(response => {
-            console.log(response.data);
-            res.send(response.data)
-        }).catch( error => {
-            console.log('error',error)
-            if (error.response) {
-                console.log(error.response,error.message);
-            }
-            res.send({ error: 'error' })
-        });
-    });
 });
 
 server.listen( port )

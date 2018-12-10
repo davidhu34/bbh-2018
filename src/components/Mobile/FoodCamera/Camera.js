@@ -44,8 +44,8 @@ class Camera extends Component {
     collectInsights() {
 
         const dataUri = this.cameraPhoto.getDataUri({ imageType: IMAGE_TYPES.JPG })
-        this.fetchInsight(dataUri)
-        // this.fetchInsightDev(dataUri)
+        // this.fetchInsight(dataUri)
+        this.fetchInsightDev(dataUri)
 
 
     }
@@ -62,11 +62,11 @@ class Camera extends Component {
     }
 
     startCamera (front) {
-        let resolution = {
-            width: this.props.width,
-            height: this.props.height
+        const resolution = {
+            // width: this.props.width,
+            // height: this.props.height
         }
-        let mode = front
+        const mode = front
             ? FACING_MODES.USER
             : FACING_MODES.ENVIRONMENT
 
@@ -103,7 +103,7 @@ class Camera extends Component {
     }
 
     switchFrontCamera(isFront) {
-        let { active, front } = this.state
+        const { active, front } = this.state
         if (isFront != front) {
             if (active) this.startCamera(isFront)
             else this.setState({ front: isFront })
@@ -120,8 +120,8 @@ class Camera extends Component {
             this.props.displaySnapshot(this.state.insights)
 
 
-            // this.fetchInsightDev(dataUri).then( insights => {
-            this.fetchInsight(dataUri).then( insights => {
+            this.fetchInsightDev(dataUri).then( insights => {
+            // this.fetchInsight(dataUri).then( insights => {
                 console.log()
             }).catch( error => {
                 console.log(error)
@@ -162,15 +162,23 @@ class Camera extends Component {
                 const insights = response.data
                 console.log(...insights,response);
                 const { width, height, displaySnapshot } = this.props
+
+                const cameraSettings = this.getCameraSettings()
+                const camHeight = cameraSettings.height
+                const camWidth = cameraSettings.width
+
+                const widthOffset = (camWidth - width) / 2
+                const heightOffset = (camHeight - height) / 2
+
                 this.setState({
                     insightsTime: time,
                     insights: insights.map( (insight, i) => ({
                         calories: insight.calories,
                         desc: insight.food_name,
-                        x1: insight.x1*width,
-                        y1: insight.y1*height,
-                        x2: insight.x2*width,
-                        y2: insight.y2*height,
+                        x1: insight.x1*camWidth - widthOffset,
+                        y1: insight.y1*camHeight - heightOffset,
+                        x2: insight.x2*camWidth - widthOffset,
+                        y2: insight.y2*camHeight - heightOffset,
                     }))
                 })
 
@@ -184,22 +192,28 @@ class Camera extends Component {
 
     fetchInsightDev () {
         const time = (new Date()).getTime()
-        let random = Number(time.toString().substr(-1))*100
+        const random = Number(time.toString().substr(-1))*100
         return new Promise( (resolve, reject) => {
             setTimeout( () => {
 
                 if (this.insightsInterval && this.state.insightsTime < time) {
 
                     const { width, height, displaySnapshot } = this.props
+                    const cameraSettings = this.getCameraSettings()
+                    const camHeight = cameraSettings.height
+                    const camWidth = cameraSettings.width
+
+                    const widthOffset = (camWidth - width) / 2
+                    const heightOffset = (camHeight - height) / 2
 
                     const insights = [1,2,3].map( (data, i) => ({
                         food_name: 10*data + random/10,
                         calories: 10*data + 100,
-                        desc: 10*data + random/10,
-                        x1: 10*data,
-                        y1: 10*data,
-                        x2: 10*data + 100,
-                        y2: 10*data + random/10,
+                        desc: 100*data + random/10,
+                        x1: 100*data - widthOffset,
+                        y1: 100*data - heightOffset,
+                        x2: 100*data + 100 - widthOffset,
+                        y2: 100*data + random/10 - heightOffset,
                     }))
                     this.setState({
                         insightsTime: time,
@@ -212,33 +226,52 @@ class Camera extends Component {
         })
     }
     render () {
-        let { front, active, snapshotURI, insights } = this.state
-        let { aspectRatio, frameRate, height, width } = this.getCameraSettings()
+        const { front, active, snapshotURI, insights } = this.state
+        const cameraSettings = this.getCameraSettings()
+        const {
+            aspectRatio,
+            frameRate,
+        } = cameraSettings
 
+        const camHeight = cameraSettings.height
+        const camWidth = cameraSettings.width
+
+        const { width, height } = this.props
+        console.log(width, camWidth, height, camHeight, aspectRatio, (width - (height*aspectRatio))/2)
         return <div style={{
             position: 'absolute',
             width: '100%',
             height: height,
             textAlign: 'center',
             padding: 'auto',
-            backgroundColor: 'black'
+            backgroundColor: 'black',
+            overflow: 'hidden'
         }}>
             <video ref={ ref => {this.camRef = ref} }
                 autoPlay
                 playsInline
-                width={this.props.width}
-                height={this.props.height}
+                width={width}
+                height={width}
                 style={{
+                    position: 'relative',
                     display: snapshotURI? 'none': 'inline-block',
-                    position: 'relative'
+                    width: width,
+                    height: height,
+                    maxHeight: width,
+                    objectFit: 'cover',
                 }}
             />
 
 
             { snapshotURI
-                ? <div style={{ position: 'relative', }}>
+                ? <div style={{
+                    position: 'relative',
+                    top: aspectRatio > 1? 0 : ((height - (width/aspectRatio))/2),
+                    left: aspectRatio > 1? (width - (height*aspectRatio))/2 : 0,
+                }}>
                     <ImageContainer standalone
-                        width={width} height={height}
+                        width={aspectRatio > 1? (height*aspectRatio) : height}
+                        height={aspectRatio > 1? height : (width/aspectRatio)}
                         src={this.state.snapshotURI}
                     />
                 </div>
@@ -248,7 +281,8 @@ class Camera extends Component {
             <div style={{
                 position: 'absolute',
                 width: '100%',
-                top: 0
+                top: 0,
+
             }}>
                 { active
                     ? <Canvas

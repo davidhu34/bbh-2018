@@ -31,8 +31,19 @@ class Canvas extends Component {
         _context.clearRect(0, 0, _canvas.width, _canvas.height)
     }
 
+    limitX(x) {
+        const { width } = this.props
+        return Math.max( Math.min(width,x), 0 )
+    }
+    limitY(y) {
+        const { height } = this.props
+        return Math.max( Math.min(height,y), 0 )
+    }
     drawRectangle(rect) {
-        let { x1, y1, x2, y2 } = rect
+        const x1 = this.limitX(rect.x1)
+        const y1 = this.limitY(rect.y1)
+        const x2 = this.limitX(rect.x2)
+        const y2 = this.limitY(rect.y2)
         const ctx = this.ref.getContext('2d')
 
 		ctx.beginPath()
