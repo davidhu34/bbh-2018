@@ -1,7 +1,13 @@
 export const pushRoute = (route) => ({
-    type: 'CHANGE_ROUTE',
+    type: 'PUSH_ROUTE',
     route: route
 })
+
+export const routeChange = (route) => ({
+    type: 'ROUTE_CHANGE',
+    route: route
+})
+
 
 export const foodListFilter = (filter) => ({
     type: 'FOOD_LIST_FILTER', filter

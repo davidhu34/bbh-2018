@@ -1,9 +1,7 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Route, withRouter } from 'react-router'
-import { Button } from 'semantic-ui-react'
 
-import { pushRoute } from '../../actions'
 import AppBar from './AppBar'
 import Home from './Home'
 import Food from './Food'
@@ -14,33 +12,44 @@ import Profile from './Profile'
 import Footer from './Footer'
 import Modal, { ModalLoader } from '../Modal'
 
-const Mobile = ({
-    router,
-    pushRoute
-}) => (
-    <div style={{
-        backgroundColor: 'white',
-        color: 'slategray',
-        position: 'fixed',
-        width: '100%',
-        height: '100%',
-        paddingTop: '3rem'
-    }}>
-        <AppBar />
-        <Route exact path="/" component={Home} />
-        <Route path="/food" component={Food} />
-        <Route path="/camera" component={FoodCamera} />
-        <Route path="/activity" component={Activity} />
+class Mobile extends Component {
 
-        <Modal />
-        <ModalLoader />
-        <Footer />
-    </div>
-)
+    getPage() {
+        console.log(this.props.route.path)
+        switch(this.props.route.path) {
+            case '/activity':
+                return <Activity />
+            case '/camera':
+                return <FoodCamera />
+            case '/food':
+                return <Food />
+            case '/':
+            default:
+                return <Home />
+        }
+    }
+
+    render() {
+
+        return <div style={{
+            backgroundColor: 'white',
+            color: 'slategray',
+            position: 'fixed',
+            width: '100%',
+            height: '100%',
+            paddingTop: '3rem'
+        }}>
+            <AppBar />
+
+            {this.getPage()}
+
+            <Modal />
+            <ModalLoader />
+            <Footer />
+        </div>
+    }
+}
 
 export default withRouter(connect(
-	({ router }) => ({ router }),
-    dispatch => ({
-        pushRoute: (route) => dispatch(pushRoute(route))
-    })
+	({ route }) => ({ route })
 )(Mobile))

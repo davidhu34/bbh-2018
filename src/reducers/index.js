@@ -5,6 +5,7 @@ import { combineReducers } from 'redux'
 import { foodData, foodUI, foodCameraUI } from './food'
 import { activityData, activityUI } from './activity'
 import { modal } from './modal'
+import { route } from './route'
 import { profile } from './profile'
 
 const reducer = combineReducers({
@@ -15,6 +16,7 @@ const reducer = combineReducers({
     activityUI,
     profile,
     modal,
+    route,
 })
 
 export default reducer

@@ -167,12 +167,12 @@ class Food extends Component {
                             <div style={{color:'transparent'}}>{'_'}</div>
                         </div>
                     </Grid.Column>
-                    <Grid.Column>
+                    <Grid.Column onClick={ (e) => foodListFilter('SNACK')}>
                         <div style={{
                             display: 'inline-flex',
                             borderBottom: '4px',
                             borderBottomStyle: 'solid',
-                            borderColor: 'transparent',
+                            borderColor: foodUI.filter == 'SNACK'? 'red': 'transparent',
                         }}>
                             <div style={{color:'transparent'}}>{'_'}</div>
                             {'宵夜'}

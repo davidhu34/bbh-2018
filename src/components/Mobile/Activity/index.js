@@ -209,25 +209,28 @@ class Activity extends Component {
                         activityDataList={activityDataList.slice(middle)}
                     />
 
-                    <Grid textAlign={'center'}
-                        verticalAlign={'middle'}
-                        style={{
-                            margin: 'auto'
-                        }}
-                    >
-                        <Grid.Row style={{
-                            borderTop: '1px',
-                            borderTopStyle: 'solid',
-                            borderTopColor: 'lightgray',
-                        }}>
-                            <Grid.Column onClick={ (e) => {
-                                const time = (new Date()).getTime()
-                                this.editActivity(time.toString())
+                    { filter == 'MINE'
+                        ?<Grid textAlign={'center'}
+                            verticalAlign={'middle'}
+                            style={{
+                                margin: 'auto'
+                            }}
+                        >
+                            <Grid.Row style={{
+                                borderTop: '1px',
+                                borderTopStyle: 'solid',
+                                borderTopColor: 'lightgray',
                             }}>
-                                <Icon size="large" name="add" />
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
+                                <Grid.Column onClick={ (e) => {
+                                    const time = (new Date()).getTime()
+                                    this.editActivity(time.toString())
+                                }}>
+                                    <Icon size="large" name="add" />
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                        : null
+                    }
 
                 </React.Fragment>
             }

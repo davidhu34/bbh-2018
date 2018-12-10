@@ -2,7 +2,7 @@ import { put, take, takeEvery, takeLatest, all, call,  select } from 'redux-saga
 import { delay } from 'redux-saga'
 import { push } from 'connected-react-router'
 
-import { getDateId } from '../utils'
+import { getDateId, filterOfDate } from '../utils'
 
 import {
     launchModal,
@@ -98,7 +98,7 @@ function* foodPhotoSubmit(action) {
     const time = date.getTime()
     const { desc, calories, count } = action
 
-    const filter = 'BREAKFAST'
+    const filter = filterOfDate(date)
     const newFood = {
         id: time.toString(),
         time: time,
@@ -110,16 +110,22 @@ function* foodPhotoSubmit(action) {
     yield put({type: 'FOOD_PHOTO_SUBMIT_END', food: newFood })
 
     // const filter = yield select(state => state.foodUI.filter)
-    yield put({ type:'FOOD_TIME_CHAGNE', date, filter })
+    // yield call(foodTimeChange, { date, filter })
 
-    yield put(push('/food'))
-    yield put(foodView(newFood.id))
-    yield put(closeLoader())
+    // yield put(push('/food'))
+    // yield put(foodView(newFood.id))
+    // yield put(closeLoader())
+
+    yield put({
+        type: 'PUSH_ROUTE',
+        route: '/food',
+        food: newFood,
+    })
 }
 
 const getFoodDateList = (state, dateId) => state.foodData.dateList[dateId] || []
 
-function* foodTimeChange(action) {
+export function* foodTimeChange(action) {
     yield put({type: 'FOOD_TIME_CHANGE_START'})
     yield put(launchLoader())
 
@@ -143,6 +149,7 @@ function* foodTimeChange(action) {
         dateId,
         hasNextDay: nextDayList.length,
         hasPrevDay: prevDayList.length,
+        filter,
         list: filteredList
     })
 

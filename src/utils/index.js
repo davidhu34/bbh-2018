@@ -5,3 +5,13 @@ export const getDateId = (date) => {
             + date.getDate().toString().padStart(2,'0')
     } else return ''
 }
+
+export const filterOfDate = (date) => {
+    if (date && date.getTime()) {
+        const hour = date.getHours()
+        return hour >= 5 && hour < 11? 'BREAKFAST'
+            : hour >= 11 && hour < 16? 'LUNCH'
+            : hour >= 16 && hour < 23? 'DINNER'
+            : 'SNACK';
+    } else return '';
+}

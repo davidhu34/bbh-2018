@@ -97,12 +97,12 @@ const foodUIInit = {
     viewing: null,
     viewingMode: null,
     loading: false,
-    filter: 'LUNCH',
+    filter: '',
     dateTime: day0.getTime(),
     dateId: day0Id,
-    hasNextDay: true,
-    hasPrevDay: true,
-    list: ['3'],
+    hasNextDay: false,
+    hasPrevDay: false,
+    list: [],
     form: foodFormInit
 }
 
@@ -180,6 +180,7 @@ export const foodUI = (state = foodUIInit, action) => {
                 dateId: action.dateId,
                 hasNextDay: action.hasNextDay,
                 hasPrevDay: action.hasPrevDay,
+                filter: action.filter,
                 list: action.list,
             }
         case 'FOOD_PHOTO_SUBMIT_END':
