@@ -96,14 +96,14 @@ function* activityEditSubmit(action) {
     const form = action.form
     const { DESC, TIME, MAX } = form
     const DATE = new Date(TIME)
+    const isNew = activity.id? false: true
 
     let newActivity = null
-
     if (!DESC) {
         yield put(launchFormError('請輸入說明~'))
     } else if (DESC.length > 10) {
         yield put(launchFormError('說明不要超過10個字拜託'))
-    } else if (!DATE || isNaN(TIME.getTime())) {
+    } else if (!DATE || isNaN(DATE.getTime())) {
         yield put(launchFormError('日期要輸入好~'))
     } else if (!MAX || isNaN(MAX)) {
         yield put(launchFormError('要輸入人數上限(數字)'))
@@ -111,13 +111,12 @@ function* activityEditSubmit(action) {
         yield put(launchFormError('確定一百個人揪的到嗎@@'))
     } else {
         const time = (new Date()).getTime()
-        const isNew = activity.id? false: true
         newActivity = {
             ...activity,
             id: activity.id || time.toString(),
             participating: activity.participating || '1',
             participation: activity.participation || '3',
-            time: (new Date(form.TIME)).getTime(),
+            time: DATE.getTime(),
             desc: form.DESC,
             max: form.MAX,
         }
@@ -125,39 +124,42 @@ function* activityEditSubmit(action) {
 
     yield delay(1)
 
-    yield put({type: 'ACTIVITY_EDIT_SUBMIT_END', activity: newActivity })
-    if (isNew) {
+    yield put({ type: 'ACTIVITY_EDIT_SUBMIT_END', activity: newActivity })
 
-        let previewIndex = 0
-        const newSchedule = yield select( ({ activityData }) => {
-            let list = []
-            let inserted = false
-            activityData.schedule.map( (id, order) => {
-                const a = activityData.data[id]
-                if (a.time > newActivity.time) {
+    if (newActivity) {
+        if (isNew) {
+            let previewIndex = 0
+            const newSchedule = yield select( ({ activityData }) => {
+                let list = []
+                let inserted = false
+                activityData.schedule.map( (id, order) => {
+                    const a = activityData.data[id]
+                    if (a.time > newActivity.time) {
+                        list.push(newActivity.id)
+                        previewIndex = order
+                        inserted = true
+                    }
+                    list.push(id)
+                })
+
+                if (!inserted) {
                     list.push(newActivity.id)
-                    previewIndex = order
-                    inserted = true
+                    previewIndex = list.length -1
                 }
-                list.push(id)
+                return list
             })
-
-            if (!inserted) {
-                list.push(newActivity.id)
-                previewIndex = list.length -1
-            }
-            return list
-        })
-        yield put({
-            type: 'ACTIVITY_UPDATE_SCHEDULE',
-            index: previewIndex,
-            schedule: newSchedule
-        })
+            yield put({
+                type: 'ACTIVITY_UPDATE_SCHEDULE',
+                index: previewIndex,
+                schedule: newSchedule
+            })
+        }
+        yield put({ type: 'ACTIVITY_LIST_FILTER', filter: 'MINE' })
     }
 
-    yield put({type: 'ACTIVITY_LIST_FILTER', filter: 'MINE' })
     yield put(closeLoader())
 }
+
 
 function* activityEdit(action) {
     yield put({type: 'ACTIVITY_EDIT_END' })
