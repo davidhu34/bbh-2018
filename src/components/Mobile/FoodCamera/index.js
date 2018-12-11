@@ -7,8 +7,10 @@ import FoodList from './FoodList'
 import { cameraSnapshot, foodPhotoSubmit } from '../../../actions'
 
 class FoodCamera extends Component {
+    state = {}
     render () {
         const { foodCameraUI, selectFood } = this.props
+        const {log} = this.state
         const insightDataList = foodCameraUI.insights
 
         return <div style={{
@@ -18,7 +20,7 @@ class FoodCamera extends Component {
             overflowX: 'hidden',
             margin: 0
         }}>
-            <Camera
+            <Camera log={ (log) => this.setState({ log }) }
                 width={window.innerWidth}
                 height={window.innerWidth}
                 displaySnapshot={this.props.cameraSnapshot}
@@ -29,7 +31,9 @@ class FoodCamera extends Component {
                 }}
                     foodDataList={insightDataList}
                     selectFood={ (food) => selectFood(food) }
+
                 />
+                {log || 'none'}
             </React.Fragment>
 
 

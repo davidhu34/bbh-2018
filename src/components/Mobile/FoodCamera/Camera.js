@@ -164,8 +164,8 @@ class Camera extends Component {
                 const { width, height, displaySnapshot } = this.props
 
                 const cameraSettings = this.getCameraSettings()
-                const camHeight = cameraSettings.height
-                const camWidth = cameraSettings.width
+                const camHeight = cameraSettings.height || height
+                const camWidth = cameraSettings.width || width
 
                 const widthOffset = (camWidth - width) / 2
                 const heightOffset = (camHeight - height) / 2
@@ -200,8 +200,8 @@ class Camera extends Component {
 
                     const { width, height, displaySnapshot } = this.props
                     const cameraSettings = this.getCameraSettings()
-                    const camHeight = cameraSettings.height
-                    const camWidth = cameraSettings.width
+                    const camHeight = cameraSettings.height || width
+                    const camWidth = cameraSettings.width || height
 
                     const widthOffset = (camWidth - width) / 2
                     const heightOffset = (camHeight - height) / 2
@@ -215,6 +215,7 @@ class Camera extends Component {
                         x2: 100*data + 100 - widthOffset,
                         y2: 100*data + random/10 - heightOffset,
                     }))
+                    this.props.log(width + ' '+ height + ' '+ camHeight + ' '+camWidth+ ' '+ cameraSettings.aspectRatio)
                     this.setState({
                         insightsTime: time,
                         insights: insights
@@ -226,18 +227,32 @@ class Camera extends Component {
         })
     }
     render () {
+        const { width, height, log } = this.props
         const { front, active, snapshotURI, insights } = this.state
+
         const cameraSettings = this.getCameraSettings()
-        const {
-            aspectRatio,
-            frameRate,
-        } = cameraSettings
+        const aspectRatio = cameraSettings.aspectRatio || 1
+        const camWidth = cameraSettings.width || width
+        const camHeight = cameraSettings.height  || height
 
-        const camHeight = cameraSettings.height
-        const camWidth = cameraSettings.width
-
-        const { width, height } = this.props
+        if (active && !cameraSettings.aspectRatio) {
+            this.setState({active: false})
+            this.haltInsights()
+            this.startCamera(front)
+        }
         console.log(width, camWidth, height, camHeight, aspectRatio, (width - (height*aspectRatio))/2)
+
+        const framePrefixTop = aspectRatio? (
+            aspectRatio > 1
+                ? 0
+                : ((height - (width/aspectRatio))/2)
+        ) : 0
+        const framePrefixLeft = aspectRatio? (
+            aspectRatio > 1
+                ? (width - (height*aspectRatio))/2
+                : 0
+        ) : 0
+
         return <div style={{
             position: 'absolute',
             width: '100%',
@@ -266,8 +281,8 @@ class Camera extends Component {
             { snapshotURI
                 ? <div style={{
                     position: 'relative',
-                    top: aspectRatio > 1? 0 : ((height - (width/aspectRatio))/2),
-                    left: aspectRatio > 1? (width - (height*aspectRatio))/2 : 0,
+                    top: framePrefixTop,
+                    left: framePrefixLeft,
                 }}>
                     <ImageContainer standalone
                         width={aspectRatio > 1? (height*aspectRatio) : height}
