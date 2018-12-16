@@ -2,10 +2,31 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Grid, Icon } from 'semantic-ui-react'
 
-import { pushRoute } from '../../../actions'
+import { pushRoute, unavailable } from '../../../actions'
 
+const items = [{
+    icon: 'home',
+    route: '/',
+    feature: '首頁',
+},{
+    icon: 'food',
+    route: '/food',
+    feature: '飲食熱量紀錄',
+},{
+    icon: 'camera',
+    route: '/camera',
+    feature: '食物相機',
+},{
+    icon: 'bicycle',
+    route: null,
+    feature: '運動熱量消耗紀錄',
+},{
+    icon: 'group',
+    route: '/activity',
+    feature: '運動活動揪團',
+},]
 const Footer = ({
-    pushRoute
+    route, pushRoute, unavailablePopup
 }) => (
     <div style={{
         position: 'fixed',
@@ -23,29 +44,26 @@ const Footer = ({
             textAlign={'center'}
             verticalAlign={'middle'}>
             <Grid.Row>
-                <Grid.Column onClick={() => pushRoute('/')}>
-                    <Icon color={null} size="large" name="home" />
-                </Grid.Column>
-                <Grid.Column onClick={() => pushRoute('/food')}>
-                    <Icon size="large" name="food" />
-                </Grid.Column>
-                <Grid.Column onClick={() => pushRoute('/camera')}>
-                    <Icon size="large" name="camera" />
-                </Grid.Column>
-                <Grid.Column onClick={() => pushRoute('/activity')}>
-                    <Icon size="large" name="bicycle" />
-                </Grid.Column>
-                <Grid.Column onClick={() => pushRoute('/')}>
-                    <Icon size="large" name="group" />
-                </Grid.Column>
+                {items.map( item => {
+                    const isOnRoute = route.path == item.route
+                    const onClick = item.route
+                        ? () => pushRoute(item.route)
+                        : () => unavailablePopup(item.feature)
+                    return <Grid.Column key={item.feature} onClick={onClick}>
+                        <Icon color={isOnRoute? 'teal': null}
+                            size={isOnRoute? 'big': 'large'}
+                            name={item.icon} />
+                    </Grid.Column>
+                })}
             </Grid.Row>
         </Grid>
     </div>
 )
 
 export default connect(
-	state => ({}),
+	({ route }) => ({ route }),
     dispatch => ({
-        pushRoute: (route) => dispatch(pushRoute(route))
+        pushRoute: (route) => dispatch(pushRoute(route)),
+        unavailablePopup: (feature) => dispatch(unavailable(feature)),
     })
 )(Footer)

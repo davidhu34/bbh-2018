@@ -16,7 +16,11 @@ import FoodDetail from './FoodDetail'
 import { getCaloriesGained } from '../../../reducers/food'
 import { getDateId } from '../../../utils'
 
-import { foodListFilter, foodEdit, foodView, foodTimeChange } from '../../../actions'
+import {
+    foodListFilter, foodEdit, foodView, foodTimeChange,
+    pushRoute,
+    unavailable
+} from '../../../actions'
 
 
 class Food extends Component {
@@ -35,6 +39,8 @@ class Food extends Component {
             foodData,
             foodUI,
             foodDateChange,
+            takePhoto,
+            unavailablePopup
         } = this.props
 
 
@@ -107,13 +113,13 @@ class Food extends Component {
                     borderTopColor: 'lightgray',
                 }}>
                     <Grid.Column>
-                        <Icon size="large" name="list alternate" />
+                        <Icon size="large" color="pink" name="list alternate" />
                     </Grid.Column>
                     <Grid.Column>
-                        <Icon size="large" name="camera" />
+                        <Icon onClick={ () => takePhoto() } size="large" name="camera" />
                     </Grid.Column>
                     <Grid.Column>
-                        <Icon size="large" name="search"  />
+                        <Icon onClick={ () => unavailablePopup('搜尋餐廳') } size="large" name="search"  />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -136,7 +142,7 @@ class Food extends Component {
                             display: 'inline-flex',
                             borderBottom: '4px',
                             borderBottomStyle: 'solid',
-                            borderColor: foodUI.filter == 'BREAKFAST'? 'red': 'transparent',
+                            borderColor: foodUI.filter == 'BREAKFAST'? 'pink': 'transparent',
                         }}>
                             <div style={{color:'transparent'}}>{'_'}</div>
                             {'早餐'}
@@ -148,7 +154,7 @@ class Food extends Component {
                             display: 'inline-flex',
                             borderBottom: '4px',
                             borderBottomStyle: 'solid',
-                            borderColor: foodUI.filter == 'LUNCH'? 'red': 'transparent',
+                            borderColor: foodUI.filter == 'LUNCH'? 'pink': 'transparent',
                         }}>
                             <div style={{color:'transparent'}}>{'_'}</div>
                             {'午餐'}
@@ -160,7 +166,7 @@ class Food extends Component {
                             display: 'inline-flex',
                             borderBottom: '4px',
                             borderBottomStyle: 'solid',
-                            borderColor: foodUI.filter == 'DINNER'? 'red': 'transparent',
+                            borderColor: foodUI.filter == 'DINNER'? 'pink': 'transparent',
                         }}>
                             <div style={{color:'transparent'}}>{'_'}</div>
                             {'晚餐'}
@@ -172,7 +178,7 @@ class Food extends Component {
                             display: 'inline-flex',
                             borderBottom: '4px',
                             borderBottomStyle: 'solid',
-                            borderColor: foodUI.filter == 'SNACK'? 'red': 'transparent',
+                            borderColor: foodUI.filter == 'SNACK'? 'pink': 'transparent',
                         }}>
                             <div style={{color:'transparent'}}>{'_'}</div>
                             {'宵夜'}
@@ -221,7 +227,7 @@ class Food extends Component {
                                 const time = (new Date()).getTime()
                                 this.editFood(time.toString())
                             }}>
-                                <Icon size="large" name="add" />
+                                <Icon inverted size="large" color="blue" name="add circle" />
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
@@ -229,7 +235,7 @@ class Food extends Component {
                 </React.Fragment>
             }
 
-            <div style={{ height: '500px', display:'block' }} />
+            <div style={{ height: '4rem', display:'block' }} />
 
         </div>
     }
@@ -247,5 +253,7 @@ export default connect(
         foodListFilter: (filter) => dispatch(foodListFilter(filter)),
         foodEdit: (foodId) => dispatch(foodEdit(foodId)),
         foodView: (foodId) => dispatch(foodView(foodId)),
+        takePhoto: (route) => dispatch(pushRoute('/camera')),
+        unavailablePopup: (feature) => dispatch(unavailable(feature))
     })
 )(Food)

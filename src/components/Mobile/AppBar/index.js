@@ -17,7 +17,7 @@ const AppBar = () => <div style={{
                 <Icon inverted size="large" name="bars" />
             </Grid.Column>
             <Grid.Column width={12}>
-                <Header inverted as='h3'>Calorima</Header>
+                <Header inverted as='h3'>卡路里長伯</Header>
             </Grid.Column>
             <Grid.Column width={2}>
                 <Icon.Group size='large'>

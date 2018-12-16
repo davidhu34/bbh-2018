@@ -25,18 +25,20 @@ const foodDataInit = () => {
             '1': {
                 id: '1',
                 time: 1538406978195,
-                desc: 'KFC',
+                desc: '六塊炸雞桶',
                 category: 'LUNCH',
                 tags: [],
-                calories: '500',
+                calories: '2000',
+                count: '六塊'
             },
             '2': {
                 id: '2',
                 time: 1538406998195,
-                desc: '7-11',
+                desc: '便利商店飯糰',
                 category: 'LUNCH',
                 tags: [],
-                calories: '5000',
+                calories: '500',
+                count: '一個'
             },
             '3': {
                 id: '3',
@@ -44,7 +46,8 @@ const foodDataInit = () => {
                 desc: '牛排',
                 category: 'DINNER',
                 tags: [],
-                calories: '8000',
+                calories: '3000',
+                count: '12oz'
             },
         }
     }

@@ -55,10 +55,14 @@ function* foodEditSubmit(action) {
         yield put(launchFormError('卡路里要輸入數字~'))
     } else if (CALORIES.toString().length > 5) {
         yield put(launchFormError('卡路里超過五位數了'))
-    } else if (!COUNT || isNaN(COUNT)) {
-        yield put(launchFormError('要輸入份量數量'))
-    } else if (COUNT.toString().length > 2) {
-        yield put(launchFormError('哪有吃到一百份的'))
+    } else if (!COUNT) {
+        yield put(launchFormError('請輸入份量~'))
+    } else if (COUNT.length > 10) {
+        yield put(launchFormError('份量不要超過10個字拜託'))
+    // } else if (!COUNT || isNaN(COUNT)) {
+    //     yield put(launchFormError('要輸入份量數量'))
+    // } else if (COUNT.toString().length > 2) {
+    //     yield put(launchFormError('哪有吃到一百份的'))
     } else {
         const time = (new Date()).getTime()
         newFood = {

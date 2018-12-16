@@ -36,6 +36,7 @@ app.set( 'port', port )
 
 
 const server = http.createServer( app )
+console.log('server started on port',port)
 // const io = new socketio(server)
 // const models = mongo( MONGOURI )
 // app.use( '/', api(io, models ) )

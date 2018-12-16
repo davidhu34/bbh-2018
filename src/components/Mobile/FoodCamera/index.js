@@ -33,7 +33,6 @@ class FoodCamera extends Component {
                     selectFood={ (food) => selectFood(food) }
 
                 />
-                {log || 'none'}
             </React.Fragment>
 
 

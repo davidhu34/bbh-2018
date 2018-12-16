@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import CircularProgressbar from 'react-circular-progressbar'
 
-import { Grid, Icon, Header } from 'semantic-ui-react'
+import { Grid, Icon, Header, Statistic } from 'semantic-ui-react'
 
 import ActivityDetail from './ActivityDetail'
 import ActivityInputArea from './ActivityInputArea'
@@ -36,6 +36,7 @@ class Activity extends Component {
             activityListSort,
             activityData,
             activityUI,
+            users,
         } = this.props
 
 
@@ -52,12 +53,18 @@ class Activity extends Component {
         const viewingIndex = list.indexOf(viewing)
         const middle = viewingIndex < 0? list.length: viewingIndex + 1
         const activityDataList = list.map( id => activityData.data[id] )
+            .map( a => ({
+                ...a,
+                participantsData: a.participants.map( p => users[p] )
+            }))
 
         const previewSchedule = activityData.schedule[previewScheduleIndex] || ''
         const previewActivity = activityData.data[previewSchedule]
 
         const previewActivityDesc = previewActivity.desc || '目前無活動'
-        const previewActivityDate = (new Date(previewActivity.time)).toLocaleDateString() || ''
+        const previewActivityDate = new Date(previewActivity.time)
+        const due = Math.round((previewActivityDate.getTime() - (new Date()).getTime()) /86400000)
+        const previewActivityDateStr = (previewActivityDate).toLocaleDateString() || ''
 
         console.log('VIEWING',viewing)
 
@@ -70,9 +77,6 @@ class Activity extends Component {
         }}>
             <Header as="h3" textAlign='center' color="teal">
                 {}
-            </Header>
-            <Header as="h2" textAlign='center' color="teal">
-                {'Luke Skywalker\'s'}
             </Header>
 
             <Grid padded
@@ -89,9 +93,11 @@ class Activity extends Component {
                         }
                     </Grid.Column>
                     <Grid.Column width={8}>
-                        { previewActivityDate }
-                        <br />
-                        { previewActivityDesc }
+                        <Statistic size='mini' color={'teal'}>
+                            <Statistic.Value>{ due + '天後' }</Statistic.Value>
+                            <Statistic.Label>{ previewActivityDesc }</Statistic.Label>
+                            <Statistic.Label>{ previewActivityDateStr }</Statistic.Label>
+                        </Statistic>
                     </Grid.Column>
                     <Grid.Column width={4}
                         style={{
@@ -118,15 +124,15 @@ class Activity extends Component {
                 }}>
                     <Grid.Column onClick={ (e) => activityListFilter('ALL')}>
                         <Icon size="large" name="calendar alternate"
-                            color={ filter == 'ALL'? 'red': ''}  />
+                            color={ filter == 'ALL'? 'pink': ''}  />
                     </Grid.Column>
                     <Grid.Column onClick={ (e) => activityListFilter('MINE')}>
                         <Icon size="large" name="add circle"
-                            color={ filter == 'MINE'? 'red': ''}  />
+                            color={ filter == 'MINE'? 'pink': ''}  />
                     </Grid.Column>
                     <Grid.Column onClick={ (e) => activityListFilter('LIKED')}>
                         <Icon size="large" name="heart"
-                            color={ filter == 'LIKED'? 'red': ''} />
+                            color={ filter == 'LIKED'? 'pink': ''} />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -149,7 +155,7 @@ class Activity extends Component {
                             display: 'inline-flex',
                             borderBottom: '4px',
                             borderBottomStyle: 'solid',
-                            borderColor: sorting == 'TIME'? 'red': 'transparent',
+                            borderColor: sorting == 'TIME'? 'pink': 'transparent',
                         }}>
                             <div style={{color:'transparent'}}>{'_'}</div>
                             {'日期'}
@@ -161,7 +167,7 @@ class Activity extends Component {
                             display: 'inline-flex',
                             borderBottom: '4px',
                             borderBottomStyle: 'solid',
-                            borderColor: sorting == 'DISTANCE'? 'red': 'transparent',
+                            borderColor: sorting == 'DISTANCE'? 'pink': 'transparent',
                         }}>
                             <div style={{color:'transparent'}}>{'_'}</div>
                             {'距離'}
@@ -173,7 +179,7 @@ class Activity extends Component {
                             display: 'inline-flex',
                             borderBottom: '4px',
                             borderBottomStyle: 'solid',
-                            borderColor: sorting == 'PARTICIPATION'? 'red': 'transparent',
+                            borderColor: sorting == 'PARTICIPATION'? 'pink': 'transparent',
                         }}>
                             <div style={{color:'transparent'}}>{'_'}</div>
                             {'參與'}
@@ -225,7 +231,7 @@ class Activity extends Component {
                                     const time = (new Date()).getTime()
                                     this.editActivity(time.toString())
                                 }}>
-                                    <Icon size="large" name="add" />
+                                    <Icon inverted size="large" color="blue" name="add circle" />
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
@@ -235,15 +241,15 @@ class Activity extends Component {
                 </React.Fragment>
             }
 
-            <div style={{ height: '500px', display:'block' }} />
+            <div style={{ height: '4rem', display:'block' }} />
 
         </div>
     }
 }
 
 export default connect(
-    ({ activityData, activityUI }) => ({
-        activityData, activityUI
+    ({ activityData, activityUI, profile }) => ({
+        activityData, activityUI, users: profile.users
     }),
     dispatch => ({
         changePreviewSchedule: (index) => dispatch(activityPreviewSchedule(index)),

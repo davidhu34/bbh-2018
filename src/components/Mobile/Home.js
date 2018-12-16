@@ -86,7 +86,7 @@ class Home extends Component {
                         <HomeStatistic tiny
                             title={'基礎代謝'}
                             value={user.diabolism || '-'}
-                            unit={'kal'} />
+                            unit={'cal'} />
                     </Grid.Column>
                     <Grid.Column>
                         <HomeStatistic tiny
@@ -98,7 +98,7 @@ class Home extends Component {
             </Grid>
 
 
-            <div style={{height: '500px', display:'block'}}>
+            <div style={{height: '4rem', display:'block'}}>
             </div>
 
         </div>

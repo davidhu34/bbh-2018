@@ -18,19 +18,19 @@ const FoodList = ({ foodDataList, selectFood }) => (
                 backgroundColor: 'ghostwhite'
             }}>
                 <Grid.Column width={1}>
-                    <Icon size="mini" name="circle" />
+                    <Icon size="small" name="circle" />
                 </Grid.Column>
                 <Grid.Column textAlign={'left'} width={6}>
-                    {food.desc}
+                    <b>{food.desc}</b>
                 </Grid.Column>
                 <Grid.Column textAlign={'right'} width={3}>
-                    {food.calories}
+                    {food.count}
                 </Grid.Column>
-                <Grid.Column width={3}>
-                    cal
+                <Grid.Column textAlign={'right'} width={3}>
+                    {food.calories+'cal'}
                 </Grid.Column>
                 <Grid.Column textAlign={'left'} width={2} onClick={ (e) => selectFood(food) }>
-                    <Icon size="mini" name="add circle" />
+                    <Icon size="small" color="blue" inverted name="add circle" />
                 </Grid.Column>
             </Grid.Row>})
         }

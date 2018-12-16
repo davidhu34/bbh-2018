@@ -1,8 +1,10 @@
 {
   "name": "imageServer",
   "version": "0.0.0",
+  "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "lint": "eslint src"
   },
   "dependencies": {

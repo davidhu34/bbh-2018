@@ -17,8 +17,9 @@ const sortActivityList = (dataList, sorting) => {
             case 'TIME':
                 return a.time - b.time
             case 'PARTICIPATION':
-                return a.participation - b.participation
+                return b.participation - a.participation
             case 'DISTANCE':
+                return a.distance - b.distance
             default:
                 return 0
         }
@@ -111,14 +112,21 @@ function* activityEditSubmit(action) {
         yield put(launchFormError('確定一百個人揪的到嗎@@'))
     } else {
         const time = (new Date()).getTime()
+        const user = yield select( state => state.profile.user || {})
         newActivity = {
             ...activity,
             id: activity.id || time.toString(),
             participating: activity.participating || '1',
+            participants: ['lukeskywalker'],
             participation: activity.participation || '3',
             time: DATE.getTime(),
             desc: form.DESC,
             max: form.MAX,
+            owner: 'lukeskywalker',
+            ownerName: user.firstName + ' ' + user.lastName,
+            location: 'cfc',
+            locationName: 'CFC',
+            distance: 0,
         }
     }
 
@@ -127,9 +135,9 @@ function* activityEditSubmit(action) {
     yield put({ type: 'ACTIVITY_EDIT_SUBMIT_END', activity: newActivity })
 
     if (newActivity) {
-        if (isNew) {
-            let previewIndex = 0
-            const newSchedule = yield select( ({ activityData }) => {
+        let previewIndex = 0
+        const newSchedule = isNew
+            ? yield select( ({ activityData }) => {
                 let list = []
                 let inserted = false
                 activityData.schedule.map( (id, order) => {
@@ -148,12 +156,21 @@ function* activityEditSubmit(action) {
                 }
                 return list
             })
-            yield put({
-                type: 'ACTIVITY_UPDATE_SCHEDULE',
-                index: previewIndex,
-                schedule: newSchedule
+            : yield select( ({ activityData }) => {
+                let list = activityData.schedule
+                console.log(list,list.sort( (a,b) => activityData.data[a].time - activityData.data[b].time ))
+                list.sort( (a,b) => activityData.data[a].time - activityData.data[b].time )
+                    .map( (id, order) => {
+                        const a = activityData.data[id]
+                        if (id == newActivity.id) previewIndex = order
+                    })
+                return list
             })
-        }
+        yield put({
+            type: 'ACTIVITY_UPDATE_SCHEDULE',
+            index: previewIndex,
+            schedule: newSchedule
+        })
         yield put({ type: 'ACTIVITY_LIST_FILTER', filter: 'MINE' })
     }
 

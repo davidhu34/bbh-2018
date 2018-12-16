@@ -12,7 +12,8 @@ const ActivityList = ({
             margin: 'auto'
         }}>
         {   activityDataList.map( (activity,i) => {
-                const { participation } = activity
+                const { participation, participating, max, locationName } = activity
+                const avail = Number(participating) < Number(max)
                 const isOwner = participation == 3
                 const date = new Date(activity.time)
                 const dateStr = (date.getMonth()+1).toString()
@@ -25,7 +26,7 @@ const ActivityList = ({
                     backgroundColor: 'ghostwhite'
                 }}>
                     <Grid.Column width={1} onClick={ e => {
-                        switch (activity.participation) {
+                        if (avail) switch (activity.participation) {
                             case '3':
                                 editActivity(activity.id);
                                 break;
@@ -38,25 +39,31 @@ const ActivityList = ({
                                 break;
                         }
                     }}>
-                        <Icon size="mini" name={
-                            participation == 3? 'pencil'
-                            : participation == 2? 'check circle'
-                            : participation == 1? 'heart'
-                            : participation == 0? 'add circle'
-                            : 'circle'
-                        }/>
+                        { avail? <Icon size="small"
+                            disabled={participation == 0}
+                            color={
+                                participation == 3? 'teal': 'pink'
+                            } name={
+                                participation == 3? 'pencil'
+                                : participation == 2? 'check circle'
+                                : participation == 1? 'heart'
+                                : participation == 0? 'add circle'
+                                : 'circle'
+                            }/>
+                            : '滿'
+                        }
                     </Grid.Column>
-                    <Grid.Column textAlign={'left'} width={5}>
-                        {activity.desc}
+                    <Grid.Column textAlign={'left'} width={6}>
+                        <b>{activity.desc}</b>
                     </Grid.Column>
-                    <Grid.Column textAlign={'right'} width={3}>
+                    <Grid.Column textAlign={'right'} width={4}>
+                        { locationName }
+                    </Grid.Column>
+                    <Grid.Column textAlign={'right'} width={2}>
                         { dateStr }
                     </Grid.Column>
-                    <Grid.Column width={4}>
-                        { activity.participating + '/' + activity.max + '人' }
-                    </Grid.Column>
                     <Grid.Column textAlign={'left'} width={2} onClick={ e => viewActivity(activity.id) }>
-                    <Icon size="mini" name="caret down" />
+                    <Icon size="small" name="caret down" />
                     </Grid.Column>
                 </Grid.Row>
             })

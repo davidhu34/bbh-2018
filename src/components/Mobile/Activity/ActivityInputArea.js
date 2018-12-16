@@ -77,9 +77,9 @@ class ActivityInputArea extends Component {
             }}>
                 <Grid.Column width={1} />
                 <Grid.Column width={7}>
-                    <Button fluid size="mini" onClick={
-                        e => activityEditSubmit(form)
-                    }>
+                    <Button fluid size="mini"
+                        color={'teal'}
+                        onClick={(e) => activityEditSubmit(form)}>
                         確認
                     </Button>
                 </Grid.Column>

@@ -112,3 +112,8 @@ export const launchFormErrors = (errors) => launchModal({
 })
 
 export const launchFormError = (error) => launchFormErrors([error])
+
+export const unavailable = (feature) => launchModal({
+    modalType: 'UNAVAILABLE_FEATURE',
+    data: { feature }
+})

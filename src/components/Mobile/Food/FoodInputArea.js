@@ -33,7 +33,7 @@ class FoodInputArea extends Component {
                     <Input fluid size="mini"
                         name="DESC"
                         value={form.DESC}
-                        placeholder={'desc...'}
+                        placeholder={'輸入品項...'}
                         onChange={this.handleChange}
                     />
                 </Grid.Column>
@@ -43,17 +43,15 @@ class FoodInputArea extends Component {
                 paddingBottom: 0
             }}>
                 <Grid.Column width={1} />
-                <Grid.Column width={5}>
+                <Grid.Column width={14}>
                     <Input fluid size="mini"
                         name="COUNT"
                         value={form.COUNT}
-                        placeholder={'count'}
+                        placeholder={'輸入份量... i.g. 一碗'}
                         onChange={this.handleChange}
                     />
                 </Grid.Column>
-                <Grid.Column width={5} style={{ margin: 'auto 0'}}>
-                    fdghgfdh
-                </Grid.Column>
+                <Grid.Column width={1} />
             </Grid.Row>
             <Grid.Row style={{
                 paddingBottom: 0
@@ -63,12 +61,14 @@ class FoodInputArea extends Component {
                     <Input fluid size="mini"
                         name="CALORIES"
                         value={form.CALORIES}
-                        placeholder={'cal...'}
+                        placeholder={'熱量'}
                         onChange={this.handleChange}
                     />
                 </Grid.Column>
-                <Grid.Column width={5} style={{ margin: 'auto 0'}}>
-                    sqdfqwe
+                <Grid.Column width={5}
+                    textAlign={'left'}
+                    style={{ margin: 'auto 0'}}>
+                    cal
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row style={{
@@ -76,9 +76,9 @@ class FoodInputArea extends Component {
             }}>
                 <Grid.Column width={1} />
                 <Grid.Column width={7}>
-                    <Button fluid size="mini" onClick={
-                        e => foodEditSubmit(form)
-                    }>
+                    <Button fluid size="mini"
+                        color={'teal'}
+                        onClick={(e) => foodEditSubmit(form)}>
                         確認
                     </Button>
                 </Grid.Column>

@@ -44,8 +44,8 @@ class Camera extends Component {
     collectInsights() {
 
         const dataUri = this.cameraPhoto.getDataUri({ imageType: IMAGE_TYPES.JPG })
-        // this.fetchInsight(dataUri)
-        this.fetchInsightDev(dataUri)
+        this.fetchInsight(dataUri)
+        // this.fetchInsightDev(dataUri)
 
 
     }
@@ -120,8 +120,8 @@ class Camera extends Component {
             this.props.displaySnapshot(this.state.insights)
 
 
-            this.fetchInsightDev(dataUri).then( insights => {
-            // this.fetchInsight(dataUri).then( insights => {
+            // this.fetchInsightDev(dataUri).then( insights => {
+            this.fetchInsight(dataUri).then( insights => {
                 console.log()
             }).catch( error => {
                 console.log(error)
@@ -175,6 +175,7 @@ class Camera extends Component {
                     insights: insights.map( (insight, i) => ({
                         calories: insight.calories,
                         desc: insight.food_name,
+                        count: insight.unit,
                         x1: insight.x1*camWidth - widthOffset,
                         y1: insight.y1*camHeight - heightOffset,
                         x2: insight.x2*camWidth - widthOffset,
@@ -311,7 +312,7 @@ class Camera extends Component {
             <div style={{
                 position: 'absolute',
                 width: '100%',
-                bottom: '-1.5em'
+                bottom: '1em'
             }}>
                 { snapshotURI
                     ? <div>
@@ -320,22 +321,10 @@ class Camera extends Component {
                             onClick={ () => {
                                 this.clearSnapshot()
                             }} />
-                        <Icon color='transparent'/>
-                        <Icon circular size='big' inverted color='teal'
-                            name='upload'
-                            onClick={ () => {
-                                this.stopCamera()
-                            }} />
                     </div>
                     : <div>
                         <Icon circular size='big' inverted color='teal'
-                            name='refresh'
-                            onClick={ () => {
-                                this.switchFrontCamera(!front)
-                            }} />
-                        <Icon color='transparent'/>
-                        <Icon circular size='big' inverted color='teal'
-                            name='camera'
+                            name='circle'
                             onClick={ () => {
                                 this.getSnapshot()
                             }} />

@@ -15,19 +15,19 @@ const FoodList = ({ foodDataList, editFood, viewFood }) => (
                 backgroundColor: 'ghostwhite'
             }}>
                 <Grid.Column width={1} onClick={ e => editFood(food.id) }>
-                    <Icon size="mini" name="pencil" />
+                    <Icon size="small" color="teal" name="pencil" />
                 </Grid.Column>
                 <Grid.Column textAlign={'left'} width={6}>
-                    {food.desc}
+                    <b>{food.desc}</b>
                 </Grid.Column>
                 <Grid.Column textAlign={'right'} width={3}>
-                    {food.calories}
+                    {food.count}
                 </Grid.Column>
-                <Grid.Column width={3}>
-                    cal
+                <Grid.Column textAlign={'right'} width={3}>
+                    {food.calories+'cal'}
                 </Grid.Column>
                 <Grid.Column textAlign={'left'} width={2} onClick={ e => viewFood(food.id) }>
-                    <Icon size="mini" name="caret down" />
+                    <Icon size="small" name="caret down" />
                 </Grid.Column>
             </Grid.Row>)
         }
