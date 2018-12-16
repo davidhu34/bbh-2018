@@ -33,15 +33,14 @@ class ActivityInputArea extends Component {
                     <Input fluid size="mini"
                         name="DESC"
                         value={form.DESC}
-                        placeholder={'desc...'}
+                        placeholder={'輸入團名...'}
                         onChange={this.handleChange}
                     />
                 </Grid.Column>
                 <Grid.Column width={1} />
             </Grid.Row>
-            <Grid.Row style={{
-                paddingBottom: 0
-            }}>
+
+            <Grid.Row style={{ paddingBottom: 0 }}>
                 <Grid.Column width={1} />
                 <Grid.Column width={14}>
                     <Input fluid size="mini"
@@ -52,19 +51,25 @@ class ActivityInputArea extends Component {
                         onChange={this.handleChange}
                     />
                 </Grid.Column>
-                <Grid.Column width={1} style={{ margin: 'auto 0'}}>
-                    fdghgfdh
+            </Grid.Row>
+
+            <Grid.Row style={{ paddingBottom: 0 }}>
+                <Grid.Column width={1} />
+                <Grid.Column width={5}>
+                    <Input fluid disabled size="mini" value={'CFC'} />
+                </Grid.Column>
+                <Grid.Column width={5} style={{ margin: 'auto 0'}}>
+                    <Icon name="map marker alternate" />
                 </Grid.Column>
             </Grid.Row>
-            <Grid.Row style={{
-                paddingBottom: 0
-            }}>
+
+            <Grid.Row style={{ paddingBottom: 0 }}>
                 <Grid.Column width={1} />
                 <Grid.Column width={5}>
                     <Input fluid size="mini"
                         name="MAX"
                         value={form.MAX}
-                        placeholder={'max participants...'}
+                        placeholder={'人數上限...'}
                         onChange={this.handleChange}
                     />
                 </Grid.Column>
@@ -72,9 +77,8 @@ class ActivityInputArea extends Component {
                     {'人'}
                 </Grid.Column>
             </Grid.Row>
-            <Grid.Row style={{
-                paddingBottom: 0
-            }}>
+
+            <Grid.Row style={{ paddingBottom: 0 }}>
                 <Grid.Column width={1} />
                 <Grid.Column width={7}>
                     <Button fluid size="mini"
@@ -92,6 +96,7 @@ class ActivityInputArea extends Component {
                 </Grid.Column>
                 <Grid.Column width={1} />
             </Grid.Row>
+
             <Grid.Row />
         </Grid>
         </Form.Group>

@@ -63,7 +63,9 @@ class Activity extends Component {
 
         const previewActivityDesc = previewActivity.desc || '目前無活動'
         const previewActivityDate = new Date(previewActivity.time)
-        const due = Math.round((previewActivityDate.getTime() - (new Date()).getTime()) /86400000)
+        const now = new Date()
+        const today = new Date( now.getFullYear(), now.getMonth(), now.getDate())
+        const due = Math.floor((previewActivityDate.getTime() - (today).getTime()) /86400000)
         const previewActivityDateStr = (previewActivityDate).toLocaleDateString() || ''
 
         console.log('VIEWING',viewing)
@@ -94,7 +96,7 @@ class Activity extends Component {
                     </Grid.Column>
                     <Grid.Column width={8}>
                         <Statistic size='mini' color={'teal'}>
-                            <Statistic.Value>{ due + '天後' }</Statistic.Value>
+                            <Statistic.Value>{ due == 0? '今天': (due + '天後') }</Statistic.Value>
                             <Statistic.Label>{ previewActivityDesc }</Statistic.Label>
                             <Statistic.Label>{ previewActivityDateStr }</Statistic.Label>
                         </Statistic>

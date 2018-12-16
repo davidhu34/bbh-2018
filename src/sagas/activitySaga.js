@@ -136,13 +136,13 @@ function* activityEditSubmit(action) {
 
     if (newActivity) {
         let previewIndex = 0
-        const newSchedule = isNew
-            ? yield select( ({ activityData }) => {
+        const newSchedule = yield select( ({ activityData }) => {
+            if (isNew) {
                 let list = []
                 let inserted = false
                 activityData.schedule.map( (id, order) => {
                     const a = activityData.data[id]
-                    if (a.time > newActivity.time) {
+                    if (!inserted && a.time > newActivity.time) {
                         list.push(newActivity.id)
                         previewIndex = order
                         inserted = true
@@ -155,8 +155,7 @@ function* activityEditSubmit(action) {
                     previewIndex = list.length -1
                 }
                 return list
-            })
-            : yield select( ({ activityData }) => {
+            } else {
                 let list = activityData.schedule
                 console.log(list,list.sort( (a,b) => activityData.data[a].time - activityData.data[b].time ))
                 list.sort( (a,b) => activityData.data[a].time - activityData.data[b].time )
@@ -165,7 +164,8 @@ function* activityEditSubmit(action) {
                         if (id == newActivity.id) previewIndex = order
                     })
                 return list
-            })
+            }
+        })
         yield put({
             type: 'ACTIVITY_UPDATE_SCHEDULE',
             index: previewIndex,
@@ -182,9 +182,12 @@ function* activityEdit(action) {
     yield put({type: 'ACTIVITY_EDIT_END' })
 
     const activity = yield select( state => state.activityData.data[action.editing] || {})
+
+    const DATE = (activity.time? new Date(activity.time): new Date())
+    const dateStr = DATE.getFullYear()+'-'+(DATE.getMonth()+1)+'-'+DATE.getDate()
     yield put(
         activityFormChange({
-            TIME: activity.time || '',
+            TIME: dateStr,
             DESC: activity.desc || '',
             MAX: activity.max || '',
         })

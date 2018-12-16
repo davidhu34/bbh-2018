@@ -17,15 +17,15 @@ const foodDataInit = () => {
     return {
         list: ['1','2','3'],
         dateList: {
-            [day2Id]: ['1','2'],
-            [day1Id]: ['1','2','3'],
-            [day0Id]: ['3'],
+            [day2Id]: ['1','7','8'],
+            [day1Id]: ['3','4','5','6'],
+            [day0Id]: ['2','9'],
         },
         data: {
             '1': {
                 id: '1',
                 time: 1538406978195,
-                desc: '六塊炸雞桶',
+                desc: '炸雞桶',
                 category: 'LUNCH',
                 tags: [],
                 calories: '2000',
@@ -35,7 +35,7 @@ const foodDataInit = () => {
                 id: '2',
                 time: 1538406998195,
                 desc: '便利商店飯糰',
-                category: 'LUNCH',
+                category: 'BREAKFAST',
                 tags: [],
                 calories: '500',
                 count: '一個'
@@ -48,6 +48,60 @@ const foodDataInit = () => {
                 tags: [],
                 calories: '3000',
                 count: '12oz'
+            },
+            '4': {
+                id: '4',
+                time: 1538406988195,
+                desc: '拉麵',
+                category: 'LUNCH',
+                tags: [],
+                calories: '1234',
+                count: '一碗'
+            },
+            '5': {
+                id: '5',
+                time: 1538406988195,
+                desc: '燒餅油條',
+                category: 'SNACK',
+                tags: [],
+                calories: '450',
+                count: '一份'
+            },
+            '6': {
+                id: '6',
+                time: 1538406988195,
+                desc: '豆漿',
+                category: 'SNACK',
+                tags: [],
+                calories: '300',
+                count: '一杯'
+            },
+            '7': {
+                id: '7',
+                time: 1538406988195,
+                desc: '培根蛋餅',
+                category: 'BREAKFAST',
+                tags: [],
+                calories: '400',
+                count: '一份'
+            },
+            '8': {
+                id: '8',
+                time: 1538406988195,
+                desc: '烤肉飯',
+                category: 'DINNER',
+                tags: [],
+                calories: '900',
+                count: '一碗'
+            },
+            '9': {
+                id: '9',
+                time: 1538406988195,
+                desc: '水餃',
+                category: 'LUNCH',
+                tags: [],
+                calories: '800',
+                count: '十顆'
             },
         }
     }

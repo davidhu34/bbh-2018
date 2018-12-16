@@ -14,7 +14,7 @@ const AppBar = () => <div style={{
         verticalAlign={'middle'}>
         <Grid.Row>
             <Grid.Column width={2}>
-                <Icon inverted size="large" name="bars" />
+                <Icon inverted size="large" name="user outline" />
             </Grid.Column>
             <Grid.Column width={12}>
                 <Header inverted as='h3'>卡路里長伯</Header>

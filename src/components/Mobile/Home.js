@@ -37,7 +37,7 @@ class Home extends Component {
                             <HomeStatistic
                                 title={'今日熱量'}
                                 value={ (Number(gained) - Number(burned)).toString() }
-                                unit={'kg'} />
+                                unit={'cal'} />
                         </CircleProgress>
                     </Grid.Column>
                     <Grid.Column width={2} />
@@ -49,7 +49,7 @@ class Home extends Component {
                             <HomeStatistic tiny
                                 title={'攝取'}
                                 value={gained || ''}
-                                unit={'kg'} />
+                                unit={'cal'} />
                         </CircleProgress>
                     </Grid.Column>
                     <Grid.Column width={8}>
@@ -57,7 +57,7 @@ class Home extends Component {
                             <HomeStatistic tiny
                                 title={'消耗'}
                                 value={burned || ''}
-                                unit={'kg'} />
+                                unit={'cal'} />
                         </CircleProgress>
                     </Grid.Column>
                 </Grid.Row>
