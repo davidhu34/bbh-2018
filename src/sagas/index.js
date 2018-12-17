@@ -40,6 +40,8 @@ export function* pushRoute(action) {
         default:
             break;
     }
+
+    yield put({type: 'CAMERA_END'})
     yield put(routeChange(action.route))
     yield put(closeLoader())
 }

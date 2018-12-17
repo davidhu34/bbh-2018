@@ -35,17 +35,17 @@ export const foodFormChange = (change) => ({
     change: change
 })
 
-export const foodPhotoSubmit = ({ desc, calories, count }) => ({
-    type: 'FOOD_PHOTO_SUBMIT', desc, calories, count
+export const foodPhotoSubmit = ({ desc, calories, count, imageSource }) => ({
+    type: 'FOOD_PHOTO_SUBMIT', desc, calories, count, imageSource
 })
 
 export const foodTimeChange = ({ date, filter }) => ({
     type: 'FOOD_TIME_CHAGNE', date, filter
 })
 
-export const cameraSnapshot = (insights) => ({
+export const cameraSnapshot = (insights, uri) => ({
     type: 'CAMERA_SNAPSHOT',
-    insights: insights
+    insights, uri
 })
 
 export const activityListSort = (sorting) => ({

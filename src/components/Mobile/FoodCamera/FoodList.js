@@ -6,7 +6,7 @@ const FoodList = ({ foodDataList, selectFood }) => (
     <Grid textAlign={'center'}
         verticalAlign={'middle'}
         style={{
-            paddingTop: window.innerWidth + 30,
+            paddingTop: window.innerWidth,
             margin: 'auto'
         }}>
         {   foodDataList.map( (food,i) => {

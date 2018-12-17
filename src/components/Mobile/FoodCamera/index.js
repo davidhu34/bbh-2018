@@ -13,6 +13,8 @@ class FoodCamera extends Component {
         const {log} = this.state
         const insightDataList = foodCameraUI.insights
 
+        const snapshotUri = foodCameraUI.uri
+
         return <div style={{
             width: '100%',
             height: '100%',
@@ -30,7 +32,9 @@ class FoodCamera extends Component {
                     paddingTop: window.innerWidth
                 }}
                     foodDataList={insightDataList}
-                    selectFood={ (food) => selectFood(food) }
+                    selectFood={ (food) => selectFood({
+                        ...food, imageSource:snapshotUri
+                    }) }
 
                 />
             </React.Fragment>
@@ -44,7 +48,7 @@ export default connect(
         foodData, foodCameraUI
     }),
     dispatch => ({
-        cameraSnapshot: (insights) => dispatch(cameraSnapshot(insights)),
-        selectFood: food => dispatch(foodPhotoSubmit(food))
+        cameraSnapshot: (insights, uri) => dispatch(cameraSnapshot(insights, uri)),
+        selectFood: (food) => dispatch(foodPhotoSubmit(food))
     })
 )(FoodCamera)

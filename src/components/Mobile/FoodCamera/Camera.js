@@ -117,7 +117,7 @@ class Camera extends Component {
             this.setState({
                 snapshotURI: dataUri
             })
-            this.props.displaySnapshot(this.state.insights)
+            this.props.displaySnapshot(this.state.insights, dataUri)
 
 
             // this.fetchInsightDev(dataUri).then( insights => {
@@ -183,7 +183,7 @@ class Camera extends Component {
                     }))
                 })
 
-                displaySnapshot(this.state.insights)
+                displaySnapshot(this.state.insights, dataUri)
                 return insights
             }).catch( error => {
                 console.log(error)
@@ -191,7 +191,7 @@ class Camera extends Component {
         })
     }
 
-    fetchInsightDev () {
+    fetchInsightDev (dataUri) {
         const time = (new Date()).getTime()
         const random = Number(time.toString().substr(-1))*100
         return new Promise( (resolve, reject) => {
@@ -221,6 +221,7 @@ class Camera extends Component {
                         insightsTime: time,
                         insights: insights
                     })
+                    displaySnapshot(this.state.insights, dataUri)
                     return insights
                 }
 

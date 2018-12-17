@@ -262,7 +262,7 @@ export const foodUI = (state = foodUIInit, action) => {
 }
 
 const foodCameraUIInit = {
-    image: '',
+    uri: '',
     insights: [],
 }
 
@@ -271,19 +271,19 @@ export const foodCameraUI = (state = foodCameraUIInit, action) => {
         case 'CAMERA_SNAPSHOT':
             return {
                 ...state,
-                image: action.image,
+                uri: action.uri,
                 insights: [...action.insights],
             }
         case 'CAMERA_START':
             return {
                 ...state,
-                image: '',
+                uri: '',
                 insights: [],
             }
         case 'CAMERA_END':
             return {
                 ...state,
-                image: '',
+                uri: '',
                 insights: [],
             }
         default:

@@ -100,14 +100,14 @@ function* foodPhotoSubmit(action) {
 
     const date = new Date()
     const time = date.getTime()
-    const { desc, calories, count } = action
+    const { desc, calories, count, imageSource } = action
 
     const filter = filterOfDate(date)
     const newFood = {
         id: time.toString(),
         time: time,
         category: filter,
-        desc, calories, count
+        desc, calories, count, imageSource
     }
 
     yield delay(1000)
