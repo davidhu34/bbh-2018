@@ -269,10 +269,11 @@ const foodCameraUIInit = {
 export const foodCameraUI = (state = foodCameraUIInit, action) => {
     switch (action.type) {
         case 'CAMERA_SNAPSHOT':
+            const newInsights = [...action.insights]
             return {
                 ...state,
-                uri: action.uri,
-                insights: [...action.insights],
+                uri: newInsights.length? action.uri: '',
+                insights: newInsights,
             }
         case 'CAMERA_START':
             return {

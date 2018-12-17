@@ -18,7 +18,7 @@ const items = [{
     feature: '食物相機',
 },{
     icon: 'bicycle',
-    route: null,
+    route: '/exercise',
     feature: '運動熱量消耗紀錄',
 },{
     icon: 'group',

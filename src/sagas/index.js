@@ -10,12 +10,12 @@ import {
     launchLoader,
     closeLoader,
     routeChange,
-
     foodView,
 
 } from '../actions'
 
 import foodSaga, { foodTimeChange } from './foodSaga'
+import exerciseSaga, { exerciseTimeChange } from './exerciseSaga'
 import activitySaga from './activitySaga'
 
 export function* pushRoute(action) {
@@ -36,7 +36,9 @@ export function* pushRoute(action) {
                 yield call(foodTimeChange, { date: now, filter: filterOfDate(now) })
             }
 
-        case '/':
+        case '/exercise':
+            const now = new Date()
+            yield call(exerciseTimeChange, { date: now, filter: 'LIGHT' })
         default:
             break;
     }
@@ -59,6 +61,7 @@ export default function* rootSaga() {
         fork(routeSaga),
         fork(cameraSaga),
         fork(foodSaga),
+        fork(exerciseSaga),
         fork(activitySaga),
     ])
 }

@@ -28,11 +28,6 @@ class Food extends Component {
     editFood = (index) => this.props.foodEdit(index)
     viewFood = (index) => this.props.foodView(index)
 
-    getfoodDataList(start, end) {
-        const { foodData, foodUI } = this.props
-        return foodUI.list.slice(start,end).map( id => foodData.data[id] )
-    }
-
     render () {
         const {
             foodListFilter,
@@ -44,9 +39,9 @@ class Food extends Component {
         } = this.props
 
 
-        const { list, viewing, viewingMode, loading, filter } = foodUI
+        const { list, viewing, viewingMode, loading, filter, dateTime } = foodUI
 
-        const viewingDate = new Date(foodUI.dateTime)
+        const viewingDate = new Date(dateTime)
         const gained = getCaloriesGained(viewingDate,foodData)
 
         const toNextDay = (e) => foodDateChange(viewingDate, 1, filter)

@@ -7,7 +7,7 @@ import Home from './Home'
 import Food from './Food'
 import FoodCamera from './FoodCamera'
 import Activity from './Activity'
-import Temp from './Temp'
+import Exercise from './Exercise'
 import Profile from './Profile'
 import Footer from './Footer'
 import Modal, { ModalLoader } from '../Modal'
@@ -19,6 +19,8 @@ class Mobile extends Component {
         switch(this.props.route.path) {
             case '/activity':
                 return <Activity />
+            case '/exercise':
+                return <Exercise />
             case '/camera':
                 return <FoodCamera />
             case '/food':

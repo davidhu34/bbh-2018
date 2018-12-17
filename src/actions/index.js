@@ -90,6 +90,19 @@ export const activityPreviewSchedule = (index) => ({
     type: 'ACTIVITY_PREVIEW_SCHEDULE', index
 })
 
+export const exerciseTimeChange = ({ date, filter }) => ({
+    type: 'EXERCISE_TIME_CHAGNE', date, filter
+})
+
+export const exerciseListFilter = (filter) => ({
+    type: 'EXERCISE_LIST_FILTER', filter
+})
+
+export const exerciseModeChange = (mode) => ({
+    type: 'EXERCISE_MODE_CHANGE', mode
+})
+
+
 export const launchLoader = () => ({ type: 'LOADER_LAUNCH' })
 
 export const closeLoader = () => ({ type: 'LOADER_CLOSE' })

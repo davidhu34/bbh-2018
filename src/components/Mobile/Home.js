@@ -8,6 +8,7 @@ import CircleProgress from './CircleProgress'
 import HomeStatistic from './HomeStatistic'
 
 import { getCaloriesGained } from '../../reducers/food'
+import { getCaloriesConsumed } from '../../reducers/exercise'
 
 class Home extends Component {
     render () {
@@ -109,7 +110,7 @@ export default connect(
         return {
             user: state.profile.user,
             gained: getCaloriesGained(new Date(), state.foodData),
-            burned: 1200,
+            burned: getCaloriesConsumed(new Date(), state.exerciseData),
         }
     }
 )(Home)

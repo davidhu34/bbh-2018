@@ -24,7 +24,7 @@ const filterFoodList = (dataList, filter) => {
 function* foodListFilter(action) {
 
     const filter = action.filter
-    yield put({type: 'FOOD_LIST_FILTER_START', action})
+    yield put({type: 'FOOD_LIST_FILTER_START', filter})
 
     const dataList = yield select(state => {
         return state.foodData.dateList[state.foodUI.dateId].map( key => state.foodData.data[key] )
