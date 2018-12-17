@@ -8,6 +8,8 @@ import { freshStore } from './configureStore'
 
 import App from './App'
 
+document.addEventListener("touchstart", function(){}, true);
+
 const sagaMiddleware = createSagaMiddleware()
 const history = createHistory()
 const store = freshStore(history, sagaMiddleware)

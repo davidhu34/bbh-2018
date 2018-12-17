@@ -123,6 +123,7 @@ class Activity extends Component {
                     borderTop: '1px',
                     borderTopStyle: 'solid',
                     borderTopColor: 'lightgray',
+                    paddingBottom: 0
                 }}>
                     <Grid.Column onClick={ (e) => activityListFilter('ALL')}>
                         <Icon size="large" name="calendar alternate"
@@ -146,12 +147,15 @@ class Activity extends Component {
                     marginTop: 'auto',
                 }}
             >
-                <Grid.Row style={{
-                    paddingBottom: 0,
-                    borderTop: '1px',
-                    borderTopStyle: 'solid',
-                    borderTopColor: 'lightgray',
-                }}>
+                <Grid.Row>
+                    <b>{
+                        filter == 'ALL'? '所有揪團'
+                        : filter == 'MINE'? '我的揪團'
+                        : filter == 'LIKED'? '關注揪團'
+                        : null
+                    }</b>
+                </Grid.Row>
+                <Grid.Row style={{ paddingTop: 0, paddingBottom: 0 }}>
                     <Grid.Column onClick={ (e) => activityListSort('TIME')}>
                         <div style={{
                             display: 'inline-flex',

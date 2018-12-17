@@ -33,20 +33,20 @@ class Exercise extends Component {
             unavailablePopup
         } = this.props
 
-        const { list, loading, filter, dateTime, mode } = exerciseUI
+        const { list, loading, filter, dateTime, dateId, mode } = exerciseUI
 
 
         const menuDataList = exerciseData.menuCategoryList[filter].map( m => exerciseData.menuData[m])
 
 
-        const viewingDate = new Date(exerciseUI.dateTime)
+        const viewingDate = new Date(dateTime)
         const consumed = getCaloriesConsumed(viewingDate,exerciseData)
 
         const toNextDay = (e) => exerciseDateChange(viewingDate, 1, filter)
         const toPrevDay = (e) => exerciseDateChange(viewingDate, -1, filter)
 
 
-        const exerciseDataList = list.map( id => exerciseData.data[id] )
+        const exerciseDataList = exerciseData.dateList[dateId].map( id => exerciseData.data[id] )
 
         return <div style={{
             width: '100%',
