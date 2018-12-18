@@ -5,7 +5,6 @@ import CircularProgressbar from 'react-circular-progressbar'
 
 import { Grid, Icon, Header } from 'semantic-ui-react'
 
-import ExerciseList from './ExerciseList'
 
 import { getCaloriesConsumed } from '../../../reducers/exercise'
 import { getDateId } from '../../../utils'
@@ -13,12 +12,17 @@ import { getDateId } from '../../../utils'
 import CircleProgress from '../CircleProgress'
 import HomeStatistic from '../HomeStatistic'
 
+import ExerciseList from './ExerciseList'
 import MenuList from './MenuList'
+import MapList from './MapList'
 
 import {
-    exerciseListFilter, exerciseTimeChange, exerciseModeChange,
+    exerciseListFilter,
+    exerciseTimeChange,
+    exerciseModeChange,
+    exerciseMapView,
     pushRoute,
-    unavailable
+    unavailable,
 } from '../../../actions'
 
 class Exercise extends Component {
@@ -30,11 +34,11 @@ class Exercise extends Component {
             exerciseUI,
             exerciseDateChange,
             changeMode,
+            viewMap,
             unavailablePopup
         } = this.props
 
-        const { list, loading, filter, dateTime, dateId, mode } = exerciseUI
-
+        const { list, loading, filter, dateTime, dateId, mode, viewingMap } = exerciseUI
 
         const menuDataList = exerciseData.menuCategoryList[filter].map( m => exerciseData.menuData[m])
 
@@ -47,6 +51,9 @@ class Exercise extends Component {
 
 
         const exerciseDataList = exerciseData.dateList[dateId].map( id => exerciseData.data[id] )
+
+        const mapDataList = exerciseData.mapList.map(m => exerciseData.mapData[m])
+        const viewingMapSource = (exerciseData.mapData[viewingMap] || {}).source || ''
 
         return <div style={{
             width: '100%',
@@ -184,6 +191,11 @@ class Exercise extends Component {
 
             { mode == 'MENU'? <MenuList menuDataList={menuDataList} />
             : mode == 'WORKOUT'? <ExerciseList exerciseDataList={exerciseDataList} />
+            : mode == 'MAPS'? <MapList
+                viewMap={viewMap}
+                viewingMap={viewingMap}
+                viewingMapSource={viewingMapSource}
+                mapDataList={mapDataList} />
             : null
             }
 
@@ -199,6 +211,7 @@ export default connect(
     }),
     dispatch => ({
         changeMode: (mode) => dispatch(exerciseModeChange(mode)),
+        viewMap: (mapId) => dispatch(exerciseMapView(mapId)),
         exerciseDateChange: (date, diff, filter) => {
             const newDate = new Date(date.setDate(date.getDate()+diff))
             dispatch(exerciseTimeChange({ date: newDate, filter: filter }))

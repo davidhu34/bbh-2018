@@ -137,6 +137,30 @@ const exerciseDataInit = () => {
                 calories: '550',
                 count: '30min'
             },
+        },
+        mapList: ['1','2'],
+        mapData: {
+            '1': {
+                id: '1',
+                desc: '象山親山步道',
+                category: '健行',
+                distance: '3.25',
+                source: 'https://i.imgur.com/uorfKZe.png',
+            },
+            '2': {
+                id: '2',
+                desc: '南港小縱走',
+                category: '健行',
+                distance: '1.45',
+                source: 'https://i.imgur.com/hxX50gA.png',
+            },
+            '3': {
+                id: '3',
+                desc: '福州山步道',
+                category: '健行',
+                distance: '1.1',
+                source: '',
+            },
         }
     }
 }
@@ -157,6 +181,7 @@ const exerciseUIInit = {
     hasNextDay: false,
     hasPrevDay: false,
     list: [],
+    viewingMap: '',
 }
 
 export const exerciseUI = (state = exerciseUIInit, action) => {
@@ -196,6 +221,11 @@ export const exerciseUI = (state = exerciseUIInit, action) => {
             return {
                 ...state,
                 mode: action.mode
+            }
+        case 'EXERCISE_MAP_VIEW':
+            return {
+                ...state,
+                viewingMap: action.mapId == state.viewingMap? '': action.mapId
             }
         default:
             return state

@@ -102,6 +102,9 @@ export const exerciseModeChange = (mode) => ({
     type: 'EXERCISE_MODE_CHANGE', mode
 })
 
+export const exerciseMapView = (mapId) => ({
+    type: 'EXERCISE_MAP_VIEW', mapId
+})
 
 export const launchLoader = () => ({ type: 'LOADER_LAUNCH' })
 
