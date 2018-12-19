@@ -5,13 +5,13 @@ import { Modal, Loader, Grid, Button, Icon } from 'semantic-ui-react'
 
 import { closeModal, activityJoinSubmit } from '../../actions'
 
-const ModalComponent = ({ modal, closeModal, activityJoinSubmit }) => {
+const ModalComponent = ({ modal, profile, closeModal, activityJoinSubmit }) => {
     const { open, modalType, data } = modal
 
     switch (modalType) {
         case 'ACTIVITY_JOIN_OPTIONS':
             const activity = data.activity
-            return <Modal open size="small">
+            return <Modal dimmer="inverted" open size="small">
                 <Modal.Header style={{
                     textAlign: 'center',
                     margin: 'auto'
@@ -87,7 +87,7 @@ const ModalComponent = ({ modal, closeModal, activityJoinSubmit }) => {
                 </Modal.Content>
             </Modal>
         case 'FORM_ERROR':
-            return <Modal open>
+            return <Modal dimmer="inverted" open>
                 <Modal.Content>
 
                     <Grid columns={1}>
@@ -106,19 +106,74 @@ const ModalComponent = ({ modal, closeModal, activityJoinSubmit }) => {
 
                 </Modal.Content>
             </Modal>
-        case 'UNAVAILABLE_FEATURE':
-            return <Modal open>
+        case 'NO_NOTICE':
+            return <Modal dimmer="inverted" open>
                 <Modal.Content>
 
                     <Grid columns={1} padded>
                         <Grid.Row>
-                            {'本 Demo 未開放此功能'}
-                            { data.feature? ('：'+data.feature): '' }
+                            {'目前沒有新活動!'}
                         </Grid.Row>
                         <Grid.Row>
                             <Button fluid size="mini" onClick={(e) => closeModal()}>
                                 {'好喔'}
                             </Button>
+                        </Grid.Row>
+                    </Grid>
+
+                </Modal.Content>
+            </Modal>
+        case 'PROFILE':
+            const user = profile.user
+            return <Modal dimmer="inverted" open size="small">
+                <Modal.Header style={{
+                    textAlign: 'center',
+                    margin: 'auto'
+                }}>
+                    { user.firstName +' '+ user.lastName }
+                    <Icon
+                        fitted
+                        name="close"
+                        onClick={(e) => closeModal()}
+                        style={{ float: 'right' }} />
+                </Modal.Header>
+                <Modal.Content>
+                    <Grid padded columns={2}>
+                        <Grid.Row>
+                            <b>
+                                {'身高'}
+                                <Icon size="small"
+                                    rotated={'counterclockwise'}
+                                    name="window minimize outline" />
+                            </b>
+                            {user.height+'cm'}
+                        </Grid.Row>
+                        <Grid.Row>
+                            <b>
+                                {'體重'}
+                                <Icon size="small"
+                                    rotated={'counterclockwise'}
+                                    name="window minimize outline" />
+                            </b>
+                            {user.weight+'kg'}
+                        </Grid.Row>
+                        <Grid.Row>
+                            <b>
+                                {'基礎代謝'}
+                                <Icon size="small"
+                                    rotated={'counterclockwise'}
+                                    name="window minimize outline" />
+                            </b>
+                            {user.diabolism}
+                        </Grid.Row>
+                        <Grid.Row>
+                            <b>
+                                {'目標體重'}
+                                <Icon size="small"
+                                    rotated={'counterclockwise'}
+                                    name="window minimize outline" />
+                            </b>
+                            {user.targetWeight+'kg'}
                         </Grid.Row>
                     </Grid>
 
@@ -130,7 +185,7 @@ const ModalComponent = ({ modal, closeModal, activityJoinSubmit }) => {
 }
 
 export default connect(
-    ({ modal }) => ({ modal }),
+    ({ modal, profile }) => ({ modal, profile }),
     dispatch => ({
         closeModal: () => dispatch(closeModal()),
         activityJoinSubmit: (participation) => dispatch(activityJoinSubmit(participation))

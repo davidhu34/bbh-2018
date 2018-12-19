@@ -25,7 +25,7 @@ class Home extends Component {
                 {}
             </Header>
             <Header as="h2" textAlign='center' color="teal">
-                {'Luke Skywalker\'s'}
+                { user.firstName +' '+ user.lastName + '\'s' }
             </Header>
             <Grid padded
                 textAlign={'center'}

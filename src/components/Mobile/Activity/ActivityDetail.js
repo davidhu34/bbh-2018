@@ -28,7 +28,7 @@ class ActivityDetail extends Component {
             <Grid.Row style={{ paddingBottom: 0 }}>
                 { activity.participantsData
                     .map( p => <Label as='a' color='teal' image key={p.id}>
-                        <img src='https://react.semantic-ui.com/images/avatar/small/veronika.jpg' />
+                        <img src={p.image} />
                         { p.name }
                         { p.id == activity.owner? <Label.Detail>團長</Label.Detail>: null}
                     </Label>)

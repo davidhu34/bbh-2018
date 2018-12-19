@@ -1,37 +1,43 @@
 const profileInit = {
     user: {
         id: 'lukeskywalker',
-        firstName: 'Luke',
-        lastName: 'Skywalker',
-        weight: '85',
-        targetWeight: '65',
+        firstName: 'Lara',
+        lastName: 'Su',
+        weight: '55',
+        targetWeight: '45',
         diabolism: '666',
         height: '200',
     },
     users: {
         'lukeskywalker': {
             id: 'lukeskywalker',
-            name: 'Luke Skywalker',
+            name: 'Lara Su',
+            image: 'https://react.semantic-ui.com/images/avatar/small/jenny.jpg',
         },
         '1': {
             id: '1',
-            name: 'Steve Rogers'
+            name: 'Steve Rogers',
+            image: 'https://react.semantic-ui.com/images/avatar/small/matt.jpg',
         },
         '2': {
             id: '2',
-            name: '周傑倫'
+            name: '周傑倫',
+            image: 'https://react.semantic-ui.com/images/avatar/small/christian.jpg',
         },
         '3': {
             id: '3',
-            name: '王小明'
+            name: '王小明',
+            image: 'https://react.semantic-ui.com/images/avatar/small/tom.jpg',
         },
         '4': {
             id: '4',
-            name: '華生'
+            name: '華生',
+            image: 'https://react.semantic-ui.com/images/avatar/small/daniel.jpg',
         },
         '5': {
             id: '5',
-            name: 'Tyler Durden'
+            name: 'Tyler Durden',
+            image: 'https://react.semantic-ui.com/images/avatar/small/elliot.jpg',
         },
     },
     loggedIn: false

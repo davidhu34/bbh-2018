@@ -133,3 +133,13 @@ export const unavailable = (feature) => launchModal({
     modalType: 'UNAVAILABLE_FEATURE',
     data: { feature }
 })
+
+export const noNotice = () => launchModal({
+    modalType: 'NO_NOTICE',
+    data: null
+})
+
+export const showProfile = () => launchModal({
+    modalType: 'PROFILE',
+    data: null
+})
