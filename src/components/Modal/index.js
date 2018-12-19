@@ -67,13 +67,18 @@ const ModalComponent = ({ modal, closeModal, activityJoinSubmit }) => {
                                 <Button fluid size="mini"
                                     color={'teal'}
                                     disabled={Number(activity.participating) >= Number(activity.max)}
-                                    onClick={(e) => activityJoinSubmit('2')}>
-                                    我要加入
+                                    onClick={(e) => activityJoinSubmit(activity.participation == '2'? '0': '2')}>
+                                    {activity.participation == '2'? '我要退出': '我要加入'}
                                 </Button>
                             </Grid.Column>
                             <Grid.Column>
-                                <Button fluid size="mini" onClick={(e) => activityJoinSubmit('1')}>
-                                    我有興趣
+                                <Button fluid size="mini"
+                                    onClick={(e) => activityJoinSubmit(activity.participation == '1'? '0': '1')}>
+                                    {
+                                        activity.participation == '1'? '取消關注'
+                                        : activity.participation == '2'? '設為關注'
+                                        : '我有興趣'
+                                    }
                                 </Button>
                             </Grid.Column>
                         </Grid.Row>

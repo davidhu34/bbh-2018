@@ -65,6 +65,7 @@ function* foodEditSubmit(action) {
     //     yield put(launchFormError('哪有吃到一百份的'))
     } else {
         const time = (new Date()).getTime()
+        const filter = yield select( state => state.foodUI.filter )
         newFood = {
             ...food,
             id: food.id || time.toString(),
@@ -72,8 +73,9 @@ function* foodEditSubmit(action) {
             desc: DESC,
             calories: CALORIES,
             count: COUNT,
+            category: filter,
         }
-        yield delay(1000)
+        yield delay(100)
     }
 
     yield put({type: 'FOOD_EDIT_SUBMIT_END', food: newFood })

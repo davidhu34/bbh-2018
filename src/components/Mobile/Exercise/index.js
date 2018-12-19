@@ -156,7 +156,7 @@ class Exercise extends Component {
                                 borderColor: exerciseUI.filter == 'LIGHT'? 'pink': 'transparent',
                             }}>
                                 <div style={{color:'transparent'}}>{'_'}</div>
-                                {'輕度'}
+                                {'低度'}
                                 <div style={{color:'transparent'}}>{'_'}</div>
                             </div>
                         </Grid.Column>
@@ -168,7 +168,7 @@ class Exercise extends Component {
                                 borderColor: exerciseUI.filter == 'MEDIUM'? 'pink': 'transparent',
                             }}>
                                 <div style={{color:'transparent'}}>{'_'}</div>
-                                {'輕度'}
+                                {'中度'}
                                 <div style={{color:'transparent'}}>{'_'}</div>
                             </div>
                         </Grid.Column>
@@ -180,7 +180,7 @@ class Exercise extends Component {
                                 borderColor: exerciseUI.filter == 'HARD'? 'pink': 'transparent',
                             }}>
                                 <div style={{color:'transparent'}}>{'_'}</div>
-                                {'重度'}
+                                {'高度'}
                                 <div style={{color:'transparent'}}>{'_'}</div>
                             </div>
                         </Grid.Column>

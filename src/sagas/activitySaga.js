@@ -209,30 +209,64 @@ function* activityJoin(action) {
         }
     }))
 
-    const { participation } = yield take('ACTIVITY_JOIN_SUBMIT')
+    const joinAction = yield take('ACTIVITY_JOIN_SUBMIT')
+    const newParticipation = joinAction.participation
 
     yield put(launchLoader())
     yield put({type: 'ACTIVITY_JOIN_SUBMIT_START' })
 
+    const user = yield select( state => state.profile.user )
+    const toQuit = activity.participants.indexOf(user.id) > -1 && newParticipation != 2
+    const toJoin = activity.participants.indexOf(user.id) == -1 && newParticipation == 2
+    let newParticipants = []
+    if (toQuit) {
+        for (let p of activity.participants) {
+            if (p != user.id) newParticipants.push(p)
+        }
+    } else if (toJoin) {
+        newParticipants = [...activity.participants, user.id]
+    } else newParticipants = activity.participants
+
     const newActivity = {
-        ...activity, participation
+        ...activity,
+        participation: newParticipation,
+        participants: newParticipants,
+        participating: newParticipants.length.toString(),
     }
     yield delay(1)
     yield put({type: 'ACTIVITY_JOIN_SUBMIT_END', activity: newActivity })
 
+
+
+
+
+
     let previewIndex = 0
     const newSchedule = yield select( ({ activityData }) => {
-        let list = []
-        activityData.schedule.map( (id, order) => {
-            const a = activityData.data[id]
-            if (id == newActivity.id) {
-                if (participation == 2) {
+        const { schedule } = activityData
+        if (toQuit) {
+            const remove = schedule.indexOf(newActivity.id)
+            previewIndex = 0
+            return [...schedule.slice(0,remove), ...schedule.slice(remove+1)]
+        } else if (toJoin) {
+            let list = []
+            let inserted = false
+            schedule.map( (id, order) => {
+                const a = activityData.data[id]
+                if (!inserted && a.time > newActivity.time) {
+                    list.push(newActivity.id)
                     previewIndex = order
-                    list.push(id)
+                    inserted = true
                 }
-            } else list.push(id)
-        })
-        return list
+                list.push(id)
+            })
+
+            if (!inserted) {
+                list.push(newActivity.id)
+                previewIndex = list.length -1
+            }
+            return list
+        } else return schedule
     })
     yield put({
         type: 'ACTIVITY_UPDATE_SCHEDULE',
