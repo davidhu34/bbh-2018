@@ -179,6 +179,24 @@ const ModalComponent = ({ modal, profile, closeModal, activityJoinSubmit }) => {
 
                 </Modal.Content>
             </Modal>
+        case 'UNAVAILABLE_FEATURE':
+            return <Modal open>
+                <Modal.Content>
+
+                    <Grid columns={1} padded>
+                        <Grid.Row>
+                            {'本 Demo 未開放此功能'}
+                            { data.feature? ('：'+data.feature): '' }
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Button fluid size="mini" onClick={(e) => closeModal()}>
+                                {'好喔'}
+                            </Button>
+                        </Grid.Row>
+                    </Grid>
+
+                </Modal.Content>
+            </Modal>
         default:
             return <span >{''}</span>
     }
