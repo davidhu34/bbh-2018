@@ -122,7 +122,7 @@ class Camera extends Component {
 
             // this.fetchInsightDev(dataUri).then( insights => {
             this.fetchInsight(dataUri).then( insights => {
-                console.log()
+                // console.log()
             }).catch( error => {
                 console.log(error)
             })
@@ -160,7 +160,13 @@ class Camera extends Component {
                 }
             }).then( response => {
                 const insights = response.data
-                console.log(...insights,response);
+                if (!insights || !insights.length) {
+                    this.setState({
+                        insightsTime: time,
+                        insights: [],
+                    })
+                    return [];
+                }
                 const { width, height, displaySnapshot } = this.props
 
                 const cameraSettings = this.getCameraSettings()
@@ -169,7 +175,6 @@ class Camera extends Component {
 
                 const widthOffset = (camWidth - width) / 2
                 const heightOffset = (camHeight - height) / 2
-
                 this.setState({
                     insightsTime: time,
                     insights: insights.map( (insight, i) => ({
@@ -237,7 +242,7 @@ class Camera extends Component {
         const camWidth = cameraSettings.width || width
         const camHeight = cameraSettings.height  || height
 
-        if (active && !cameraSettings.aspectRatio) {
+        if (active && Object.keys(cameraSettings||{}).length == 0) {
             this.setState({active: false})
             this.haltInsights()
             this.startCamera(front)

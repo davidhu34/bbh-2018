@@ -77,7 +77,7 @@ app.post('*/insights', function (req, res, next) {
 
             let form = new FormData();
             form.append('image', fs.createReadStream(imgPath), {
-                filename: 'foodImage.jpg'
+                image: 'foodImage.jpg'
             });
             console.log('FORM CREATED, SENDING AXIOS');
             axios.create({
@@ -86,8 +86,8 @@ app.post('*/insights', function (req, res, next) {
                 console.log('AXIOS RETURN', response.data);
                 res.send(response.data)
             }).catch( error => {
-                console.log('AXIOS ERROR', error);
-                res.send({ error: 'error' })
+                // console.log('AXIOS ERROR', error);
+                res.send({ error: error })
             });
         });
     } else {
